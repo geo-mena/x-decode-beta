@@ -2,5 +2,5 @@ import { RecentSalesSkeleton } from '@/features/overview/components/recent-sales
 import React from 'react';
 
 export default function Loading() {
-  return <RecentSalesSkeleton />;
+    return <RecentSalesSkeleton />;
 }

@@ -3,23 +3,23 @@ import { notFound } from 'next/navigation';
 import ProductForm from './product-form';
 
 type TProductViewPageProps = {
-  productId: string;
+    productId: string;
 };
 
 export default async function ProductViewPage({
-  productId
+    productId
 }: TProductViewPageProps) {
-  let product = null;
-  let pageTitle = 'Create New Product';
+    let product = null;
+    let pageTitle = 'Create New Product';
 
-  if (productId !== 'new') {
-    const data = await fakeProducts.getProductById(Number(productId));
-    product = data.product as Product;
-    if (!product) {
-      notFound();
+    if (productId !== 'new') {
+        const data = await fakeProducts.getProductById(Number(productId));
+        product = data.product as Product;
+        if (!product) {
+            notFound();
+        }
+        pageTitle = `Edit Product`;
     }
-    pageTitle = `Edit Product`;
-  }
 
-  return <ProductForm initialData={product} pageTitle={pageTitle} />;
+    return <ProductForm initialData={product} pageTitle={pageTitle} />;
 }
