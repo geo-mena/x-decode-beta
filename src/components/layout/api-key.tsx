@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { usePlaygroundStore } from '@/store'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
-
 import { toast } from 'sonner'
 import { truncateText } from '@/lib/utils-key'
 import { IconKey, IconX } from '@tabler/icons-react'
@@ -60,12 +59,12 @@ const ApiKey = () => {
     const getDisplayText = (): string => {
         if (!isMounted) return 'Loading...'
         if (!apiKey) return API_KEY_PLACEHOLDER
-        return truncateText(maskApiKey(apiKey), 25)
+        return truncateText(maskApiKey(apiKey), 22)
     }
 
     if (isEditing) {
         return (
-            <div className="flex items-center gap-1">
+            <div className="space-y-2">
                 <div className="relative">
                     <IconKey className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
@@ -73,27 +72,31 @@ const ApiKey = () => {
                         value={apiKeyValue}
                         onChange={(e) => setApiKeyValue(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        className="h-9 w-40 md:w-48 lg:w-56 rounded-[0.5rem] pl-10 pr-3 text-sm font-normal"
+                        className="h-9 pl-10 pr-3 text-sm font-normal"
                         placeholder="Enter API key..."
                         autoFocus
                     />
                 </div>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleSave}
-                    className="h-8 w-8"
-                >
-                    <Save className="h-4 w-4" />
-                </Button>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleCancel}
-                    className="h-8 w-8"
-                >
-                    <IconX className="h-4 w-4" />
-                </Button>
+                <div className="flex justify-end gap-1">
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleCancel}
+                        className="h-7 px-2 text-xs hover:bg-red-100 hover:text-red-600"
+                    >
+                        <IconX className="h-3 w-3 mr-1" />
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleSave}
+                        className="h-7 px-2 text-xs hover:bg-green-100 hover:text-green-600"
+                    >
+                        <Save className="h-3 w-3 mr-1" />
+                        Save
+                    </Button>
+                </div>
             </div>
         )
     }
@@ -101,43 +104,47 @@ const ApiKey = () => {
     return (
         <Button
             variant="outline"
-            className="bg-background text-muted-foreground relative h-9 w-40 md:w-48 lg:w-56 justify-start rounded-[0.5rem] text-sm font-normal shadow-none hover:bg-accent"
+            className="bg-background text-muted-foreground relative h-9 w-full justify-start rounded-[0.5rem] text-sm font-normal shadow-none hover:bg-accent group-data-[collapsible=icon]/sidebar-wrapper:h-10 group-data-[collapsible=icon]/sidebar-wrapper:w-10 group-data-[collapsible=icon]/sidebar-wrapper:justify-center group-data-[collapsible=icon]/sidebar-wrapper:p-0"
             onClick={() => setIsEditing(true)}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
         >
-            <IconKey className="mr-2 h-4 w-4" />
+            <IconKey className="mr-2 h-4 w-4 group-data-[collapsible=icon]/sidebar-wrapper:mr-0 flex-shrink-0" />
             
-            <AnimatePresence mode="wait">
-                {isHovering && apiKey ? (
-                    <motion.span
-                        key="edit-text"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.15 }}
-                        className="text-primary"
-                    >
-                        Edit API Key
-                    </motion.span>
-                ) : (
-                    <motion.span
-                        key="display-text"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.15 }}
-                        className={apiKey ? 'text-foreground' : 'text-muted-foreground'}
-                    >
-                        {getDisplayText()}
-                    </motion.span>
-                )}
-            </AnimatePresence>
+            {/* Contenido que se oculta cuando el sidebar está colapsado */}
+            <div className="flex-1 min-w-0 group-data-[collapsible=icon]/sidebar-wrapper:hidden">
+                <AnimatePresence mode="wait">
+                    {isHovering && apiKey ? (
+                        <motion.span
+                            key="edit-text"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                            className="text-primary truncate block"
+                        >
+                            Edit API Key
+                        </motion.span>
+                    ) : (
+                        <motion.span
+                            key="display-text"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                            className={`truncate block ${apiKey ? 'text-foreground' : 'text-muted-foreground'}`}
+                        >
+                            {getDisplayText()}
+                        </motion.span>
+                    )}
+                </AnimatePresence>
+            </div>
 
+            {/* Indicador de estado - se adapta al modo colapsado */}
             <div
-                className={`absolute right-3 size-2 shrink-0 rounded-full ${
+                className={`flex-shrink-0 size-2 rounded-full transition-all duration-200 ${
                     apiKey ? 'bg-green-500' : 'bg-red-500'
-                }`}
+                } group-data-[collapsible=icon]/sidebar-wrapper:absolute group-data-[collapsible=icon]/sidebar-wrapper:top-1 group-data-[collapsible=icon]/sidebar-wrapper:right-1 group-data-[collapsible=icon]/sidebar-wrapper:size-3`}
             />
         </Button>
     )
