@@ -264,6 +264,12 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                             </DropdownMenuCheckboxItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
+
+                    {/* Botón Limpiar */}
+                    <Button variant="outline" size="sm" className="h-8" onClick={onClear}>
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Limpiar
+                    </Button>
                 </div>
             </div>
         )
@@ -354,22 +360,14 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
     return (
         <Card className="w-full">
             <CardHeader>
-                <div className="flex items-center justify-between">
-                    <div>
-                        <CardTitle className="flex items-center gap-2">
-                            <Sheet />
-                            Resultados de Evaluación
-                        </CardTitle>
-                        <CardDescription>
-                            Resultados de la evaluación de liveness
-                        </CardDescription>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" onClick={onClear}>
-                            <Trash2 className="mr-1" />
-                            Limpiar
-                        </Button>
-                    </div>
+                <div>
+                    <CardTitle className="flex items-center gap-2">
+                        <Sheet />
+                        Resultados de Evaluación
+                    </CardTitle>
+                    <CardDescription>
+                        Resultados de la evaluación de liveness
+                    </CardDescription>
                 </div>
             </CardHeader>
 
