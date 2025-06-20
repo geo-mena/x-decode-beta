@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu'
 import { LivenessResult } from '@/types/liveness'
-import { Download, RefreshCcw, Sheet, X, MoreHorizontal, Eye, ArrowUpDown } from 'lucide-react'
+import { Download, RefreshCcw, Sheet, X, MoreHorizontal, Eye } from 'lucide-react'
 
 interface ResultsTableProps {
     results: LivenessResult[]
@@ -65,20 +65,6 @@ const CellAction = ({ result }: { result: LivenessResult }) => {
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
-}
-
-// Componente para header de columnas
-const DataTableColumnHeader = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
-    return (
-        <Button
-            variant="ghost"
-            size="sm"
-            className={`-ml-3 h-8 data-[state=open]:bg-accent ${className}`}
-        >
-            {children}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
     )
 }
 
@@ -210,21 +196,11 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-20">
-                                    <DataTableColumnHeader>Imagen</DataTableColumnHeader>
-                                </TableHead>
-                                <TableHead>
-                                    <DataTableColumnHeader>Título</DataTableColumnHeader>
-                                </TableHead>
-                                <TableHead>
-                                    <DataTableColumnHeader>Resolución</DataTableColumnHeader>
-                                </TableHead>
-                                <TableHead>
-                                    <DataTableColumnHeader>Tamaño</DataTableColumnHeader>
-                                </TableHead>
-                                <TableHead>
-                                    <DataTableColumnHeader>Diagnóstico SaaS</DataTableColumnHeader>
-                                </TableHead>
+                                <TableHead className="w-20">Imagen</TableHead>
+                                <TableHead>Título</TableHead>
+                                <TableHead>Resolución</TableHead>
+                                <TableHead>Tamaño</TableHead>
+                                <TableHead>Diagnóstico SaaS</TableHead>
                                 <TableHead className="w-20">Acciones</TableHead>
                             </TableRow>
                         </TableHeader>
