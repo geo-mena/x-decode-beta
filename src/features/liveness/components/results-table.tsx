@@ -395,7 +395,7 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                             <TableCell className="font-medium">
                                                 <div className="space-y-1">
                                                     <p className="text-sm font-medium leading-none">{result.title}</p>
-                                                    <p className="text-xs text-muted-foreground">{result.imagePath}</p>
+                                                    {/* <p className="text-xs text-muted-foreground">{result.imagePath}</p> */}
                                                 </div>
                                             </TableCell>
                                         )}
