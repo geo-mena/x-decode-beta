@@ -1,9 +1,11 @@
+"use client"
+
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useLivenessEvaluator } from '@/hooks/useLivenessEvaluator'
-import { ImageUpload } from './components/Image-upload'
-import { ImageResult } from './components/Image-result'
+import { ImageUpload } from './components/image-upload'
+import { ImageResult } from './components/image-result'
 import { ResultsTable } from './components/results-table'
 
 export default function LivenessContent() {
