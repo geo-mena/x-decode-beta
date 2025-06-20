@@ -3,7 +3,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { 
     DropdownMenu, 
@@ -16,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { LivenessResult } from '@/types/liveness'
 import { Download, Sheet, X, MoreHorizontal, Eye, Search, Filter, Settings2, Trash2 } from 'lucide-react'
+import { ResultsTableSkeleton } from './results-table-skeleton'
 
 interface ResultsTableProps {
     results: LivenessResult[]
@@ -306,24 +306,9 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
         return diagnostic
     }
 
+    // Mostrar skeleton cuando esté cargando
     if (isLoading) {
-        return (
-            <Card className="w-full">
-                <CardContent>
-                    <div className="space-y-3">
-                        {[...Array(3)].map((_, i) => (
-                            <div key={i} className="flex items-center space-x-4">
-                                <Skeleton className="h-16 w-16 rounded" />
-                                <div className="space-y-2">
-                                    <Skeleton className="h-4 w-[200px]" />
-                                    <Skeleton className="h-4 w-[150px]" />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
-        )
+        return <ResultsTableSkeleton visibleColumns={visibleColumns} rows={5} />
     }
 
     if (results.length === 0) {
