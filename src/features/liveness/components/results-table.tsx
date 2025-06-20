@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { LivenessResult } from '@/types/liveness'
-import { Download, RefreshCcw, Sheet, X } from 'lucide-react'
+import { Download, RefreshCcw, Sheet, UserCog, X } from 'lucide-react'
 
 interface ResultsTableProps {
     results: LivenessResult[]
@@ -209,7 +209,7 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                                 disabled={!result.imageUrl}
                                                 title="Ver imagen"
                                             >
-                                                <Icon type="agent" className="h-3 w-3" />
+                                                <UserCog className="h-3 w-3" />
                                             </Button>
                                             <Button
                                                 variant="outline"

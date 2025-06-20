@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 import { LivenessResult } from '@/types/liveness'
-import { Download, RefreshCcw, X } from 'lucide-react'
+import { Download, RefreshCcw, UserCog, X } from 'lucide-react'
 
 interface ImageResultProps {
     result: LivenessResult | null
@@ -25,19 +25,6 @@ export function ImageResult({ result, isLoading, error }: ImageResultProps) {
             return 'default'
         }
         return 'secondary'
-    }
-
-    const getDiagnosticIcon = (diagnostic: string | undefined) => {
-        if (!diagnostic) return 'agent'
-        
-        const lowerDiag = diagnostic.toLowerCase()
-        if (lowerDiag.includes('error') || lowerDiag.includes('failed')) {
-            return 'x'
-        }
-        if (lowerDiag.includes('live') || lowerDiag.includes('success')) {
-            return 'check'
-        }
-        return 'agent'
     }
 
     const handleDownloadImage = () => {
@@ -115,7 +102,7 @@ export function ImageResult({ result, isLoading, error }: ImageResultProps) {
                 </CardHeader>
                 <CardContent className="flex h-64 items-center justify-center text-muted-foreground">
                     <div className="text-center">
-                        <Icon type="agent" className="mx-auto mb-2 h-12 w-12 opacity-50" />
+                        <UserCog className="mx-auto mb-2 h-12 w-12 opacity-50" />
                         <p className="text-sm">Esperando imagen para evaluar...</p>
                     </div>
                 </CardContent>
@@ -128,7 +115,7 @@ export function ImageResult({ result, isLoading, error }: ImageResultProps) {
             <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <Icon type="agent" />
+                        <UserCog/>
                         {result.title}
                     </div>
                     <div className="flex gap-2">
@@ -192,8 +179,7 @@ export function ImageResult({ result, isLoading, error }: ImageResultProps) {
                     
                     <div className="rounded-lg border p-4">
                         <div className="flex items-start gap-3">
-                            <Icon 
-                                type={getDiagnosticIcon(result.diagnosticSaaS)} 
+                            <UserCog
                                 className="mt-0.5"
                             />
                             <div className="flex-1 space-y-2">
