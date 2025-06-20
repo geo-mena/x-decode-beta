@@ -83,6 +83,21 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
         acciones: true
     })
 
+    // Obtener valores únicos de diagnóstico SaaS
+    const uniqueDiagnosticValues = useMemo(() => {
+        const values = new Set<string>()
+        
+        results.forEach(result => {
+            if (result.diagnosticSaaS && result.diagnosticSaaS.trim()) {
+                values.add(result.diagnosticSaaS.trim())
+            } else {
+                values.add('Pendiente')
+            }
+        })
+        
+        return Array.from(values).sort()
+    }, [results])
+
     // Filtrar resultados
     const filteredResults = useMemo(() => {
         return results.filter(result => {
@@ -91,14 +106,26 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                 result.title.toLowerCase().includes(searchValue.toLowerCase()) ||
                 result.imagePath.toLowerCase().includes(searchValue.toLowerCase())
 
-            // Filtro por estado
-            const matchesStatus = statusFilter === 'all' || 
-                (statusFilter === 'success' && result.diagnosticSaaS && !result.diagnosticSaaS.toLowerCase().includes('error')) ||
-                (statusFilter === 'error' && (result.error || (result.diagnosticSaaS && result.diagnosticSaaS.toLowerCase().includes('error'))))
+            // Filtro por estado basado en valores reales
+            let matchesStatus = true
+            if (statusFilter !== 'all') {
+                const diagnosticValue = result.diagnosticSaaS?.trim() || 'Pendiente'
+                matchesStatus = diagnosticValue === statusFilter
+            }
 
             return matchesSearch && matchesStatus
         })
     }, [results, searchValue, statusFilter])
+
+    // Contar resultados por cada filtro
+    const getFilterCount = (filterValue: string) => {
+        if (filterValue === 'all') return results.length
+        
+        return results.filter(result => {
+            const diagnosticValue = result.diagnosticSaaS?.trim() || 'Pendiente'
+            return diagnosticValue === filterValue
+        }).length
+    }
 
     // Componente Toolbar
     const DataTableToolbar = () => {
@@ -123,7 +150,7 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                         />
                     </div>
 
-                    {/* Filtro por estado */}
+                    {/* Filtro por estado dinámico */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline" size="sm" className="h-8 border-dashed">
@@ -136,27 +163,46 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                 )}
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="start" className="w-[200px]">
-                            <DropdownMenuLabel>Filtrar por estado</DropdownMenuLabel>
+                        <DropdownMenuContent align="start" className="w-[250px]">
+                            <DropdownMenuLabel>Filtrar por diagnóstico</DropdownMenuLabel>
                             <DropdownMenuSeparator />
+                            
+                            {/* Opción "Todos" */}
                             <DropdownMenuCheckboxItem
                                 checked={statusFilter === 'all'}
                                 onCheckedChange={() => setStatusFilter('all')}
                             >
-                                Todos los resultados
+                                <div className="flex items-center justify-between w-full">
+                                    <span>Todos los resultados</span>
+                                    <Badge variant="outline" className="ml-2 h-5 px-1 text-xs">
+                                        {getFilterCount('all')}
+                                    </Badge>
+                                </div>
                             </DropdownMenuCheckboxItem>
-                            <DropdownMenuCheckboxItem
-                                checked={statusFilter === 'success'}
-                                onCheckedChange={() => setStatusFilter('success')}
-                            >
-                                Exitosos
-                            </DropdownMenuCheckboxItem>
-                            <DropdownMenuCheckboxItem
-                                checked={statusFilter === 'error'}
-                                onCheckedChange={() => setStatusFilter('error')}
-                            >
-                                Con errores
-                            </DropdownMenuCheckboxItem>
+                            
+                            <DropdownMenuSeparator />
+                            
+                            {/* Opciones dinámicas basadas en valores reales */}
+                            {uniqueDiagnosticValues.map((diagnosticValue) => (
+                                <DropdownMenuCheckboxItem
+                                    key={diagnosticValue}
+                                    checked={statusFilter === diagnosticValue}
+                                    onCheckedChange={() => setStatusFilter(diagnosticValue)}
+                                >
+                                    <div className="flex items-center justify-between w-full">
+                                        <span className="truncate">{diagnosticValue}</span>
+                                        <Badge variant="outline" className="ml-2 h-5 px-1 text-xs">
+                                            {getFilterCount(diagnosticValue)}
+                                        </Badge>
+                                    </div>
+                                </DropdownMenuCheckboxItem>
+                            ))}
+                            
+                            {uniqueDiagnosticValues.length === 0 && (
+                                <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                                    No hay diagnósticos disponibles
+                                </div>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
 
@@ -430,6 +476,11 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <div>
                         Mostrando {filteredResults.length} de {results.length} resultado{results.length !== 1 ? 's' : ''}
+                        {statusFilter !== 'all' && (
+                            <span className="ml-2">
+                                • Filtrado por: <span className="font-medium">{statusFilter}</span>
+                            </span>
+                        )}
                     </div>
                 </div>
             </CardContent>
