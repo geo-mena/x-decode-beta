@@ -82,7 +82,7 @@ const ApiKey = () => {
                         variant="ghost"
                         size="sm"
                         onClick={handleCancel}
-                        className="h-7 px-2 text-xs hover:bg-red-100 hover:text-red-600"
+                        className="h-7 px-2 text-xs"
                     >
                         <IconX className="h-3 w-3 mr-1" />
                         Cancel
@@ -91,7 +91,7 @@ const ApiKey = () => {
                         variant="ghost"
                         size="sm"
                         onClick={handleSave}
-                        className="h-7 px-2 text-xs hover:bg-green-100 hover:text-green-600"
+                        className="h-7 px-2 text-xs"
                     >
                         <Save className="h-3 w-3 mr-1" />
                         Save
@@ -109,7 +109,7 @@ const ApiKey = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
         >
-            <IconKey className="mr-2 h-4 w-4 flex-shrink-0" />
+            <IconKey className="h-4 w-4 flex-shrink-0" />
             
             <div className="flex-1 min-w-0">
                 <AnimatePresence mode="wait">
