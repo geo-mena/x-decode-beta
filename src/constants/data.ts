@@ -66,7 +66,7 @@ export const navItems: NavItem[] = [
 
         items: [
             {
-                title: 'Prube Liveness',
+                title: 'Passive Liveness',
                 url: '/dashboard/liveness',
                 icon: 'route',
                 shortcut: ['m', 'm']
