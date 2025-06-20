@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { CloudUpload, Play, RefreshCcw, Route, Trash } from 'lucide-react'
+import { CloudUpload, Play, Route, Trash, Folder, Files, Loader } from 'lucide-react'
 
 interface ImageUploadProps {
     onFilesSelected: (files: File[], isDirectory: boolean) => void
@@ -14,6 +14,7 @@ interface ImageUploadProps {
 export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExtensions }: ImageUploadProps) {
     const [dragActive, setDragActive] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+    const [isDirectoryMode, setIsDirectoryMode] = useState(false)
 
     const isValidFile = useCallback((file: File): boolean => {
         const extension = '.' + file.name.split('.').pop()?.toLowerCase()
@@ -40,13 +41,13 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
 
         setSelectedFiles(validFiles)
         
-        // Determinar si es un directorio (múltiples archivos)
-        const isDirectory = validFiles.length > 1
+        // Determinar si es un directorio (múltiples archivos o modo directorio)
+        const isDirectory = validFiles.length > 1 || isDirectoryMode
         
         toast.success('Archivos seleccionados', {
             description: `${validFiles.length} imagen${validFiles.length > 1 ? 'es' : ''} seleccionada${validFiles.length > 1 ? 's' : ''}`
         })
-    }, [isValidFile, supportedExtensions])
+    }, [isValidFile, supportedExtensions, isDirectoryMode])
 
     const handleDrag = useCallback((e: React.DragEvent) => {
         e.preventDefault()
@@ -83,25 +84,40 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
             return
         }
 
-        const isDirectory = selectedFiles.length > 1
+        const isDirectory = selectedFiles.length > 1 || isDirectoryMode
         onFilesSelected(selectedFiles, isDirectory)
-    }, [selectedFiles, onFilesSelected])
+    }, [selectedFiles, onFilesSelected, isDirectoryMode])
 
     const handleClear = useCallback(() => {
         setSelectedFiles([])
         onClear()
-        // Reset input
-        const input = document.getElementById('file-input') as HTMLInputElement
-        if (input) {
-            input.value = ''
-        }
+        // Reset both inputs
+        const fileInput = document.getElementById('file-input') as HTMLInputElement
+        const dirInput = document.getElementById('directory-input') as HTMLInputElement
+        if (fileInput) fileInput.value = ''
+        if (dirInput) dirInput.value = ''
     }, [onClear])
+
+    const clearInputsOnly = useCallback(() => {
+        setSelectedFiles([])
+        // Reset both inputs without triggering onClear callback
+        const fileInput = document.getElementById('file-input') as HTMLInputElement
+        const dirInput = document.getElementById('directory-input') as HTMLInputElement
+        if (fileInput) fileInput.value = ''
+        if (dirInput) dirInput.value = ''
+    }, [])
+
+    const toggleMode = useCallback(() => {
+        setIsDirectoryMode(!isDirectoryMode)
+        // Limpiar internamente sin mostrar mensaje
+        clearInputsOnly()
+    }, [isDirectoryMode, clearInputsOnly])
 
     return (
         <Card className="w-full">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                    <Route type="route" />
+                    <Route className="h-5 w-5" />
                     Evaluación de Liveness
                 </CardTitle>
                 <CardDescription>
@@ -110,6 +126,29 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
             </CardHeader>
 
             <CardContent className="space-y-4">
+                {/* Mode selector */}
+                <div className="flex gap-2">
+                    <Button
+                        variant={!isDirectoryMode ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => !isDirectoryMode || toggleMode()}
+                        disabled={isLoading}
+                        className="flex items-center gap-2"
+                    >
+                        <Files className="h-4 w-4" />
+                        Archivos individuales
+                    </Button>
+                    <Button
+                        variant={isDirectoryMode ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => isDirectoryMode || toggleMode()}
+                        disabled={isLoading}
+                        className="flex items-center gap-2"
+                    >
+                        <Folder className="h-4 w-4" />
+                        Carpeta completa
+                    </Button>
+                </div>
 
                 {/* Drop zone */}
                 <div
@@ -123,25 +162,53 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
                     onDragOver={handleDrag}
                     onDrop={handleDrop}
                 >
+                    {/* Input for individual files */}
                     <input
                         id="file-input"
                         type="file"
-                        multiple
+                        multiple={!isDirectoryMode}
                         accept={supportedExtensions.map(ext => `image/*${ext}`).join(',')}
                         onChange={handleFileInput}
-                        className="absolute inset-0 cursor-pointer opacity-0"
-                        disabled={isLoading}
+                        className={`absolute inset-0 cursor-pointer opacity-0 ${isDirectoryMode ? 'hidden' : ''}`}
+                        disabled={isLoading || isDirectoryMode}
+                    />
+                    
+                    {/* Input for directory */}
+                    <input
+                        id="directory-input"
+                        type="file"
+                        // @ts-ignore - webkitdirectory is not in TypeScript definitions but is supported
+                        webkitdirectory="true"
+                        multiple
+                        onChange={handleFileInput}
+                        className={`absolute inset-0 cursor-pointer opacity-0 ${!isDirectoryMode ? 'hidden' : ''}`}
+                        disabled={isLoading || !isDirectoryMode}
                     />
                     
                     <div className="flex flex-col items-center justify-center space-y-2">
-                        <CloudUpload className='mb-2 h-12 w-12 text-muted-foreground'/>
+                        {isDirectoryMode ? (
+                            <Folder className='mb-2 h-12 w-12 text-muted-foreground'/>
+                        ) : (
+                            <CloudUpload className='mb-2 h-12 w-12 text-muted-foreground'/>
+                        )}
                         <div>
                             <p className="text-sm font-medium">
-                                Haga clic para seleccionar o arrastre archivos aquí
+                                {isDirectoryMode 
+                                    ? 'Haga clic para seleccionar una carpeta o arrastre una carpeta aquí'
+                                    : 'Haga clic para seleccionar archivos o arrastre archivos aquí'
+                                }
                             </p>
                             <p className="text-xs text-muted-foreground">
-                                Imagen individual o múltiples imágenes (máx. 10MB por archivo)
+                                {isDirectoryMode 
+                                    ? 'Se seleccionarán todas las imágenes de la carpeta (máx. 10MB por archivo)'
+                                    : 'Imagen individual o múltiples imágenes (máx. 10MB por archivo)'
+                                }
                             </p>
+                            {selectedFiles.length > 0 && (
+                                <p className="text-xs text-green-600 mt-1">
+                                    {selectedFiles.length} archivo{selectedFiles.length > 1 ? 's' : ''} seleccionado{selectedFiles.length > 1 ? 's' : ''}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -156,12 +223,12 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
                 >
                     {isLoading ? (
                         <>
-                            <RefreshCcw className="mr-2 animate-spin"/>
+                            <Loader className="mr-2 h-4 w-4 animate-spin"/>
                             Evaluando...
                         </>
                     ) : (
                         <>
-                            <Play className="mr-2"/>
+                            <Play className="mr-2 h-4 w-4"/>
                             Evaluar {selectedFiles.length > 1 ? 'Imágenes' : 'Imagen'}
                         </>
                     )}
@@ -172,7 +239,7 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
                     onClick={handleClear}
                     disabled={isLoading || selectedFiles.length === 0}
                 >
-                    <Trash className="mr-2" />
+                    <Trash className="mr-2 h-4 w-4" />
                     Limpiar
                 </Button>
             </CardFooter>
