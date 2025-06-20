@@ -104,15 +104,14 @@ const ApiKey = () => {
     return (
         <Button
             variant="outline"
-            className="bg-background text-muted-foreground relative h-9 w-full justify-start rounded-[0.5rem] text-sm font-normal shadow-none hover:bg-accent group-data-[collapsible=icon]/sidebar-wrapper:h-10 group-data-[collapsible=icon]/sidebar-wrapper:w-10 group-data-[collapsible=icon]/sidebar-wrapper:justify-center group-data-[collapsible=icon]/sidebar-wrapper:p-0"
+            className="bg-background text-muted-foreground relative h-9 w-full justify-start rounded-[0.5rem] text-sm font-normal shadow-none hover:bg-accent"
             onClick={() => setIsEditing(true)}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
         >
-            <IconKey className="mr-2 h-4 w-4 group-data-[collapsible=icon]/sidebar-wrapper:mr-0 flex-shrink-0" />
+            <IconKey className="mr-2 h-4 w-4 flex-shrink-0" />
             
-            {/* Contenido que se oculta cuando el sidebar está colapsado */}
-            <div className="flex-1 min-w-0 group-data-[collapsible=icon]/sidebar-wrapper:hidden">
+            <div className="flex-1 min-w-0">
                 <AnimatePresence mode="wait">
                     {isHovering && apiKey ? (
                         <motion.span
@@ -140,11 +139,10 @@ const ApiKey = () => {
                 </AnimatePresence>
             </div>
 
-            {/* Indicador de estado - se adapta al modo colapsado */}
             <div
-                className={`flex-shrink-0 size-2 rounded-full transition-all duration-200 ${
+                className={`flex-shrink-0 size-2 rounded-full ${
                     apiKey ? 'bg-green-500' : 'bg-red-500'
-                } group-data-[collapsible=icon]/sidebar-wrapper:absolute group-data-[collapsible=icon]/sidebar-wrapper:top-1 group-data-[collapsible=icon]/sidebar-wrapper:right-1 group-data-[collapsible=icon]/sidebar-wrapper:size-3`}
+                }`}
             />
         </Button>
     )
