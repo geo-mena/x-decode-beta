@@ -193,11 +193,6 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                             <Badge variant={getDiagnosticBadgeVariant(result.diagnosticSaaS)}>
                                                 {getDiagnosticDisplay(result.diagnosticSaaS)}
                                             </Badge>
-                                            {result.rawResponse && (
-                                                <div className="text-xs text-muted-foreground">
-                                                    Liveness: {result.rawResponse.serviceLivenessResult === 3 ? 'LIVE' : 'NOT LIVE'}
-                                                </div>
-                                            )}
                                         </div>
                                     </TableCell>
                                     <TableCell>
@@ -226,28 +221,6 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                             ))}
                         </TableBody>
                     </Table>
-                </div>
-
-                {/* Estadísticas resumidas */}
-                <div className="mt-4 grid grid-cols-2 gap-4 rounded-lg border p-4 text-sm md:grid-cols-4">
-                    <div>
-                        <p className="text-muted-foreground">Total de imágenes</p>
-                        <p className="text-lg font-semibold">{results.length}</p>
-                    </div>
-                    <div>
-                        <p className="text-muted-foreground">Evaluaciones exitosas</p>
-                        <p className="text-lg font-semibold text-green-600">{successCount}</p>
-                    </div>
-                    <div>
-                        <p className="text-muted-foreground">Errores</p>
-                        <p className="text-lg font-semibold text-red-600">{errorCount}</p>
-                    </div>
-                    <div>
-                        <p className="text-muted-foreground">Tasa de éxito</p>
-                        <p className="text-lg font-semibold">
-                            {results.length > 0 ? Math.round((successCount / results.length) * 100) : 0}%
-                        </p>
-                    </div>
                 </div>
             </CardContent>
         </Card>
