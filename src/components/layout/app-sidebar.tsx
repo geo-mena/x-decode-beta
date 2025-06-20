@@ -50,6 +50,7 @@ import * as React from 'react';
 import { Icons } from '../icons';
 import { OrgSwitcher } from '../org-switcher';
 import ApiKey from './api-key';
+import type { SidebarVariant, SidebarCollapsible } from '@/lib/layout-preferences';
 
 export const company = {
     name: 'Acme Inc',
@@ -63,7 +64,15 @@ const tenants = [
     { id: '3', name: 'Gamma Ltd' }
 ];
 
-export default function AppSidebar() {
+interface AppSidebarProps {
+    variant?: SidebarVariant;
+    collapsible?: SidebarCollapsible;
+}
+
+export default function AppSidebar({ 
+    variant = 'inset', 
+    collapsible = 'icon' 
+}: AppSidebarProps) {
     const pathname = usePathname();
     const { isOpen } = useMediaQuery();
     const { user } = useUser();
@@ -81,7 +90,7 @@ export default function AppSidebar() {
     }, [isOpen]);
 
     return (
-        <Sidebar collapsible='icon'>
+        <Sidebar variant={variant} collapsible={collapsible}>
             <SidebarHeader>
                 <OrgSwitcher
                     tenants={tenants}
