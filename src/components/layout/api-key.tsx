@@ -77,7 +77,7 @@ const ApiKey = () => {
                     />
                 </div>
                 <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     onClick={handleSave}
                     className="h-9 px-3 text-xs"
