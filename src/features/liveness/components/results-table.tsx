@@ -4,13 +4,82 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { 
+    DropdownMenu, 
+    DropdownMenuContent, 
+    DropdownMenuItem, 
+    DropdownMenuLabel, 
+    DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu'
 import { LivenessResult } from '@/types/liveness'
-import { Download, RefreshCcw, Sheet, UserCog, X } from 'lucide-react'
+import { Download, RefreshCcw, Sheet, X, MoreHorizontal, Eye, ArrowUpDown } from 'lucide-react'
 
 interface ResultsTableProps {
     results: LivenessResult[]
     isLoading: boolean
     onClear: () => void
+}
+
+// Componente para acciones de cada fila
+const CellAction = ({ result }: { result: LivenessResult }) => {
+    const handleDownloadImage = () => {
+        if (result.imageUrl) {
+            const link = document.createElement('a')
+            link.href = result.imageUrl
+            link.download = result.imagePath
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+        }
+    }
+
+    const handleViewImage = () => {
+        if (result.imageUrl) {
+            window.open(result.imageUrl, '_blank')
+        }
+    }
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Abrir menú</span>
+                    <MoreHorizontal className="h-4 w-4" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                <DropdownMenuItem 
+                    onClick={handleViewImage}
+                    disabled={!result.imageUrl}
+                >
+                    <Eye className="mr-2 h-4 w-4" />
+                    Ver imagen
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                    onClick={handleDownloadImage}
+                    disabled={!result.imageUrl}
+                >
+                    <Download className="mr-2 h-4 w-4" />
+                    Descargar
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
+}
+
+// Componente para header de columnas
+const DataTableColumnHeader = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <Button
+            variant="ghost"
+            size="sm"
+            className={`-ml-3 h-8 data-[state=open]:bg-accent ${className}`}
+        >
+            {children}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    )
 }
 
 export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps) {
@@ -35,23 +104,6 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
             return diagnostic.substring(0, 47) + '...'
         }
         return diagnostic
-    }
-
-    const handleDownloadImage = (result: LivenessResult) => {
-        if (result.imageUrl) {
-            const link = document.createElement('a')
-            link.href = result.imageUrl
-            link.download = result.imagePath
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
-        }
-    }
-
-    const handleViewImage = (result: LivenessResult) => {
-        if (result.imageUrl) {
-            window.open(result.imageUrl, '_blank')
-        }
     }
 
     if (isLoading) {
@@ -143,25 +195,46 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                 </div>
             </CardHeader>
 
-            <CardContent>
+            <CardContent className="space-y-4">
+                {/* Toolbar área */}
+                <div className="flex items-center justify-between">
+                    <div className="flex flex-1 items-center space-x-2">
+                        <p className="text-sm text-muted-foreground">
+                            {results.length} resultado{results.length !== 1 ? 's' : ''} en total
+                        </p>
+                    </div>
+                </div>
+
+                {/* Tabla mejorada */}
                 <div className="rounded-md border">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-20">Imagen</TableHead>
-                                <TableHead>Título</TableHead>
-                                <TableHead>Resolución</TableHead>
-                                <TableHead>Tamaño</TableHead>
-                                <TableHead>Diagnóstico SaaS</TableHead>
-                                <TableHead className="w-24">Acciones</TableHead>
+                                <TableHead className="w-20">
+                                    <DataTableColumnHeader>Imagen</DataTableColumnHeader>
+                                </TableHead>
+                                <TableHead>
+                                    <DataTableColumnHeader>Título</DataTableColumnHeader>
+                                </TableHead>
+                                <TableHead>
+                                    <DataTableColumnHeader>Resolución</DataTableColumnHeader>
+                                </TableHead>
+                                <TableHead>
+                                    <DataTableColumnHeader>Tamaño</DataTableColumnHeader>
+                                </TableHead>
+                                <TableHead>
+                                    <DataTableColumnHeader>Diagnóstico SaaS</DataTableColumnHeader>
+                                </TableHead>
+                                <TableHead className="w-20">Acciones</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {results.map((result, index) => (
-                                <TableRow key={index}>
+                                <TableRow key={index} className="hover:bg-muted/50">
+                                    {/* Imagen */}
                                     <TableCell>
                                         {result.imageUrl ? (
-                                            <div className="relative h-12 w-12 overflow-hidden rounded border">
+                                            <div className="relative aspect-square h-12 w-12 overflow-hidden rounded border">
                                                 <img
                                                     src={result.imageUrl}
                                                     alt={result.title}
@@ -174,20 +247,28 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                             </div>
                                         )}
                                     </TableCell>
+
+                                    {/* Título */}
                                     <TableCell className="font-medium">
-                                        <div>
-                                            <p className="text-sm">{result.title}</p>
+                                        <div className="space-y-1">
+                                            <p className="text-sm font-medium leading-none">{result.title}</p>
                                             <p className="text-xs text-muted-foreground">{result.imagePath}</p>
                                         </div>
                                     </TableCell>
+
+                                    {/* Resolución */}
                                     <TableCell>
                                         <Badge variant="outline" className="font-mono text-xs">
                                             {result.resolution}
                                         </Badge>
                                     </TableCell>
+
+                                    {/* Tamaño */}
                                     <TableCell>
-                                        <span className="text-sm">{result.size}</span>
+                                        <span className="text-sm font-medium">{result.size}</span>
                                     </TableCell>
+
+                                    {/* Diagnóstico SaaS */}
                                     <TableCell>
                                         <div className="space-y-1">
                                             <Badge variant={getDiagnosticBadgeVariant(result.diagnosticSaaS)}>
@@ -195,27 +276,10 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                             </Badge>
                                         </div>
                                     </TableCell>
+
+                                    {/* Acciones */}
                                     <TableCell>
-                                        <div className="flex gap-1">
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => handleViewImage(result)}
-                                                disabled={!result.imageUrl}
-                                                title="Ver imagen"
-                                            >
-                                                <UserCog className="h-3 w-3" />
-                                            </Button>
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => handleDownloadImage(result)}
-                                                disabled={!result.imageUrl}
-                                                title="Descargar imagen"
-                                            >
-                                                <Download className="h-3 w-3" />
-                                            </Button>
-                                        </div>
+                                        <CellAction result={result} />
                                     </TableCell>
                                 </TableRow>
                             ))}
