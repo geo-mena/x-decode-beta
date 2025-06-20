@@ -1,71 +1,73 @@
-import { PlaygroundChatMessage, SessionEntry } from '@/types/playground'
-import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { PlaygroundChatMessage, SessionEntry } from '@/types/playground';
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface Agent {
-    value: string
-    label: string
+    value: string;
+    label: string;
     model: {
-        provider: string
-    }
-    storage?: boolean
+        provider: string;
+    };
+    storage?: boolean;
 }
 
 interface Route {
-    value: string
-    label: string
-    path: string
-    description: string
+    value: string;
+    label: string;
+    path: string;
+    description: string;
 }
 
 interface PlaygroundStore {
-    hydrated: boolean
-    setHydrated: () => void
-    streamingErrorMessage: string
-    setStreamingErrorMessage: (streamingErrorMessage: string) => void
+    hydrated: boolean;
+    setHydrated: () => void;
+    streamingErrorMessage: string;
+    setStreamingErrorMessage: (streamingErrorMessage: string) => void;
     endpoints: {
-        endpoint: string
-        id_playground_endpoint: string
-    }[]
+        endpoint: string;
+        id_playground_endpoint: string;
+    }[];
     setEndpoints: (
         endpoints: {
-            endpoint: string
-            id_playground_endpoint: string
+            endpoint: string;
+            id_playground_endpoint: string;
         }[]
-    ) => void
-    isStreaming: boolean
-    setIsStreaming: (isStreaming: boolean) => void
-    isEndpointActive: boolean
-    setIsEndpointActive: (isActive: boolean) => void
-    isEndpointLoading: boolean
-    setIsEndpointLoading: (isLoading: boolean) => void
-    messages: PlaygroundChatMessage[]
+    ) => void;
+    isStreaming: boolean;
+    setIsStreaming: (isStreaming: boolean) => void;
+    isEndpointActive: boolean;
+    setIsEndpointActive: (isActive: boolean) => void;
+    isEndpointLoading: boolean;
+    setIsEndpointLoading: (isLoading: boolean) => void;
+    messages: PlaygroundChatMessage[];
     setMessages: (
         messages:
             | PlaygroundChatMessage[]
-            | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[])
-    ) => void
-    hasStorage: boolean
-    setHasStorage: (hasStorage: boolean) => void
-    chatInputRef: React.RefObject<HTMLTextAreaElement | null>
-    selectedEndpoint: string
-    setSelectedEndpoint: (selectedEndpoint: string) => void
-    apiKey: string
-    setApiKey: (apiKey: string) => void
-    agents: Agent[]
-    setAgents: (agents: Agent[]) => void
-    routes: Route[]
-    setRoutes: (routes: Route[]) => void
-    selectedModel: string
-    setSelectedModel: (model: string) => void
-    sessionsData: SessionEntry[] | null
+            | ((
+                  prevMessages: PlaygroundChatMessage[]
+              ) => PlaygroundChatMessage[])
+    ) => void;
+    hasStorage: boolean;
+    setHasStorage: (hasStorage: boolean) => void;
+    chatInputRef: React.RefObject<HTMLTextAreaElement | null>;
+    selectedEndpoint: string;
+    setSelectedEndpoint: (selectedEndpoint: string) => void;
+    apiKey: string;
+    setApiKey: (apiKey: string) => void;
+    agents: Agent[];
+    setAgents: (agents: Agent[]) => void;
+    routes: Route[];
+    setRoutes: (routes: Route[]) => void;
+    selectedModel: string;
+    setSelectedModel: (model: string) => void;
+    sessionsData: SessionEntry[] | null;
     setSessionsData: (
         sessionsData:
             | SessionEntry[]
             | ((prevSessions: SessionEntry[] | null) => SessionEntry[] | null)
-    ) => void
-    isSessionsLoading: boolean
-    setIsSessionsLoading: (isSessionsLoading: boolean) => void
+    ) => void;
+    isSessionsLoading: boolean;
+    setIsSessionsLoading: (isSessionsLoading: boolean) => void;
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>()(
@@ -81,19 +83,25 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
             isStreaming: false,
             setIsStreaming: (isStreaming) => set(() => ({ isStreaming })),
             isEndpointActive: false,
-            setIsEndpointActive: (isActive) => set(() => ({ isEndpointActive: isActive })),
+            setIsEndpointActive: (isActive) =>
+                set(() => ({ isEndpointActive: isActive })),
             isEndpointLoading: true,
-            setIsEndpointLoading: (isLoading) => set(() => ({ isEndpointLoading: isLoading })),
+            setIsEndpointLoading: (isLoading) =>
+                set(() => ({ isEndpointLoading: isLoading })),
             messages: [],
             setMessages: (messages) =>
                 set((state) => ({
-                    messages: typeof messages === 'function' ? messages(state.messages) : messages
+                    messages:
+                        typeof messages === 'function'
+                            ? messages(state.messages)
+                            : messages
                 })),
             hasStorage: false,
             setHasStorage: (hasStorage) => set(() => ({ hasStorage })),
             chatInputRef: { current: null },
             selectedEndpoint: 'http://localhost:7777',
-            setSelectedEndpoint: (selectedEndpoint) => set(() => ({ selectedEndpoint })),
+            setSelectedEndpoint: (selectedEndpoint) =>
+                set(() => ({ selectedEndpoint })),
             apiKey: '',
             setApiKey: (apiKey) => set(() => ({ apiKey })),
             agents: [],
@@ -110,7 +118,7 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
                     label: 'Readiness',
                     path: '/Readiness',
                     description: 'Health check and monitoring route'
-                } 
+                }
             ],
             setRoutes: (routes) => set({ routes }),
             selectedModel: '',
@@ -124,7 +132,8 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
                             : sessionsData
                 })),
             isSessionsLoading: false,
-            setIsSessionsLoading: (isSessionsLoading) => set(() => ({ isSessionsLoading }))
+            setIsSessionsLoading: (isSessionsLoading) =>
+                set(() => ({ isSessionsLoading }))
         }),
         {
             name: 'endpoint-storage',
@@ -134,8 +143,8 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
                 apiKey: state.apiKey
             }),
             onRehydrateStorage: () => (state) => {
-                state?.setHydrated?.()
+                state?.setHydrated?.();
             }
         }
     )
-)
+);

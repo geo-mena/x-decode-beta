@@ -1,80 +1,107 @@
-import React, { useState, useMemo } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { 
-    DropdownMenu, 
-    DropdownMenuContent, 
-    DropdownMenuItem, 
-    DropdownMenuLabel, 
+import React, { useState, useMemo } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow
+} from '@/components/ui/table';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
     DropdownMenuTrigger,
     DropdownMenuCheckboxItem,
     DropdownMenuSeparator
-} from '@/components/ui/dropdown-menu'
-import { LivenessResult } from '@/types/liveness'
-import { Download, Sheet, X, MoreHorizontal, Eye, Search, Filter, Settings2, Trash2 } from 'lucide-react'
-import { ResultsTableSkeleton } from './results-table-skeleton'
-import { ImagePreviewModal } from './image-preview'
+} from '@/components/ui/dropdown-menu';
+import { LivenessResult } from '@/types/liveness';
+import {
+    Download,
+    Sheet,
+    X,
+    MoreHorizontal,
+    Eye,
+    Search,
+    Filter,
+    Settings2,
+    Trash2
+} from 'lucide-react';
+import { ResultsTableSkeleton } from './results-table-skeleton';
+import { ImagePreviewModal } from './image-preview';
 
 interface ResultsTableProps {
-    results: LivenessResult[]
-    isLoading: boolean
-    onClear: () => void
+    results: LivenessResult[];
+    isLoading: boolean;
+    onClear: () => void;
 }
 
-const CellAction = ({ result, onViewImage }: { result: LivenessResult; onViewImage: (result: LivenessResult) => void }) => {
+const CellAction = ({
+    result,
+    onViewImage
+}: {
+    result: LivenessResult;
+    onViewImage: (result: LivenessResult) => void;
+}) => {
     const handleDownloadImage = () => {
         if (result.imageUrl) {
-            const link = document.createElement('a')
-            link.href = result.imageUrl
-            link.download = result.imagePath
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
+            const link = document.createElement('a');
+            link.href = result.imageUrl;
+            link.download = result.imagePath;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
-    }
+    };
 
     const handleViewImage = () => {
         if (result.imageUrl) {
-            onViewImage(result)
+            onViewImage(result);
         }
-    }
+    };
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                    <span className="sr-only">Abrir menú</span>
-                    <MoreHorizontal className="h-4 w-4" />
+                <Button variant='ghost' className='h-8 w-8 p-0'>
+                    <span className='sr-only'>Abrir menú</span>
+                    <MoreHorizontal className='h-4 w-4' />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align='end'>
                 <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                <DropdownMenuItem 
+                <DropdownMenuItem
                     onClick={handleViewImage}
                     disabled={!result.imageUrl}
                 >
-                    <Eye className="mr-2 h-4 w-4" />
+                    <Eye className='mr-2 h-4 w-4' />
                     Ver imagen
                 </DropdownMenuItem>
-                <DropdownMenuItem 
+                <DropdownMenuItem
                     onClick={handleDownloadImage}
                     disabled={!result.imageUrl}
                 >
-                    <Download className="mr-2 h-4 w-4" />
+                    <Download className='mr-2 h-4 w-4' />
                     Descargar
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
-}
+    );
+};
 
-export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps) {
+export function ResultsTable({
+    results,
+    isLoading,
+    onClear
+}: ResultsTableProps) {
     // Estados para filtros
-    const [searchValue, setSearchValue] = useState('')
-    const [statusFilter, setStatusFilter] = useState<string>('all')
+    const [searchValue, setSearchValue] = useState('');
+    const [statusFilter, setStatusFilter] = useState<string>('all');
     const [visibleColumns, setVisibleColumns] = useState({
         imagen: true,
         titulo: true,
@@ -82,140 +109,171 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
         tamaño: true,
         diagnostico: true,
         acciones: true
-    })
+    });
 
     // Estados para el modal de imagen
-    const [imageModalOpen, setImageModalOpen] = useState(false)
-    const [selectedImage, setSelectedImage] = useState<LivenessResult | null>(null)
+    const [imageModalOpen, setImageModalOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<LivenessResult | null>(
+        null
+    );
 
     // Obtener valores únicos de diagnóstico SaaS
     const uniqueDiagnosticValues = useMemo(() => {
-        const values = new Set<string>()
-        
-        results.forEach(result => {
+        const values = new Set<string>();
+
+        results.forEach((result) => {
             if (result.diagnosticSaaS && result.diagnosticSaaS.trim()) {
-                values.add(result.diagnosticSaaS.trim())
+                values.add(result.diagnosticSaaS.trim());
             } else {
-                values.add('Pendiente')
+                values.add('Pendiente');
             }
-        })
-        
-        return Array.from(values).sort()
-    }, [results])
+        });
+
+        return Array.from(values).sort();
+    }, [results]);
 
     // Filtrar resultados
     const filteredResults = useMemo(() => {
-        return results.filter(result => {
+        return results.filter((result) => {
             // Filtro de búsqueda por título y path
-            const matchesSearch = searchValue === '' || 
-                result.title.toLowerCase().includes(searchValue.toLowerCase()) ||
-                result.imagePath.toLowerCase().includes(searchValue.toLowerCase())
+            const matchesSearch =
+                searchValue === '' ||
+                result.title
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase()) ||
+                result.imagePath
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase());
 
             // Filtro por estado basado en valores reales
-            let matchesStatus = true
+            let matchesStatus = true;
             if (statusFilter !== 'all') {
-                const diagnosticValue = result.diagnosticSaaS?.trim() || 'Pendiente'
-                matchesStatus = diagnosticValue === statusFilter
+                const diagnosticValue =
+                    result.diagnosticSaaS?.trim() || 'Pendiente';
+                matchesStatus = diagnosticValue === statusFilter;
             }
 
-            return matchesSearch && matchesStatus
-        })
-    }, [results, searchValue, statusFilter])
+            return matchesSearch && matchesStatus;
+        });
+    }, [results, searchValue, statusFilter]);
 
     // Contar resultados por cada filtro
     const getFilterCount = (filterValue: string) => {
-        if (filterValue === 'all') return results.length
-        
-        return results.filter(result => {
-            const diagnosticValue = result.diagnosticSaaS?.trim() || 'Pendiente'
-            return diagnosticValue === filterValue
-        }).length
-    }
+        if (filterValue === 'all') return results.length;
+
+        return results.filter((result) => {
+            const diagnosticValue =
+                result.diagnosticSaaS?.trim() || 'Pendiente';
+            return diagnosticValue === filterValue;
+        }).length;
+    };
 
     // Funciones para el modal de imagen
     const handleViewImage = (result: LivenessResult) => {
-        setSelectedImage(result)
-        setImageModalOpen(true)
-    }
+        setSelectedImage(result);
+        setImageModalOpen(true);
+    };
 
     const handleCloseImageModal = () => {
-        setImageModalOpen(false)
-        setSelectedImage(null)
-    }
+        setImageModalOpen(false);
+        setSelectedImage(null);
+    };
 
     // Componente Toolbar
     const DataTableToolbar = () => {
-        const isFiltered = searchValue !== '' || statusFilter !== 'all'
+        const isFiltered = searchValue !== '' || statusFilter !== 'all';
 
         const handleReset = () => {
-            setSearchValue('')
-            setStatusFilter('all')
-        }
+            setSearchValue('');
+            setStatusFilter('all');
+        };
 
         return (
-            <div className="flex w-full items-start justify-between gap-2 p-1">
-                <div className="flex flex-1 flex-wrap items-center gap-2">
+            <div className='flex w-full items-start justify-between gap-2 p-1'>
+                <div className='flex flex-1 flex-wrap items-center gap-2'>
                     {/* Búsqueda por texto */}
-                    <div className="relative">
-                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <div className='relative'>
+                        <Search className='text-muted-foreground absolute top-2.5 left-2 h-4 w-4' />
                         <Input
-                            placeholder="Buscar por título o archivo..."
+                            placeholder='Buscar por título o archivo...'
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
-                            className="h-8 w-[200px] pl-8 lg:w-[250px]"
+                            className='h-8 w-[200px] pl-8 lg:w-[250px]'
                         />
                     </div>
 
                     {/* Filtro por estado dinámico */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="sm" className="h-8 border-dashed">
-                                <Filter className="mr-2 h-4 w-4" />
+                            <Button
+                                variant='outline'
+                                size='sm'
+                                className='h-8 border-dashed'
+                            >
+                                <Filter className='mr-2 h-4 w-4' />
                                 Estado
                                 {statusFilter !== 'all' && (
-                                    <Badge variant="secondary" className="ml-2 h-5 px-1 text-xs">
+                                    <Badge
+                                        variant='secondary'
+                                        className='ml-2 h-5 px-1 text-xs'
+                                    >
                                         1
                                     </Badge>
                                 )}
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="start" className="w-[250px]">
-                            <DropdownMenuLabel>Filtrar por diagnóstico</DropdownMenuLabel>
+                        <DropdownMenuContent
+                            align='start'
+                            className='w-[250px]'
+                        >
+                            <DropdownMenuLabel>
+                                Filtrar por diagnóstico
+                            </DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            
+
                             {/* Opción "Todos" */}
                             <DropdownMenuCheckboxItem
                                 checked={statusFilter === 'all'}
                                 onCheckedChange={() => setStatusFilter('all')}
                             >
-                                <div className="flex items-center justify-between w-full">
+                                <div className='flex w-full items-center justify-between'>
                                     <span>Todos los resultados</span>
-                                    <Badge variant="outline" className="ml-2 h-5 px-1 text-xs">
+                                    <Badge
+                                        variant='outline'
+                                        className='ml-2 h-5 px-1 text-xs'
+                                    >
                                         {getFilterCount('all')}
                                     </Badge>
                                 </div>
                             </DropdownMenuCheckboxItem>
-                            
+
                             <DropdownMenuSeparator />
-                            
+
                             {/* Opciones dinámicas basadas en valores reales */}
                             {uniqueDiagnosticValues.map((diagnosticValue) => (
                                 <DropdownMenuCheckboxItem
                                     key={diagnosticValue}
                                     checked={statusFilter === diagnosticValue}
-                                    onCheckedChange={() => setStatusFilter(diagnosticValue)}
+                                    onCheckedChange={() =>
+                                        setStatusFilter(diagnosticValue)
+                                    }
                                 >
-                                    <div className="flex items-center justify-between w-full">
-                                        <span className="truncate">{diagnosticValue}</span>
-                                        <Badge variant="outline" className="ml-2 h-5 px-1 text-xs">
+                                    <div className='flex w-full items-center justify-between'>
+                                        <span className='truncate'>
+                                            {diagnosticValue}
+                                        </span>
+                                        <Badge
+                                            variant='outline'
+                                            className='ml-2 h-5 px-1 text-xs'
+                                        >
                                             {getFilterCount(diagnosticValue)}
                                         </Badge>
                                     </div>
                                 </DropdownMenuCheckboxItem>
                             ))}
-                            
+
                             {uniqueDiagnosticValues.length === 0 && (
-                                <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                                <div className='text-muted-foreground px-2 py-1.5 text-sm'>
                                     No hay diagnósticos disponibles
                                 </div>
                             )}
@@ -225,56 +283,87 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                     {/* Botón reset */}
                     {isFiltered && (
                         <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-8 px-2 lg:px-3 border-dashed"
+                            variant='outline'
+                            size='sm'
+                            className='h-8 border-dashed px-2 lg:px-3'
                             onClick={handleReset}
                         >
-                            <X className="mr-2 h-4 w-4" />
+                            <X className='mr-2 h-4 w-4' />
                             Reset
                         </Button>
                     )}
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className='flex items-center gap-2'>
                     {/* Vista de columnas */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="sm" className="ml-auto h-8">
-                                <Settings2 className="mr-2 h-4 w-4" />
+                            <Button
+                                variant='outline'
+                                size='sm'
+                                className='ml-auto h-8'
+                            >
+                                <Settings2 className='mr-2 h-4 w-4' />
                                 Ver
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-[200px]">
-                            <DropdownMenuLabel>Alternar columnas</DropdownMenuLabel>
+                        <DropdownMenuContent align='end' className='w-[200px]'>
+                            <DropdownMenuLabel>
+                                Alternar columnas
+                            </DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.imagen}
-                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, imagen: checked }))}
+                                onCheckedChange={(checked) =>
+                                    setVisibleColumns((prev) => ({
+                                        ...prev,
+                                        imagen: checked
+                                    }))
+                                }
                             >
                                 Imagen
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.titulo}
-                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, titulo: checked }))}
+                                onCheckedChange={(checked) =>
+                                    setVisibleColumns((prev) => ({
+                                        ...prev,
+                                        titulo: checked
+                                    }))
+                                }
                             >
                                 Título
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.resolucion}
-                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, resolucion: checked }))}
+                                onCheckedChange={(checked) =>
+                                    setVisibleColumns((prev) => ({
+                                        ...prev,
+                                        resolucion: checked
+                                    }))
+                                }
                             >
                                 Resolución
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.tamaño}
-                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, tamaño: checked }))}
+                                onCheckedChange={(checked) =>
+                                    setVisibleColumns((prev) => ({
+                                        ...prev,
+                                        tamaño: checked
+                                    }))
+                                }
                             >
                                 Tamaño
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.diagnostico}
-                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, diagnostico: checked }))}
+                                onCheckedChange={(checked) =>
+                                    setVisibleColumns((prev) => ({
+                                        ...prev,
+                                        diagnostico: checked
+                                    }))
+                                }
                             >
                                 Diagnóstico SaaS
                             </DropdownMenuCheckboxItem>
@@ -282,110 +371,146 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                     </DropdownMenu>
 
                     {/* Botón Limpiar */}
-                    <Button variant="outline" size="sm" className="h-8" onClick={onClear}>
-                        <Trash2 className="mr-2 h-4 w-4" />
+                    <Button
+                        variant='outline'
+                        size='sm'
+                        className='h-8'
+                        onClick={onClear}
+                    >
+                        <Trash2 className='mr-2 h-4 w-4' />
                         Limpiar
                     </Button>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     const getDiagnosticBadgeVariant = (diagnostic: string | undefined) => {
-        if (!diagnostic) return 'secondary'
-        
-        const trimmedDiag = diagnostic.trim().toLowerCase()
-        
+        if (!diagnostic) return 'secondary';
+
+        const trimmedDiag = diagnostic.trim().toLowerCase();
+
         if (trimmedDiag === 'live') {
-            return 'default'
+            return 'default';
         }
         if (trimmedDiag === 'nolive') {
-            return 'destructive'
+            return 'destructive';
         }
-        
+
         if (trimmedDiag.includes('error') || trimmedDiag.includes('failed')) {
-            return 'destructive'
+            return 'destructive';
         }
         if (trimmedDiag.includes('success')) {
-            return 'default'
+            return 'default';
         }
-        return 'secondary'
-    }
+        return 'secondary';
+    };
 
     const getDiagnosticDisplay = (diagnostic: string | undefined) => {
-        if (!diagnostic) return 'Pendiente'
-        
+        if (!diagnostic) return 'Pendiente';
+
         // Truncar mensaje muy largo
         if (diagnostic.length > 50) {
-            return diagnostic.substring(0, 47) + '...'
+            return diagnostic.substring(0, 47) + '...';
         }
-        return diagnostic
-    }
+        return diagnostic;
+    };
 
     // Mostrar skeleton cuando esté cargando
     if (isLoading) {
-        return <ResultsTableSkeleton visibleColumns={visibleColumns} rows={5} />
+        return (
+            <ResultsTableSkeleton visibleColumns={visibleColumns} rows={5} />
+        );
     }
 
     if (results.length === 0) {
         return (
-            <Card className="w-full">
-                <CardContent className="flex h-64 items-center justify-center text-muted-foreground">
-                    <div className="text-center">
-                        <Sheet className="mx-auto mb-2 h-12 w-12 opacity-50" />
-                        <p className="text-sm">Esperando resultados de evaluación...</p>
+            <Card className='w-full'>
+                <CardContent className='text-muted-foreground flex h-64 items-center justify-center'>
+                    <div className='text-center'>
+                        <Sheet className='mx-auto mb-2 h-12 w-12 opacity-50' />
+                        <p className='text-sm'>
+                            Esperando resultados de evaluación...
+                        </p>
                     </div>
                 </CardContent>
             </Card>
-        )
+        );
     }
 
     return (
-        <Card className="w-full">
-            <CardContent className="space-y-4">
+        <Card className='w-full'>
+            <CardContent className='space-y-4'>
                 {/* Toolbar mejorado */}
                 <DataTableToolbar />
 
                 {/* Tabla mejorada */}
-                <div className="rounded-md border">
+                <div className='rounded-md border'>
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                {visibleColumns.imagen && <TableHead className="w-20">Imagen</TableHead>}
-                                {visibleColumns.titulo && <TableHead>Título</TableHead>}
-                                {visibleColumns.resolucion && <TableHead>Resolución</TableHead>}
-                                {visibleColumns.tamaño && <TableHead>Tamaño</TableHead>}
-                                {visibleColumns.diagnostico && <TableHead>Diagnóstico SaaS</TableHead>}
-                                {visibleColumns.acciones && <TableHead className="w-20">Acciones</TableHead>}
+                                {visibleColumns.imagen && (
+                                    <TableHead className='w-20'>
+                                        Imagen
+                                    </TableHead>
+                                )}
+                                {visibleColumns.titulo && (
+                                    <TableHead>Título</TableHead>
+                                )}
+                                {visibleColumns.resolucion && (
+                                    <TableHead>Resolución</TableHead>
+                                )}
+                                {visibleColumns.tamaño && (
+                                    <TableHead>Tamaño</TableHead>
+                                )}
+                                {visibleColumns.diagnostico && (
+                                    <TableHead>Diagnóstico SaaS</TableHead>
+                                )}
+                                {visibleColumns.acciones && (
+                                    <TableHead className='w-20'>
+                                        Acciones
+                                    </TableHead>
+                                )}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {filteredResults.length === 0 ? (
                                 <TableRow>
-                                    <TableCell 
-                                        colSpan={Object.values(visibleColumns).filter(Boolean).length} 
-                                        className="h-24 text-center"
+                                    <TableCell
+                                        colSpan={
+                                            Object.values(
+                                                visibleColumns
+                                            ).filter(Boolean).length
+                                        }
+                                        className='h-24 text-center'
                                     >
-                                        {searchValue || statusFilter !== 'all' ? 'No se encontraron resultados con los filtros aplicados.' : 'No hay resultados.'}
+                                        {searchValue || statusFilter !== 'all'
+                                            ? 'No se encontraron resultados con los filtros aplicados.'
+                                            : 'No hay resultados.'}
                                     </TableCell>
                                 </TableRow>
                             ) : (
                                 filteredResults.map((result, index) => (
-                                    <TableRow key={index} className="hover:bg-muted/50">
+                                    <TableRow
+                                        key={index}
+                                        className='hover:bg-muted/50'
+                                    >
                                         {/* Imagen */}
                                         {visibleColumns.imagen && (
                                             <TableCell>
                                                 {result.imageUrl ? (
-                                                    <div className="relative aspect-square h-20 w-20 overflow-hidden rounded border">
+                                                    <div className='relative aspect-square h-20 w-20 overflow-hidden rounded border'>
                                                         <img
-                                                            src={result.imageUrl}
+                                                            src={
+                                                                result.imageUrl
+                                                            }
                                                             alt={result.title}
-                                                            className="h-full w-full object-cover"
+                                                            className='h-full w-full object-cover'
                                                         />
                                                     </div>
                                                 ) : (
-                                                    <div className="flex h-12 w-12 items-center justify-center rounded border bg-muted">
-                                                        <X className="h-4 w-4 text-muted-foreground" />
+                                                    <div className='bg-muted flex h-12 w-12 items-center justify-center rounded border'>
+                                                        <X className='text-muted-foreground h-4 w-4' />
                                                     </div>
                                                 )}
                                             </TableCell>
@@ -393,9 +518,11 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
 
                                         {/* Título */}
                                         {visibleColumns.titulo && (
-                                            <TableCell className="font-medium">
-                                                <div className="space-y-1">
-                                                    <p className="text-sm font-medium leading-none">{result.title}</p>
+                                            <TableCell className='font-medium'>
+                                                <div className='space-y-1'>
+                                                    <p className='text-sm leading-none font-medium'>
+                                                        {result.title}
+                                                    </p>
                                                     {/* <p className="text-xs text-muted-foreground">{result.imagePath}</p> */}
                                                 </div>
                                             </TableCell>
@@ -404,7 +531,7 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                         {/* Resolución */}
                                         {visibleColumns.resolucion && (
                                             <TableCell>
-                                                <span className="font-sm font-medium">
+                                                <span className='font-sm font-medium'>
                                                     {result.resolution} px
                                                 </span>
                                             </TableCell>
@@ -413,16 +540,24 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                         {/* Tamaño */}
                                         {visibleColumns.tamaño && (
                                             <TableCell>
-                                                <span className="text-sm font-medium">{result.size}</span>
+                                                <span className='text-sm font-medium'>
+                                                    {result.size}
+                                                </span>
                                             </TableCell>
                                         )}
 
                                         {/* Diagnóstico SaaS */}
                                         {visibleColumns.diagnostico && (
                                             <TableCell>
-                                                <div className="space-y-1">
-                                                    <Badge variant={getDiagnosticBadgeVariant(result.diagnosticSaaS)}>
-                                                        {getDiagnosticDisplay(result.diagnosticSaaS)}
+                                                <div className='space-y-1'>
+                                                    <Badge
+                                                        variant={getDiagnosticBadgeVariant(
+                                                            result.diagnosticSaaS
+                                                        )}
+                                                    >
+                                                        {getDiagnosticDisplay(
+                                                            result.diagnosticSaaS
+                                                        )}
                                                     </Badge>
                                                 </div>
                                             </TableCell>
@@ -431,7 +566,12 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                         {/* Acciones */}
                                         {visibleColumns.acciones && (
                                             <TableCell>
-                                                <CellAction result={result} onViewImage={handleViewImage} />
+                                                <CellAction
+                                                    result={result}
+                                                    onViewImage={
+                                                        handleViewImage
+                                                    }
+                                                />
                                             </TableCell>
                                         )}
                                     </TableRow>
@@ -442,12 +582,16 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                 </div>
 
                 {/* Información de resultados */}
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <div className='text-muted-foreground flex items-center justify-between text-sm'>
                     <div>
-                        Mostrando {filteredResults.length} de {results.length} resultado{results.length !== 1 ? 's' : ''}
+                        Mostrando {filteredResults.length} de {results.length}{' '}
+                        resultado{results.length !== 1 ? 's' : ''}
                         {statusFilter !== 'all' && (
-                            <span className="ml-2">
-                                • Filtrado por: <span className="font-medium">{statusFilter}</span>
+                            <span className='ml-2'>
+                                • Filtrado por:{' '}
+                                <span className='font-medium'>
+                                    {statusFilter}
+                                </span>
                             </span>
                         )}
                     </div>
@@ -461,5 +605,5 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                 result={selectedImage}
             />
         </Card>
-    )
+    );
 }

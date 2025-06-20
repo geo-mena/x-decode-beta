@@ -17,7 +17,10 @@ export default function Header() {
             </div>
 
             <div className='flex items-center gap-2 px-4'>
-                <Separator orientation='vertical' className='h-4 hidden lg:block' />
+                <Separator
+                    orientation='vertical'
+                    className='hidden h-4 lg:block'
+                />
                 <div className='hidden md:flex'>
                     <SearchInput />
                 </div>

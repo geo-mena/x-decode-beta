@@ -70,9 +70,9 @@ export const navItems: NavItem[] = [
                 url: '/dashboard/liveness',
                 icon: 'route',
                 shortcut: ['m', 'm']
-            },
+            }
         ]
-    },
+    }
 ];
 
 export interface SaleUser {

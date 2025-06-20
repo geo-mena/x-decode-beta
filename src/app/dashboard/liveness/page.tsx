@@ -1,8 +1,7 @@
-import LivenessContent from "@/features/liveness";
-
+import LivenessContent from '@/features/liveness';
 
 export const metadata = {
-    title: 'Liveness : Image Evaluation',
+    title: 'Liveness : Image Evaluation'
 };
 
 export default function page() {

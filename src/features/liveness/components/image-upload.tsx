@@ -1,229 +1,299 @@
-import React, { useCallback, useState } from 'react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { toast } from 'sonner'
-import { CloudUpload, Play, Route, Trash, Folder, Files, Loader, FileText, Plus, X, Copy } from 'lucide-react'
+import React, { useCallback, useState } from 'react';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
+import {
+    CloudUpload,
+    Play,
+    Route,
+    Trash,
+    Folder,
+    Files,
+    Loader,
+    FileText,
+    Plus,
+    X,
+    Copy
+} from 'lucide-react';
 
 interface ImageUploadProps {
-    onFilesSelected: (files: File[], isDirectory: boolean) => void
-    onBase64Selected: (base64Images: string[]) => void
-    onClear: () => void
-    isLoading: boolean
-    supportedExtensions: string[]
+    onFilesSelected: (files: File[], isDirectory: boolean) => void;
+    onBase64Selected: (base64Images: string[]) => void;
+    onClear: () => void;
+    isLoading: boolean;
+    supportedExtensions: string[];
 }
 
-export function ImageUpload({ onFilesSelected, onBase64Selected, onClear, isLoading, supportedExtensions }: ImageUploadProps) {
-    const [dragActive, setDragActive] = useState(false)
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([])
-    const [isDirectoryMode, setIsDirectoryMode] = useState(false)
-    const [inputMethod, setInputMethod] = useState<'files' | 'base64'>('files')
-    const [base64Inputs, setBase64Inputs] = useState<string[]>([''])
+export function ImageUpload({
+    onFilesSelected,
+    onBase64Selected,
+    onClear,
+    isLoading,
+    supportedExtensions
+}: ImageUploadProps) {
+    const [dragActive, setDragActive] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [isDirectoryMode, setIsDirectoryMode] = useState(false);
+    const [inputMethod, setInputMethod] = useState<'files' | 'base64'>('files');
+    const [base64Inputs, setBase64Inputs] = useState<string[]>(['']);
 
-    const MAX_BASE64_INPUTS = 5
+    const MAX_BASE64_INPUTS = 5;
 
-    const isValidFile = useCallback((file: File): boolean => {
-        const extension = '.' + file.name.split('.').pop()?.toLowerCase()
-        return supportedExtensions.includes(extension)
-    }, [supportedExtensions])
+    const isValidFile = useCallback(
+        (file: File): boolean => {
+            const extension = '.' + file.name.split('.').pop()?.toLowerCase();
+            return supportedExtensions.includes(extension);
+        },
+        [supportedExtensions]
+    );
 
-    const handleFiles = useCallback((files: FileList | File[]) => {
-        const fileArray = Array.from(files)
-        const validFiles = fileArray.filter(isValidFile)
-        const invalidFiles = fileArray.filter(file => !isValidFile(file))
+    const handleFiles = useCallback(
+        (files: FileList | File[]) => {
+            const fileArray = Array.from(files);
+            const validFiles = fileArray.filter(isValidFile);
+            const invalidFiles = fileArray.filter((file) => !isValidFile(file));
 
-        if (invalidFiles.length > 0) {
-            toast.warning('Archivos no válidos', {
-                description: `${invalidFiles.length} archivo(s) ignorado(s). Solo se admiten: ${supportedExtensions.join(', ')}`
-            })
-        }
+            if (invalidFiles.length > 0) {
+                toast.warning('Archivos no válidos', {
+                    description: `${invalidFiles.length} archivo(s) ignorado(s). Solo se admiten: ${supportedExtensions.join(', ')}`
+                });
+            }
 
-        if (validFiles.length === 0) {
-            toast.error('Error', {
-                description: 'No se seleccionaron archivos de imagen válidos'
-            })
-            return
-        }
+            if (validFiles.length === 0) {
+                toast.error('Error', {
+                    description:
+                        'No se seleccionaron archivos de imagen válidos'
+                });
+                return;
+            }
 
-        setSelectedFiles(validFiles)
-        
-        const isDirectory = validFiles.length > 1 || isDirectoryMode
-        
-        toast.success('Archivos seleccionados', {
-            description: `${validFiles.length} imagen${validFiles.length > 1 ? 'es' : ''} seleccionada${validFiles.length > 1 ? 's' : ''}`
-        })
-    }, [isValidFile, supportedExtensions, isDirectoryMode])
+            setSelectedFiles(validFiles);
+
+            const isDirectory = validFiles.length > 1 || isDirectoryMode;
+
+            toast.success('Archivos seleccionados', {
+                description: `${validFiles.length} imagen${validFiles.length > 1 ? 'es' : ''} seleccionada${validFiles.length > 1 ? 's' : ''}`
+            });
+        },
+        [isValidFile, supportedExtensions, isDirectoryMode]
+    );
 
     const handleDrag = useCallback((e: React.DragEvent) => {
-        e.preventDefault()
-        e.stopPropagation()
+        e.preventDefault();
+        e.stopPropagation();
         if (e.type === 'dragenter' || e.type === 'dragover') {
-            setDragActive(true)
+            setDragActive(true);
         } else if (e.type === 'dragleave') {
-            setDragActive(false)
+            setDragActive(false);
         }
-    }, [])
+    }, []);
 
-    const handleDrop = useCallback((e: React.DragEvent) => {
-        e.preventDefault()
-        e.stopPropagation()
-        setDragActive(false)
+    const handleDrop = useCallback(
+        (e: React.DragEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setDragActive(false);
 
-        if (inputMethod === 'files') {
-            const files = e.dataTransfer.files
-            if (files && files.length > 0) {
-                handleFiles(files)
+            if (inputMethod === 'files') {
+                const files = e.dataTransfer.files;
+                if (files && files.length > 0) {
+                    handleFiles(files);
+                }
             }
-        }
-    }, [handleFiles, inputMethod])
+        },
+        [handleFiles, inputMethod]
+    );
 
-    const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            handleFiles(e.target.files)
-        }
-    }, [handleFiles])
+    const handleFileInput = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            if (e.target.files && e.target.files.length > 0) {
+                handleFiles(e.target.files);
+            }
+        },
+        [handleFiles]
+    );
 
     // Funciones para manejar Base64
     const addBase64Field = useCallback(() => {
         if (base64Inputs.length >= MAX_BASE64_INPUTS) {
             toast.warning('Límite alcanzado', {
                 description: `No se pueden agregar más de ${MAX_BASE64_INPUTS} entradas de base64.`
-            })
-            return
+            });
+            return;
         }
-        setBase64Inputs([...base64Inputs, ''])
-    }, [base64Inputs])
+        setBase64Inputs([...base64Inputs, '']);
+    }, [base64Inputs]);
 
-    const removeBase64Field = useCallback((index: number) => {
-        if (base64Inputs.length <= 1) {
-            setBase64Inputs([''])
-        } else {
-            const newInputs = [...base64Inputs]
-            newInputs.splice(index, 1)
-            setBase64Inputs(newInputs)
-        }
-    }, [base64Inputs])
+    const removeBase64Field = useCallback(
+        (index: number) => {
+            if (base64Inputs.length <= 1) {
+                setBase64Inputs(['']);
+            } else {
+                const newInputs = [...base64Inputs];
+                newInputs.splice(index, 1);
+                setBase64Inputs(newInputs);
+            }
+        },
+        [base64Inputs]
+    );
 
-    const updateBase64Input = useCallback((value: string, index: number) => {
-        const newInputs = [...base64Inputs]
-        newInputs[index] = value
-        setBase64Inputs(newInputs)
-    }, [base64Inputs])
+    const updateBase64Input = useCallback(
+        (value: string, index: number) => {
+            const newInputs = [...base64Inputs];
+            newInputs[index] = value;
+            setBase64Inputs(newInputs);
+        },
+        [base64Inputs]
+    );
 
     const copyToClipboard = useCallback((base64: string) => {
-        if (!base64) return
-        navigator.clipboard.writeText(base64)
+        if (!base64) return;
+        navigator.clipboard.writeText(base64);
         toast.success('Copiado al portapapeles', {
             description: 'El base64 ha sido copiado al portapapeles.'
-        })
-    }, [])
+        });
+    }, []);
 
     const validateBase64 = useCallback((base64String: string): boolean => {
         try {
             // Limpiar el base64 (remover espacios y saltos de línea)
-            const cleanBase64 = base64String.replace(/\s/g, '')
-            
+            const cleanBase64 = base64String.replace(/\s/g, '');
+
             // Verificar si tiene el prefijo data:image
-            const base64WithoutPrefix = cleanBase64.startsWith('data:image/') 
-                ? cleanBase64.split(',')[1] 
-                : cleanBase64
+            const base64WithoutPrefix = cleanBase64.startsWith('data:image/')
+                ? cleanBase64.split(',')[1]
+                : cleanBase64;
 
             // Validar que sea base64 válido
-            const decoded = atob(base64WithoutPrefix)
-            return decoded.length > 0
+            const decoded = atob(base64WithoutPrefix);
+            return decoded.length > 0;
         } catch (error) {
-            return false
+            return false;
         }
-    }, [])
+    }, []);
 
     const handleSubmit = useCallback(() => {
         if (inputMethod === 'files') {
             if (selectedFiles.length === 0) {
                 toast.error('Error', {
                     description: 'Seleccione al menos una imagen para evaluar'
-                })
-                return
+                });
+                return;
             }
 
-            const isDirectory = selectedFiles.length > 1 || isDirectoryMode
-            onFilesSelected(selectedFiles, isDirectory)
+            const isDirectory = selectedFiles.length > 1 || isDirectoryMode;
+            onFilesSelected(selectedFiles, isDirectory);
         } else {
             // Modo base64
-            const validBase64s = base64Inputs.filter(base64 => {
-                const trimmed = base64.trim()
-                return trimmed !== '' && validateBase64(trimmed)
-            })
+            const validBase64s = base64Inputs.filter((base64) => {
+                const trimmed = base64.trim();
+                return trimmed !== '' && validateBase64(trimmed);
+            });
 
             if (validBase64s.length === 0) {
                 toast.error('Error', {
-                    description: 'Ingrese al menos un base64 válido para evaluar'
-                })
-                return
+                    description:
+                        'Ingrese al menos un base64 válido para evaluar'
+                });
+                return;
             }
 
-            onBase64Selected(validBase64s)
+            onBase64Selected(validBase64s);
         }
-    }, [inputMethod, selectedFiles, onFilesSelected, isDirectoryMode, base64Inputs, validateBase64, onBase64Selected])
+    }, [
+        inputMethod,
+        selectedFiles,
+        onFilesSelected,
+        isDirectoryMode,
+        base64Inputs,
+        validateBase64,
+        onBase64Selected
+    ]);
 
     const handleClear = useCallback(() => {
-        setSelectedFiles([])
-        setBase64Inputs([''])
-        onClear()
-        
+        setSelectedFiles([]);
+        setBase64Inputs(['']);
+        onClear();
+
         // Reset file inputs
-        const fileInput = document.getElementById('file-input') as HTMLInputElement
-        const dirInput = document.getElementById('directory-input') as HTMLInputElement
-        if (fileInput) fileInput.value = ''
-        if (dirInput) dirInput.value = ''
-    }, [onClear])
+        const fileInput = document.getElementById(
+            'file-input'
+        ) as HTMLInputElement;
+        const dirInput = document.getElementById(
+            'directory-input'
+        ) as HTMLInputElement;
+        if (fileInput) fileInput.value = '';
+        if (dirInput) dirInput.value = '';
+    }, [onClear]);
 
     const clearInputsOnly = useCallback(() => {
-        setSelectedFiles([])
-        setBase64Inputs([''])
-        
+        setSelectedFiles([]);
+        setBase64Inputs(['']);
+
         // Reset inputs without triggering onClear callback
-        const fileInput = document.getElementById('file-input') as HTMLInputElement
-        const dirInput = document.getElementById('directory-input') as HTMLInputElement
-        if (fileInput) fileInput.value = ''
-        if (dirInput) dirInput.value = ''
-    }, [])
+        const fileInput = document.getElementById(
+            'file-input'
+        ) as HTMLInputElement;
+        const dirInput = document.getElementById(
+            'directory-input'
+        ) as HTMLInputElement;
+        if (fileInput) fileInput.value = '';
+        if (dirInput) dirInput.value = '';
+    }, []);
 
     const toggleMode = useCallback(() => {
-        setIsDirectoryMode(!isDirectoryMode)
-        clearInputsOnly()
-    }, [isDirectoryMode, clearInputsOnly])
+        setIsDirectoryMode(!isDirectoryMode);
+        clearInputsOnly();
+    }, [isDirectoryMode, clearInputsOnly]);
 
-    const handleInputMethodChange = useCallback((value: string) => {
-        const newMethod = value as 'files' | 'base64'
-        setInputMethod(newMethod)
-        clearInputsOnly()
-    }, [clearInputsOnly])
+    const handleInputMethodChange = useCallback(
+        (value: string) => {
+            const newMethod = value as 'files' | 'base64';
+            setInputMethod(newMethod);
+            clearInputsOnly();
+        },
+        [clearInputsOnly]
+    );
 
     const getSubmitText = () => {
         if (inputMethod === 'files') {
-            return selectedFiles.length > 1 ? 'Evaluar Imágenes' : 'Evaluar Imagen'
+            return selectedFiles.length > 1
+                ? 'Evaluar Imágenes'
+                : 'Evaluar Imagen';
         } else {
-            const validCount = base64Inputs.filter(b => b.trim() && validateBase64(b.trim())).length
-            return validCount > 1 ? 'Evaluar Base64s' : 'Evaluar Base64'
+            const validCount = base64Inputs.filter(
+                (b) => b.trim() && validateBase64(b.trim())
+            ).length;
+            return validCount > 1 ? 'Evaluar Base64s' : 'Evaluar Base64';
         }
-    }
+    };
 
     const canSubmit = () => {
         if (inputMethod === 'files') {
-            return selectedFiles.length > 0
+            return selectedFiles.length > 0;
         } else {
-            return base64Inputs.some(base64 => base64.trim() && validateBase64(base64.trim()))
+            return base64Inputs.some(
+                (base64) => base64.trim() && validateBase64(base64.trim())
+            );
         }
-    }
+    };
 
     return (
-        <Card className="w-full">
+        <Card className='w-full'>
             <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Route className="h-5 w-5" />
+                <CardTitle className='flex items-center gap-2'>
+                    <Route className='h-5 w-5' />
                     Evaluación de Liveness
                 </CardTitle>
                 <CardDescription>
@@ -231,41 +301,48 @@ export function ImageUpload({ onFilesSelected, onBase64Selected, onClear, isLoad
                 </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-4">
+            <CardContent className='space-y-4'>
                 {/* Method selector tabs */}
-                <Tabs value={inputMethod} onValueChange={handleInputMethodChange}>
-                    <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="files">
-                            <Files className="mr-2 h-4 w-4" />
+                <Tabs
+                    value={inputMethod}
+                    onValueChange={handleInputMethodChange}
+                >
+                    <TabsList className='grid w-full grid-cols-2'>
+                        <TabsTrigger value='files'>
+                            <Files className='mr-2 h-4 w-4' />
                             Subir Archivos
                         </TabsTrigger>
-                        <TabsTrigger value="base64">
-                            <FileText className="mr-2 h-4 w-4" />
+                        <TabsTrigger value='base64'>
+                            <FileText className='mr-2 h-4 w-4' />
                             Ingresar Base64
                         </TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="files" className="space-y-4">
+                    <TabsContent value='files' className='space-y-4'>
                         {/* Mode selector for files */}
-                        <div className="flex gap-2">
+                        <div className='flex gap-2'>
                             <Button
-                                variant={!isDirectoryMode ? "default" : "outline"}
-                                size="sm"
+                                variant={
+                                    !isDirectoryMode ? 'default' : 'outline'
+                                }
+                                size='sm'
                                 onClick={() => !isDirectoryMode || toggleMode()}
                                 disabled={isLoading}
-                                className="flex items-center gap-2"
+                                className='flex items-center gap-2'
                             >
-                                <Files className="h-4 w-4" />
+                                <Files className='h-4 w-4' />
                                 Archivos individuales
                             </Button>
                             <Button
-                                variant={isDirectoryMode ? "default" : "outline"}
-                                size="sm"
+                                variant={
+                                    isDirectoryMode ? 'default' : 'outline'
+                                }
+                                size='sm'
                                 onClick={() => isDirectoryMode || toggleMode()}
                                 disabled={isLoading}
-                                className="flex items-center gap-2"
+                                className='flex items-center gap-2'
                             >
-                                <Folder className="h-4 w-4" />
+                                <Folder className='h-4 w-4' />
                                 Carpeta completa
                             </Button>
                         </div>
@@ -284,49 +361,56 @@ export function ImageUpload({ onFilesSelected, onBase64Selected, onClear, isLoad
                         >
                             {/* Input for individual files */}
                             <input
-                                id="file-input"
-                                type="file"
+                                id='file-input'
+                                type='file'
                                 multiple={!isDirectoryMode}
-                                accept={supportedExtensions.map(ext => `image/*${ext}`).join(',')}
+                                accept={supportedExtensions
+                                    .map((ext) => `image/*${ext}`)
+                                    .join(',')}
                                 onChange={handleFileInput}
                                 className={`absolute inset-0 cursor-pointer opacity-0 ${isDirectoryMode ? 'hidden' : ''}`}
                                 disabled={isLoading || isDirectoryMode}
                             />
-                            
+
                             {/* Input for directory */}
                             <input
-                                id="directory-input"
-                                type="file"
+                                id='directory-input'
+                                type='file'
                                 // @ts-ignore - webkitdirectory is not in TypeScript definitions but is supported
-                                webkitdirectory="true"
+                                webkitdirectory='true'
                                 multiple
                                 onChange={handleFileInput}
                                 className={`absolute inset-0 cursor-pointer opacity-0 ${!isDirectoryMode ? 'hidden' : ''}`}
                                 disabled={isLoading || !isDirectoryMode}
                             />
-                            
-                            <div className="flex flex-col items-center justify-center space-y-2">
+
+                            <div className='flex flex-col items-center justify-center space-y-2'>
                                 {isDirectoryMode ? (
-                                    <Folder className='mb-2 h-12 w-12 text-muted-foreground'/>
+                                    <Folder className='text-muted-foreground mb-2 h-12 w-12' />
                                 ) : (
-                                    <CloudUpload className='mb-2 h-12 w-12 text-muted-foreground'/>
+                                    <CloudUpload className='text-muted-foreground mb-2 h-12 w-12' />
                                 )}
                                 <div>
-                                    <p className="text-sm font-medium">
-                                        {isDirectoryMode 
+                                    <p className='text-sm font-medium'>
+                                        {isDirectoryMode
                                             ? 'Haga clic para seleccionar una carpeta o arrastre una carpeta aquí'
-                                            : 'Haga clic para seleccionar archivos o arrastre archivos aquí'
-                                        }
+                                            : 'Haga clic para seleccionar archivos o arrastre archivos aquí'}
                                     </p>
-                                    <p className="text-xs text-muted-foreground">
-                                        {isDirectoryMode 
+                                    <p className='text-muted-foreground text-xs'>
+                                        {isDirectoryMode
                                             ? 'Se seleccionarán todas las imágenes de la carpeta (máx. 10MB por archivo)'
-                                            : 'Imagen individual o múltiples imágenes (máx. 10MB por archivo)'
-                                        }
+                                            : 'Imagen individual o múltiples imágenes (máx. 10MB por archivo)'}
                                     </p>
                                     {selectedFiles.length > 0 && (
-                                        <p className="text-xs text-emerald-500 mt-1">
-                                            {selectedFiles.length} archivo{selectedFiles.length > 1 ? 's' : ''} seleccionado{selectedFiles.length > 1 ? 's' : ''}
+                                        <p className='mt-1 text-xs text-emerald-500'>
+                                            {selectedFiles.length} archivo
+                                            {selectedFiles.length > 1
+                                                ? 's'
+                                                : ''}{' '}
+                                            seleccionado
+                                            {selectedFiles.length > 1
+                                                ? 's'
+                                                : ''}
                                         </p>
                                     )}
                                 </div>
@@ -334,58 +418,79 @@ export function ImageUpload({ onFilesSelected, onBase64Selected, onClear, isLoad
                         </div>
                     </TabsContent>
 
-                    <TabsContent value="base64" className="space-y-4">
+                    <TabsContent value='base64' className='space-y-4'>
                         {/* Base64 manual input */}
-                        <div className="space-y-4">
-                            <div className="space-y-2">
-                                <div className="flex items-center justify-between">
+                        <div className='space-y-4'>
+                            <div className='space-y-2'>
+                                <div className='flex items-center justify-between'>
                                     <Label>Base64 de Imágenes</Label>
                                     <Badge
-                                        variant={base64Inputs.length >= MAX_BASE64_INPUTS ? 'destructive' : 'outline'}
-                                        className="ml-2"
+                                        variant={
+                                            base64Inputs.length >=
+                                            MAX_BASE64_INPUTS
+                                                ? 'destructive'
+                                                : 'outline'
+                                        }
+                                        className='ml-2'
                                     >
-                                        {base64Inputs.filter(b => b.trim() !== '').length}/{MAX_BASE64_INPUTS} base64(s)
+                                        {
+                                            base64Inputs.filter(
+                                                (b) => b.trim() !== ''
+                                            ).length
+                                        }
+                                        /{MAX_BASE64_INPUTS} base64(s)
                                     </Badge>
                                 </div>
 
                                 {base64Inputs.map((base64, index) => (
-                                    <div key={index} className="flex space-x-2">
+                                    <div key={index} className='flex space-x-2'>
                                         <Textarea
                                             placeholder={`Base64 de imagen ${index + 1}`}
                                             value={base64}
-                                            onChange={(e) => updateBase64Input(e.target.value, index)}
-                                            className="h-[100px] flex-grow font-mono text-xs resize-none overflow-auto"
+                                            onChange={(e) =>
+                                                updateBase64Input(
+                                                    e.target.value,
+                                                    index
+                                                )
+                                            }
+                                            className='h-[100px] flex-grow resize-none overflow-auto font-mono text-xs'
                                         />
-                                        <div className="flex flex-col space-y-2">
+                                        <div className='flex flex-col space-y-2'>
                                             {base64 && (
                                                 <Button
-                                                    variant="outline"
-                                                    size="icon"
-                                                    onClick={() => copyToClipboard(base64)}
-                                                    title="Copiar base64"
+                                                    variant='outline'
+                                                    size='icon'
+                                                    onClick={() =>
+                                                        copyToClipboard(base64)
+                                                    }
+                                                    title='Copiar base64'
                                                 >
-                                                    <Copy className="h-4 w-4" />
+                                                    <Copy className='h-4 w-4' />
                                                 </Button>
                                             )}
                                             <Button
-                                                variant="outline"
-                                                size="icon"
-                                                onClick={() => removeBase64Field(index)}
-                                                title="Eliminar campo"
+                                                variant='outline'
+                                                size='icon'
+                                                onClick={() =>
+                                                    removeBase64Field(index)
+                                                }
+                                                title='Eliminar campo'
                                             >
-                                                <X className="h-4 w-4" />
+                                                <X className='h-4 w-4' />
                                             </Button>
                                         </div>
                                     </div>
                                 ))}
 
                                 <Button
-                                    variant="outline"
-                                    className="w-full"
+                                    variant='outline'
+                                    className='w-full'
                                     onClick={addBase64Field}
-                                    disabled={base64Inputs.length >= MAX_BASE64_INPUTS}
+                                    disabled={
+                                        base64Inputs.length >= MAX_BASE64_INPUTS
+                                    }
                                 >
-                                    <Plus className="mr-2 h-4 w-4" />
+                                    <Plus className='mr-2 h-4 w-4' />
                                     {base64Inputs.length >= MAX_BASE64_INPUTS
                                         ? `Máximo ${MAX_BASE64_INPUTS} base64s`
                                         : 'Agregar otro base64'}
@@ -396,35 +501,35 @@ export function ImageUpload({ onFilesSelected, onBase64Selected, onClear, isLoad
                 </Tabs>
             </CardContent>
 
-            <CardFooter className="flex gap-2">
+            <CardFooter className='flex gap-2'>
                 <Button
                     onClick={handleSubmit}
                     disabled={isLoading || !canSubmit()}
-                    className="flex-1"
-                    variant="default"
+                    className='flex-1'
+                    variant='default'
                 >
                     {isLoading ? (
                         <>
-                            <Loader className="mr-2 h-4 w-4 animate-spin"/>
+                            <Loader className='mr-2 h-4 w-4 animate-spin' />
                             Evaluando...
                         </>
                     ) : (
                         <>
-                            <Play className="mr-2 h-4 w-4"/>
+                            <Play className='mr-2 h-4 w-4' />
                             {getSubmitText()}
                         </>
                     )}
                 </Button>
-                
+
                 <Button
-                    variant="outline"
+                    variant='outline'
                     onClick={handleClear}
-                    disabled={isLoading || (!canSubmit())}
+                    disabled={isLoading || !canSubmit()}
                 >
-                    <Trash className="mr-2 h-4 w-4" />
+                    <Trash className='mr-2 h-4 w-4' />
                     Limpiar
                 </Button>
             </CardFooter>
         </Card>
-    )
+    );
 }

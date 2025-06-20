@@ -1,16 +1,16 @@
-import { clsx, type ClassValue } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-    return twMerge(clsx(inputs))
+    return twMerge(clsx(inputs));
 }
 
 export const truncateText = (text: string, limit: number) => {
     if (text) {
-        return text.length > limit ? `${text.slice(0, limit)}..` : text
+        return text.length > limit ? `${text.slice(0, limit)}..` : text;
     }
-    return ''
-}
+    return '';
+};
 
 export const isValidUrl = (url: string): boolean => {
     try {
@@ -24,21 +24,21 @@ export const isValidUrl = (url: string): boolean => {
                 '(\\?[;&a-zA-Z\\d%@_.,~+&:=-]*)?' +
                 '(\\#[-a-zA-Z\\d_]*)?$',
             'i'
-        )
+        );
 
-        return pattern.test(url.trim())
+        return pattern.test(url.trim());
     } catch {
-        return false
+        return false;
     }
-}
+};
 
 export const getJsonMarkdown = (content: object = {}) => {
-    let jsonBlock = ''
+    let jsonBlock = '';
     try {
-        jsonBlock = `\`\`\`json\n${JSON.stringify(content, null, 2)}\n\`\`\``
+        jsonBlock = `\`\`\`json\n${JSON.stringify(content, null, 2)}\n\`\`\``;
     } catch {
-        jsonBlock = `\`\`\`\n${String(content)}\n\`\`\``
+        jsonBlock = `\`\`\`\n${String(content)}\n\`\`\``;
     }
 
-    return jsonBlock
-}
+    return jsonBlock;
+};
