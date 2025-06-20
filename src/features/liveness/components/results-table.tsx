@@ -16,6 +16,7 @@ import {
 import { LivenessResult } from '@/types/liveness'
 import { Download, Sheet, X, MoreHorizontal, Eye, Search, Filter, Settings2, Trash2 } from 'lucide-react'
 import { ResultsTableSkeleton } from './results-table-skeleton'
+import { ImagePreviewModal } from './image-preview'
 
 interface ResultsTableProps {
     results: LivenessResult[]
@@ -23,7 +24,7 @@ interface ResultsTableProps {
     onClear: () => void
 }
 
-const CellAction = ({ result }: { result: LivenessResult }) => {
+const CellAction = ({ result, onViewImage }: { result: LivenessResult; onViewImage: (result: LivenessResult) => void }) => {
     const handleDownloadImage = () => {
         if (result.imageUrl) {
             const link = document.createElement('a')
@@ -37,7 +38,7 @@ const CellAction = ({ result }: { result: LivenessResult }) => {
 
     const handleViewImage = () => {
         if (result.imageUrl) {
-            window.open(result.imageUrl, '_blank')
+            onViewImage(result)
         }
     }
 
@@ -83,6 +84,10 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
         acciones: true
     })
 
+    // Estados para el modal de imagen
+    const [imageModalOpen, setImageModalOpen] = useState(false)
+    const [selectedImage, setSelectedImage] = useState<LivenessResult | null>(null)
+
     // Obtener valores únicos de diagnóstico SaaS
     const uniqueDiagnosticValues = useMemo(() => {
         const values = new Set<string>()
@@ -125,6 +130,17 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
             const diagnosticValue = result.diagnosticSaaS?.trim() || 'Pendiente'
             return diagnosticValue === filterValue
         }).length
+    }
+
+    // Funciones para el modal de imagen
+    const handleViewImage = (result: LivenessResult) => {
+        setSelectedImage(result)
+        setImageModalOpen(true)
+    }
+
+    const handleCloseImageModal = () => {
+        setImageModalOpen(false)
+        setSelectedImage(null)
     }
 
     // Componente Toolbar
@@ -415,7 +431,7 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                         {/* Acciones */}
                                         {visibleColumns.acciones && (
                                             <TableCell>
-                                                <CellAction result={result} />
+                                                <CellAction result={result} onViewImage={handleViewImage} />
                                             </TableCell>
                                         )}
                                     </TableRow>
@@ -437,6 +453,13 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                     </div>
                 </div>
             </CardContent>
+
+            {/* Modal de vista previa de imagen */}
+            <ImagePreviewModal
+                isOpen={imageModalOpen}
+                onClose={handleCloseImageModal}
+                result={selectedImage}
+            />
         </Card>
     )
 }
