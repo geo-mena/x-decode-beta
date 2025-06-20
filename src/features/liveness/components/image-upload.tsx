@@ -400,7 +400,7 @@ export function ImageUpload({ onFilesSelected, onBase64Selected, onClear, isLoad
                 <Button
                     onClick={handleSubmit}
                     disabled={isLoading || !canSubmit()}
-                    className="flex-1 text-background"
+                    className="flex-1"
                     variant="default"
                 >
                     {isLoading ? (
