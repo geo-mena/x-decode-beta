@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { useLivenessEvaluator } from '@/hooks/useLivenessEvaluator'
+import { useLivenessEvaluator } from '@/hooks/use-liveness-evaluator'
 import { ImageUpload } from './components/image-upload'
 import { ResultsTable } from './components/results-table'
 
