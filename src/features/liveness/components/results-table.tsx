@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu'
 import { LivenessResult } from '@/types/liveness'
-import { Download, RefreshCcw, Sheet, X, MoreHorizontal, Eye } from 'lucide-react'
+import { Download, RefreshCcw, Sheet, X, MoreHorizontal, Eye, Trash2 } from 'lucide-react'
 
 interface ResultsTableProps {
     results: LivenessResult[]
@@ -143,14 +143,6 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
         )
     }
 
-    const successCount = results.filter(r => 
-        r.diagnosticSaaS && !r.diagnosticSaaS.toLowerCase().includes('error')
-    ).length
-    
-    const errorCount = results.filter(r => 
-        r.error || (r.diagnosticSaaS && r.diagnosticSaaS.toLowerCase().includes('error'))
-    ).length
-
     return (
         <Card className="w-full">
             <CardHeader>
@@ -165,16 +157,8 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                         </CardDescription>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Badge variant="default" className="bg-green-500">
-                            {successCount} exitosas
-                        </Badge>
-                        {errorCount > 0 && (
-                            <Badge variant="destructive">
-                                {errorCount} errores
-                            </Badge>
-                        )}
                         <Button variant="outline" size="sm" onClick={onClear}>
-                            <X className="mr-1" />
+                            <Trash2 className="mr-1" />
                             Limpiar
                         </Button>
                     </div>
