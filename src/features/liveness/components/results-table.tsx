@@ -194,7 +194,7 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                     {/* Imagen */}
                                     <TableCell>
                                         {result.imageUrl ? (
-                                            <div className="relative aspect-square h-12 w-12 overflow-hidden rounded border">
+                                            <div className="relative aspect-square h-20 w-20 overflow-hidden rounded border">
                                                 <img
                                                     src={result.imageUrl}
                                                     alt={result.title}
