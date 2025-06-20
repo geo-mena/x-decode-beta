@@ -1,8 +1,6 @@
 "use client"
 
 import React, { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { useLivenessEvaluator } from '@/hooks/useLivenessEvaluator'
 import { ImageUpload } from './components/image-upload'
 import { ResultsTable } from './components/results-table'
