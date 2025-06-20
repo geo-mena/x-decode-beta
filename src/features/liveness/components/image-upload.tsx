@@ -97,14 +97,8 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
         }
     }, [onClear])
 
-    const formatFileSize = (bytes: number): string => {
-        if (bytes < 1024) return `${bytes} B`
-        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-    }
-
     return (
-        <Card className="w-full bg-primaryAccent">
+        <Card className="w-full">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Route type="route" />
@@ -167,14 +161,14 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
                         </>
                     ) : (
                         <>
-                            <Play className="mr-2" color="neutral-500"/>
+                            <Play className="mr-2"/>
                             Evaluar {selectedFiles.length > 1 ? 'Imágenes' : 'Imagen'}
                         </>
                     )}
                 </Button>
                 
                 <Button
-                    variant="ghost"
+                    variant="outline"
                     onClick={handleClear}
                     disabled={isLoading || selectedFiles.length === 0}
                 >
