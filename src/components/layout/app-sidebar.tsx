@@ -1,4 +1,5 @@
 'use client';
+
 import {
     Collapsible,
     CollapsibleContent,
@@ -26,7 +27,8 @@ import {
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
-    SidebarRail
+    SidebarRail,
+    useSidebar
 } from '@/components/ui/sidebar';
 import { UserAvatarProfile } from '@/components/user-avatar-profile';
 import { navItems } from '@/constants/data';
@@ -48,6 +50,7 @@ import * as React from 'react';
 import { Icons } from '../icons';
 import { OrgSwitcher } from '../org-switcher';
 import ApiKey from './api-key';
+
 export const company = {
     name: 'Acme Inc',
     logo: IconPhotoUp,
@@ -65,6 +68,8 @@ export default function AppSidebar() {
     const { isOpen } = useMediaQuery();
     const { user } = useUser();
     const router = useRouter();
+    const { state } = useSidebar();
+    
     const handleSwitchTenant = (_tenantId: string) => {
         // Tenant switching functionality would be implemented here
     };
@@ -86,12 +91,16 @@ export default function AppSidebar() {
             </SidebarHeader>
             <SidebarContent className='overflow-x-hidden'>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Settings</SidebarGroupLabel>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <ApiKey />
-                        </SidebarMenuItem>
-                    </SidebarMenu>
+                    {state !== 'collapsed' && (
+                        <>
+                            <SidebarGroupLabel>Settings</SidebarGroupLabel>
+                            <SidebarMenu>
+                                <SidebarMenuItem>
+                                    <ApiKey />
+                                </SidebarMenuItem>
+                            </SidebarMenu>
+                        </>
+                    )}
                     <SidebarGroupLabel>Overview</SidebarGroupLabel>
                     <SidebarMenu>
                         {navItems.map((item) => {
