@@ -222,14 +222,23 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
             </div>
         )
     }
+
     const getDiagnosticBadgeVariant = (diagnostic: string | undefined) => {
         if (!diagnostic) return 'secondary'
         
-        const lowerDiag = diagnostic.toLowerCase()
-        if (lowerDiag.includes('error') || lowerDiag.includes('failed')) {
+        const trimmedDiag = diagnostic.trim().toLowerCase()
+        
+        if (trimmedDiag === 'live') {
+            return 'default'
+        }
+        if (trimmedDiag === 'nolive') {
             return 'destructive'
         }
-        if (lowerDiag.includes('live') || lowerDiag.includes('success')) {
+        
+        if (trimmedDiag.includes('error') || trimmedDiag.includes('failed')) {
+            return 'destructive'
+        }
+        if (trimmedDiag.includes('success')) {
             return 'default'
         }
         return 'secondary'
