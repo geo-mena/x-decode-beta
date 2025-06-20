@@ -205,7 +205,7 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
                                 }
                             </p>
                             {selectedFiles.length > 0 && (
-                                <p className="text-xs text-green-600 mt-1">
+                                <p className="text-xs text-emerald-500 mt-1">
                                     {selectedFiles.length} archivo{selectedFiles.length > 1 ? 's' : ''} seleccionado{selectedFiles.length > 1 ? 's' : ''}
                                 </p>
                             )}
