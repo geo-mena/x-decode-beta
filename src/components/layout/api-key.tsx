@@ -96,7 +96,7 @@ const ApiKey = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
         >
-            <Key className="mr-2 h-4 w-4 flex-shrink-0" />
+            <Key className="h-4 w-4 flex-shrink-0" />
             
             <div className="flex-1 min-w-0">
                 <AnimatePresence mode="wait">
