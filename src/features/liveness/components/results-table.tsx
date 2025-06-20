@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { 
@@ -9,10 +10,12 @@ import {
     DropdownMenuContent, 
     DropdownMenuItem, 
     DropdownMenuLabel, 
-    DropdownMenuTrigger 
+    DropdownMenuTrigger,
+    DropdownMenuCheckboxItem,
+    DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu'
 import { LivenessResult } from '@/types/liveness'
-import { Download, RefreshCcw, Sheet, X, MoreHorizontal, Eye, Trash2 } from 'lucide-react'
+import { Download, RefreshCcw, Sheet, X, MoreHorizontal, Eye, Search, Filter, Settings2, Trash2 } from 'lucide-react'
 
 interface ResultsTableProps {
     results: LivenessResult[]
@@ -69,6 +72,157 @@ const CellAction = ({ result }: { result: LivenessResult }) => {
 }
 
 export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps) {
+    // Estados para filtros
+    const [searchValue, setSearchValue] = useState('')
+    const [statusFilter, setStatusFilter] = useState<string>('all')
+    const [visibleColumns, setVisibleColumns] = useState({
+        imagen: true,
+        titulo: true,
+        resolucion: true,
+        tamaño: true,
+        diagnostico: true,
+        acciones: true
+    })
+
+    // Filtrar resultados
+    const filteredResults = useMemo(() => {
+        return results.filter(result => {
+            // Filtro de búsqueda por título y path
+            const matchesSearch = searchValue === '' || 
+                result.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+                result.imagePath.toLowerCase().includes(searchValue.toLowerCase())
+
+            // Filtro por estado
+            const matchesStatus = statusFilter === 'all' || 
+                (statusFilter === 'success' && result.diagnosticSaaS && !result.diagnosticSaaS.toLowerCase().includes('error')) ||
+                (statusFilter === 'error' && (result.error || (result.diagnosticSaaS && result.diagnosticSaaS.toLowerCase().includes('error'))))
+
+            return matchesSearch && matchesStatus
+        })
+    }, [results, searchValue, statusFilter])
+
+    // Componente Toolbar
+    const DataTableToolbar = () => {
+        const isFiltered = searchValue !== '' || statusFilter !== 'all'
+
+        const handleReset = () => {
+            setSearchValue('')
+            setStatusFilter('all')
+        }
+
+        return (
+            <div className="flex w-full items-start justify-between gap-2 p-1">
+                <div className="flex flex-1 flex-wrap items-center gap-2">
+                    {/* Búsqueda por texto */}
+                    <div className="relative">
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                            placeholder="Buscar por título o archivo..."
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            className="h-8 w-[200px] pl-8 lg:w-[250px]"
+                        />
+                    </div>
+
+                    {/* Filtro por estado */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="sm" className="h-8 border-dashed">
+                                <Filter className="mr-2 h-4 w-4" />
+                                Estado
+                                {statusFilter !== 'all' && (
+                                    <Badge variant="secondary" className="ml-2 h-5 px-1 text-xs">
+                                        1
+                                    </Badge>
+                                )}
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-[200px]">
+                            <DropdownMenuLabel>Filtrar por estado</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuCheckboxItem
+                                checked={statusFilter === 'all'}
+                                onCheckedChange={() => setStatusFilter('all')}
+                            >
+                                Todos los resultados
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem
+                                checked={statusFilter === 'success'}
+                                onCheckedChange={() => setStatusFilter('success')}
+                            >
+                                Exitosos
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem
+                                checked={statusFilter === 'error'}
+                                onCheckedChange={() => setStatusFilter('error')}
+                            >
+                                Con errores
+                            </DropdownMenuCheckboxItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
+                    {/* Botón reset */}
+                    {isFiltered && (
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 px-2 lg:px-3 border-dashed"
+                            onClick={handleReset}
+                        >
+                            <X className="mr-2 h-4 w-4" />
+                            Reset
+                        </Button>
+                    )}
+                </div>
+
+                <div className="flex items-center gap-2">
+                    {/* Vista de columnas */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="sm" className="ml-auto h-8">
+                                <Settings2 className="mr-2 h-4 w-4" />
+                                Ver
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-[200px]">
+                            <DropdownMenuLabel>Alternar columnas</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuCheckboxItem
+                                checked={visibleColumns.imagen}
+                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, imagen: checked }))}
+                            >
+                                Imagen
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem
+                                checked={visibleColumns.titulo}
+                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, titulo: checked }))}
+                            >
+                                Título
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem
+                                checked={visibleColumns.resolucion}
+                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, resolucion: checked }))}
+                            >
+                                Resolución
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem
+                                checked={visibleColumns.tamaño}
+                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, tamaño: checked }))}
+                            >
+                                Tamaño
+                            </DropdownMenuCheckboxItem>
+                            <DropdownMenuCheckboxItem
+                                checked={visibleColumns.diagnostico}
+                                onCheckedChange={(checked) => setVisibleColumns(prev => ({ ...prev, diagnostico: checked }))}
+                            >
+                                Diagnóstico SaaS
+                            </DropdownMenuCheckboxItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </div>
+        )
+    }
     const getDiagnosticBadgeVariant = (diagnostic: string | undefined) => {
         if (!diagnostic) return 'secondary'
         
@@ -142,7 +296,7 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
             </Card>
         )
     }
-
+    
     return (
         <Card className="w-full">
             <CardHeader>
@@ -153,7 +307,7 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                             Resultados de Evaluación
                         </CardTitle>
                         <CardDescription>
-                            Resultados de la evaluación de liveness para {results.length} imágenes
+                            Resultados de la evaluación de liveness
                         </CardDescription>
                     </div>
                     <div className="flex items-center gap-2">
@@ -166,85 +320,109 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
             </CardHeader>
 
             <CardContent className="space-y-4">
-                {/* Toolbar área */}
-                <div className="flex items-center justify-between">
-                    <div className="flex flex-1 items-center space-x-2">
-                        <p className="text-sm text-muted-foreground">
-                            {results.length} resultado{results.length !== 1 ? 's' : ''} en total
-                        </p>
-                    </div>
-                </div>
+                {/* Toolbar mejorado */}
+                <DataTableToolbar />
 
                 {/* Tabla mejorada */}
                 <div className="rounded-md border">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-20">Imagen</TableHead>
-                                <TableHead>Título</TableHead>
-                                <TableHead>Resolución</TableHead>
-                                <TableHead>Tamaño</TableHead>
-                                <TableHead>Diagnóstico SaaS</TableHead>
-                                <TableHead className="w-20">Acciones</TableHead>
+                                {visibleColumns.imagen && <TableHead className="w-20">Imagen</TableHead>}
+                                {visibleColumns.titulo && <TableHead>Título</TableHead>}
+                                {visibleColumns.resolucion && <TableHead>Resolución</TableHead>}
+                                {visibleColumns.tamaño && <TableHead>Tamaño</TableHead>}
+                                {visibleColumns.diagnostico && <TableHead>Diagnóstico SaaS</TableHead>}
+                                {visibleColumns.acciones && <TableHead className="w-20">Acciones</TableHead>}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {results.map((result, index) => (
-                                <TableRow key={index} className="hover:bg-muted/50">
-                                    {/* Imagen */}
-                                    <TableCell>
-                                        {result.imageUrl ? (
-                                            <div className="relative aspect-square h-20 w-20 overflow-hidden rounded border">
-                                                <img
-                                                    src={result.imageUrl}
-                                                    alt={result.title}
-                                                    className="h-full w-full object-cover"
-                                                />
-                                            </div>
-                                        ) : (
-                                            <div className="flex h-12 w-12 items-center justify-center rounded border bg-muted">
-                                                <X className="h-4 w-4 text-muted-foreground" />
-                                            </div>
-                                        )}
-                                    </TableCell>
-
-                                    {/* Título */}
-                                    <TableCell className="font-medium">
-                                        <div className="space-y-1">
-                                            <p className="text-sm font-medium leading-none">{result.title}</p>
-                                            <p className="text-xs text-muted-foreground">{result.imagePath}</p>
-                                        </div>
-                                    </TableCell>
-
-                                    {/* Resolución */}
-                                    <TableCell>
-                                        <Badge variant="outline" className="font-mono text-xs">
-                                            {result.resolution}
-                                        </Badge>
-                                    </TableCell>
-
-                                    {/* Tamaño */}
-                                    <TableCell>
-                                        <span className="text-sm font-medium">{result.size}</span>
-                                    </TableCell>
-
-                                    {/* Diagnóstico SaaS */}
-                                    <TableCell>
-                                        <div className="space-y-1">
-                                            <Badge variant={getDiagnosticBadgeVariant(result.diagnosticSaaS)}>
-                                                {getDiagnosticDisplay(result.diagnosticSaaS)}
-                                            </Badge>
-                                        </div>
-                                    </TableCell>
-
-                                    {/* Acciones */}
-                                    <TableCell>
-                                        <CellAction result={result} />
+                            {filteredResults.length === 0 ? (
+                                <TableRow>
+                                    <TableCell 
+                                        colSpan={Object.values(visibleColumns).filter(Boolean).length} 
+                                        className="h-24 text-center"
+                                    >
+                                        {searchValue || statusFilter !== 'all' ? 'No se encontraron resultados con los filtros aplicados.' : 'No hay resultados.'}
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            ) : (
+                                filteredResults.map((result, index) => (
+                                    <TableRow key={index} className="hover:bg-muted/50">
+                                        {/* Imagen */}
+                                        {visibleColumns.imagen && (
+                                            <TableCell>
+                                                {result.imageUrl ? (
+                                                    <div className="relative aspect-square h-20 w-20 overflow-hidden rounded border">
+                                                        <img
+                                                            src={result.imageUrl}
+                                                            alt={result.title}
+                                                            className="h-full w-full object-cover"
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex h-12 w-12 items-center justify-center rounded border bg-muted">
+                                                        <X className="h-4 w-4 text-muted-foreground" />
+                                                    </div>
+                                                )}
+                                            </TableCell>
+                                        )}
+
+                                        {/* Título */}
+                                        {visibleColumns.titulo && (
+                                            <TableCell className="font-medium">
+                                                <div className="space-y-1">
+                                                    <p className="text-sm font-medium leading-none">{result.title}</p>
+                                                    <p className="text-xs text-muted-foreground">{result.imagePath}</p>
+                                                </div>
+                                            </TableCell>
+                                        )}
+
+                                        {/* Resolución */}
+                                        {visibleColumns.resolucion && (
+                                            <TableCell>
+                                                <Badge variant="outline" className="font-mono text-xs">
+                                                    {result.resolution}
+                                                </Badge>
+                                            </TableCell>
+                                        )}
+
+                                        {/* Tamaño */}
+                                        {visibleColumns.tamaño && (
+                                            <TableCell>
+                                                <span className="text-sm font-medium">{result.size}</span>
+                                            </TableCell>
+                                        )}
+
+                                        {/* Diagnóstico SaaS */}
+                                        {visibleColumns.diagnostico && (
+                                            <TableCell>
+                                                <div className="space-y-1">
+                                                    <Badge variant={getDiagnosticBadgeVariant(result.diagnosticSaaS)}>
+                                                        {getDiagnosticDisplay(result.diagnosticSaaS)}
+                                                    </Badge>
+                                                </div>
+                                            </TableCell>
+                                        )}
+
+                                        {/* Acciones */}
+                                        {visibleColumns.acciones && (
+                                            <TableCell>
+                                                <CellAction result={result} />
+                                            </TableCell>
+                                        )}
+                                    </TableRow>
+                                ))
+                            )}
                         </TableBody>
                     </Table>
+                </div>
+
+                {/* Información de resultados */}
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <div>
+                        Mostrando {filteredResults.length} de {results.length} resultado{results.length !== 1 ? 's' : ''}
+                    </div>
                 </div>
             </CardContent>
         </Card>
