@@ -47,6 +47,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
 import { OrgSwitcher } from '../org-switcher';
+import ApiKey from './api-key';
 export const company = {
     name: 'Acme Inc',
     logo: IconPhotoUp,
@@ -85,6 +86,12 @@ export default function AppSidebar() {
             </SidebarHeader>
             <SidebarContent className='overflow-x-hidden'>
                 <SidebarGroup>
+                    <SidebarGroupLabel>Settings</SidebarGroupLabel>
+                    <SidebarMenu>
+                            <SidebarMenuItem>
+                                <ApiKey />
+                            </SidebarMenuItem>
+                    </SidebarMenu>
                     <SidebarGroupLabel>Overview</SidebarGroupLabel>
                     <SidebarMenu>
                         {navItems.map((item) => {
