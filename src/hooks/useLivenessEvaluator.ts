@@ -35,7 +35,48 @@ export const useLivenessEvaluator = () => {
         })
     }, [])
 
-    // Función para obtener información de la imagen
+    // Función para limpiar base64 (remover prefijos si existen)
+    const cleanBase64 = useCallback((base64String: string): string => {
+        const trimmed = base64String.trim()
+        
+        // Si tiene prefijo data:image, removerlo
+        if (trimmed.startsWith('data:image/')) {
+            return trimmed.split(',')[1]
+        }
+        
+        return trimmed
+    }, [])
+
+    // Función para obtener información de imagen desde base64
+    const getImageInfoFromBase64 = useCallback((base64String: string, index: number): Promise<ImageInfo> => {
+        return new Promise((resolve, reject) => {
+            const img = new Image()
+            const cleanedBase64 = cleanBase64(base64String)
+            const dataUrl = `data:image/jpeg;base64,${cleanedBase64}`
+            
+            img.onload = () => {
+                // Calcular tamaño aproximado del base64
+                const base64Length = cleanedBase64.length
+                const sizeInBytes = Math.floor(base64Length * 0.75) // Aproximación del tamaño real
+                
+                resolve({
+                    width: img.width,
+                    height: img.height,
+                    size: sizeInBytes,
+                    name: `base64_image_${index + 1}.jpg`,
+                    type: 'image/jpeg' // Asumimos JPEG por defecto
+                })
+            }
+            
+            img.onerror = () => {
+                reject(new Error('Error al cargar la imagen desde base64'))
+            }
+            
+            img.src = dataUrl
+        })
+    }, [cleanBase64])
+
+    // Función para obtener información de la imagen desde archivo
     const getImageInfo = useCallback((file: File): Promise<ImageInfo> => {
         return new Promise((resolve, reject) => {
             const img = new Image()
@@ -61,12 +102,12 @@ export const useLivenessEvaluator = () => {
         })
     }, [])
 
-    // Función para evaluar con SaaS
+    // Función para evaluar con SaaS usando base64 directo
     const evaluateWithSaaS = useCallback(async (
-        file: File
+        imageBase64: string
     ): Promise<{ diagnostic: string; rawResponse?: EvaluatePassiveLivenessResponse }> => {
         try {
-            const imageBase64 = await convertImageToBase64(file)
+            const cleanedBase64 = cleanBase64(imageBase64)
             
             if (!apiKey.trim()) {
                 return { diagnostic: 'Error: API key no configurada. Configure la API key usando el botón "API Key" en la barra lateral.' }
@@ -75,7 +116,7 @@ export const useLivenessEvaluator = () => {
             const livenessService = createLivenessServiceWithApiKey(apiKey)
             
             const response = await livenessService.evaluatePassiveLiveness({
-                imageBuffer: imageBase64
+                imageBuffer: cleanedBase64
             })
 
             return {
@@ -88,7 +129,22 @@ export const useLivenessEvaluator = () => {
             }
             return { diagnostic: `Error: ${error instanceof Error ? error.message : 'Error desconocido'}` }
         }
-    }, [convertImageToBase64, apiKey])
+    }, [cleanBase64, apiKey])
+
+    // Función para evaluar con SaaS usando archivo
+    const evaluateFileWithSaaS = useCallback(async (
+        file: File
+    ): Promise<{ diagnostic: string; rawResponse?: EvaluatePassiveLivenessResponse }> => {
+        try {
+            const imageBase64 = await convertImageToBase64(file)
+            return await evaluateWithSaaS(imageBase64)
+        } catch (error) {
+            if (error instanceof LivenessApiError) {
+                return { diagnostic: `Error: ${error.message}` }
+            }
+            return { diagnostic: `Error: ${error instanceof Error ? error.message : 'Error desconocido'}` }
+        }
+    }, [convertImageToBase64, evaluateWithSaaS])
 
     // Función para formatear el tamaño del archivo
     const formatFileSize = useCallback((bytes: number): string => {
@@ -97,7 +153,7 @@ export const useLivenessEvaluator = () => {
         return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
     }, [])
 
-    // Función para procesar una imagen individual
+    // Función para procesar una imagen individual desde archivo
     const processImage = useCallback(async (
         file: File
     ): Promise<LivenessResult> => {
@@ -118,7 +174,7 @@ export const useLivenessEvaluator = () => {
 
             // Evaluar con SaaS
             try {
-                const saasResult = await evaluateWithSaaS(file)
+                const saasResult = await evaluateFileWithSaaS(file)
                 result.diagnosticSaaS = saasResult.diagnostic
                 result.rawResponse = saasResult.rawResponse
             } catch (error) {
@@ -137,14 +193,57 @@ export const useLivenessEvaluator = () => {
                 error: error instanceof Error ? error.message : 'Error desconocido'
             }
         }
-    }, [getImageInfo, formatFileSize, evaluateWithSaaS])
+    }, [getImageInfo, formatFileSize, evaluateFileWithSaaS])
 
-    // Función principal para evaluar imágenes
+    // Función para procesar base64 directamente
+    const processBase64 = useCallback(async (
+        base64String: string,
+        index: number
+    ): Promise<LivenessResult> => {
+        try {
+            const imageInfo = await getImageInfoFromBase64(base64String, index)
+            const cleanedBase64 = cleanBase64(base64String)
+            const imageUrl = `data:image/jpeg;base64,${cleanedBase64}`
+            
+            const title = `Base64_${index + 1}`
+            
+            const result: LivenessResult = {
+                title,
+                imagePath: imageInfo.name,
+                imageUrl,
+                resolution: `${imageInfo.width} x ${imageInfo.height}`,
+                size: formatFileSize(imageInfo.size),
+                imageInfo
+            }
+
+            // Evaluar con SaaS
+            try {
+                const saasResult = await evaluateWithSaaS(base64String)
+                result.diagnosticSaaS = saasResult.diagnostic
+                result.rawResponse = saasResult.rawResponse
+            } catch (error) {
+                result.diagnosticSaaS = `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`
+                result.error = error instanceof Error ? error.message : 'Error desconocido'
+            }
+
+            return result
+        } catch (error) {
+            return {
+                title: `Base64_${index + 1}`,
+                imagePath: `base64_image_${index + 1}`,
+                resolution: 'N/A',
+                size: 'N/A',
+                diagnosticSaaS: 'Error al procesar base64',
+                error: error instanceof Error ? error.message : 'Error desconocido'
+            }
+        }
+    }, [getImageInfoFromBase64, cleanBase64, formatFileSize, evaluateWithSaaS])
+
+    // Función principal para evaluar imágenes desde archivos
     const evaluateImages = useCallback(async (
         files: File[],
         isDirectory: boolean = false
     ) => {
-
         // Filtrar solo archivos de imagen válidos
         const validFiles = files.filter(file => {
             const extension = '.' + file.name.split('.').pop()?.toLowerCase()
@@ -196,11 +295,60 @@ export const useLivenessEvaluator = () => {
         }
     }, [processImage])
 
+    // Función principal para evaluar base64s directamente
+    const evaluateBase64Images = useCallback(async (
+        base64Strings: string[]
+    ) => {
+        if (base64Strings.length === 0) {
+            toast.error('Error', {
+                description: 'No se proporcionaron base64 válidos'
+            })
+            return
+        }
+
+        setLoading(true)
+        setError(null)
+        setResults([])
+
+        try {
+            const startTime = Date.now()
+            
+            toast.info('Procesando', {
+                description: `Evaluando ${base64Strings.length} base64${base64Strings.length > 1 ? 's' : ''}...`
+            })
+
+            // Procesar base64s secuencialmente para evitar límites de API
+            const results: LivenessResult[] = []
+            for (let i = 0; i < base64Strings.length; i++) {
+                const result = await processBase64(base64Strings[i], i)
+                results.push(result)
+            }
+
+            // Ordenar resultados por título
+            results.sort((a, b) => a.title.localeCompare(b.title))
+            setResults(results)
+
+            const elapsed = (Date.now() - startTime) / 1000
+            toast.success('Evaluación completada', {
+                description: `${results.length} base64${results.length > 1 ? 's' : ''} procesado${results.length > 1 ? 's' : ''} en ${elapsed.toFixed(1)}s`
+            })
+
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Error desconocido durante la evaluación'
+            setError(errorMessage)
+            toast.error('Error', {
+                description: errorMessage
+            })
+        } finally {
+            setLoading(false)
+        }
+    }, [processBase64])
+
     // Función para limpiar resultados
     const clearResults = useCallback(() => {
         // Limpiar URLs de objeto para evitar memory leaks
         results.forEach(result => {
-            if (result.imageUrl) {
+            if (result.imageUrl && result.imageUrl.startsWith('blob:')) {
                 URL.revokeObjectURL(result.imageUrl)
             }
         })
@@ -219,13 +367,34 @@ export const useLivenessEvaluator = () => {
         return VALID_IMAGE_EXTENSIONS.includes(extension)
     }, [])
 
+    // Función para validar base64
+    const validateBase64 = useCallback((base64String: string): boolean => {
+        try {
+            // Limpiar el base64 (remover espacios y saltos de línea)
+            const cleanString = base64String.replace(/\s/g, '')
+            
+            // Verificar si tiene el prefijo data:image
+            const base64WithoutPrefix = cleanString.startsWith('data:image/') 
+                ? cleanString.split(',')[1] 
+                : cleanString
+
+            // Validar que sea base64 válido
+            const decoded = atob(base64WithoutPrefix)
+            return decoded.length > 0
+        } catch (error) {
+            return false
+        }
+    }, [])
+
     return {
         loading,
         results,
         error,
         evaluateImages,
+        evaluateBase64Images,
         clearResults,
         isValidImageFile,
+        validateBase64,
         supportedExtensions: VALID_IMAGE_EXTENSIONS
     }
 }
