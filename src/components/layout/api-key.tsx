@@ -6,9 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { truncateText } from '@/lib/utils-key'
-import { IconKey, IconX } from '@tabler/icons-react'
 import { Input } from '../ui/input'
-import { Save } from 'lucide-react'
+import { Key, Save } from 'lucide-react'
 
 const API_KEY_PLACEHOLDER = 'Add API Key'
 
@@ -64,9 +63,9 @@ const ApiKey = () => {
 
     if (isEditing) {
         return (
-            <div className="space-y-2">
-                <div className="relative">
-                    <IconKey className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                    <Key className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
                         type="password"
                         value={apiKeyValue}
@@ -77,26 +76,14 @@ const ApiKey = () => {
                         autoFocus
                     />
                 </div>
-                <div className="flex justify-end gap-1">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleCancel}
-                        className="h-7 px-2 text-xs"
-                    >
-                        <IconX className="h-3 w-3 mr-1" />
-                        Cancel
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleSave}
-                        className="h-7 px-2 text-xs"
-                    >
-                        <Save className="h-3 w-3 mr-1" />
-                        Save
-                    </Button>
-                </div>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSave}
+                    className="h-9 px-3 text-xs"
+                >
+                    <Save className="h-4 w-4" />
+                </Button>
             </div>
         )
     }
@@ -109,7 +96,7 @@ const ApiKey = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
         >
-            <IconKey className="h-4 w-4 flex-shrink-0" />
+            <Key className="mr-2 h-4 w-4 flex-shrink-0" />
             
             <div className="flex-1 min-w-0">
                 <AnimatePresence mode="wait">
