@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { Play, RefreshCcw, Route, Trash, Upload } from 'lucide-react'
+import { CloudUpload, Play, RefreshCcw, Route, Trash, Upload } from 'lucide-react'
 
 interface ImageUploadProps {
     onFilesSelected: (files: File[], isDirectory: boolean) => void
@@ -134,7 +134,7 @@ export function ImageUpload({ onFilesSelected, onClear, isLoading, supportedExte
                     />
                     
                     <div className="flex flex-col items-center justify-center space-y-2">
-                        <Upload type="upload" />
+                        <CloudUpload className='mb-2 h-12 w-12 text-muted-foreground'/>
                         <div>
                             <p className="text-sm font-medium">
                                 Haga clic para seleccionar o arrastre archivos aquí
