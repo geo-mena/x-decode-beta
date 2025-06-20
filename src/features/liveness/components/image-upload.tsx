@@ -351,7 +351,7 @@ export function ImageUpload({ onFilesSelected, onBase64Selected, onClear, isLoad
                                 {base64Inputs.map((base64, index) => (
                                     <div key={index} className="flex space-x-2">
                                         <Textarea
-                                            placeholder={`Base64 de imagen ${index + 1} (puede incluir o no el prefijo data:image/...)`}
+                                            placeholder={`Base64 de imagen ${index + 1}`}
                                             value={base64}
                                             onChange={(e) => updateBase64Input(e.target.value, index)}
                                             className="h-[100px] flex-grow font-mono text-xs resize-none overflow-auto"
