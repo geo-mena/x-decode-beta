@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { CloudUpload, Play, RefreshCcw, Route, Trash, Upload } from 'lucide-react'
+import { CloudUpload, Play, RefreshCcw, Route, Trash } from 'lucide-react'
 
 interface ImageUploadProps {
     onFilesSelected: (files: File[], isDirectory: boolean) => void
