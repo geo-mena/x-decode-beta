@@ -88,9 +88,9 @@ export default function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupLabel>Settings</SidebarGroupLabel>
                     <SidebarMenu>
-                            <SidebarMenuItem>
-                                <ApiKey />
-                            </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <ApiKey />
+                        </SidebarMenuItem>
                     </SidebarMenu>
                     <SidebarGroupLabel>Overview</SidebarGroupLabel>
                     <SidebarMenu>
