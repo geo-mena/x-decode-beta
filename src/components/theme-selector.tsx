@@ -82,14 +82,6 @@ export function ThemeSelector() {
                     </SelectGroup>
                     <SelectSeparator />
                     <SelectGroup>
-                        <SelectLabel>Scaled</SelectLabel>
-                        {SCALED_THEMES.map((theme) => (
-                            <SelectItem key={theme.name} value={theme.value}>
-                                {theme.name}
-                            </SelectItem>
-                        ))}
-                    </SelectGroup>
-                    <SelectGroup>
                         <SelectLabel>Monospaced</SelectLabel>
                         {MONO_THEMES.map((theme) => (
                             <SelectItem key={theme.name} value={theme.value}>
