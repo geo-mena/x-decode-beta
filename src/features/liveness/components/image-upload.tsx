@@ -227,7 +227,7 @@ export function ImageUpload({ onFilesSelected, onBase64Selected, onClear, isLoad
                     Evaluación de Liveness
                 </CardTitle>
                 <CardDescription>
-                    Suba imágenes desde archivos o ingrese base64 manualmente para evaluar la prueba de vida pasiva
+                    Suba imágenes desde archivos o ingrese base64 manualmente
                 </CardDescription>
             </CardHeader>
 
