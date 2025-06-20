@@ -435,9 +435,9 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
                                         {/* Resolución */}
                                         {visibleColumns.resolucion && (
                                             <TableCell>
-                                                <Badge variant="outline" className="font-mono text-xs">
-                                                    {result.resolution}
-                                                </Badge>
+                                                <span className="font-sm font-medium">
+                                                    {result.resolution} px
+                                                </span>
                                             </TableCell>
                                         )}
 
