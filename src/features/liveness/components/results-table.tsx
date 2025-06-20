@@ -23,7 +23,6 @@ interface ResultsTableProps {
     onClear: () => void
 }
 
-// Componente para acciones de cada fila
 const CellAction = ({ result }: { result: LivenessResult }) => {
     const handleDownloadImage = () => {
         if (result.imageUrl) {
@@ -296,7 +295,7 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
             </Card>
         )
     }
-    
+
     return (
         <Card className="w-full">
             <CardHeader>
