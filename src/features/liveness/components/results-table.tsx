@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,7 +15,7 @@ import {
     DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu'
 import { LivenessResult } from '@/types/liveness'
-import { Download, RefreshCcw, Sheet, X, MoreHorizontal, Eye, Search, Filter, Settings2, Trash2 } from 'lucide-react'
+import { Download, Sheet, X, MoreHorizontal, Eye, Search, Filter, Settings2, Trash2 } from 'lucide-react'
 
 interface ResultsTableProps {
     results: LivenessResult[]
@@ -309,15 +309,6 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
     if (isLoading) {
         return (
             <Card className="w-full">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <RefreshCcw className="animate-spin" />
-                        Evaluando Imágenes
-                    </CardTitle>
-                    <CardDescription>
-                        Procesando múltiples imágenes con el servicio de liveness...
-                    </CardDescription>
-                </CardHeader>
                 <CardContent>
                     <div className="space-y-3">
                         {[...Array(3)].map((_, i) => (
@@ -338,15 +329,6 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
     if (results.length === 0) {
         return (
             <Card className="w-full">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Sheet />
-                        Resultados de Evaluación
-                    </CardTitle>
-                    <CardDescription>
-                        Los resultados de la evaluación aparecerán aquí
-                    </CardDescription>
-                </CardHeader>
                 <CardContent className="flex h-64 items-center justify-center text-muted-foreground">
                     <div className="text-center">
                         <Sheet className="mx-auto mb-2 h-12 w-12 opacity-50" />
@@ -359,18 +341,6 @@ export function ResultsTable({ results, isLoading, onClear }: ResultsTableProps)
 
     return (
         <Card className="w-full">
-            <CardHeader>
-                <div>
-                    <CardTitle className="flex items-center gap-2">
-                        <Sheet />
-                        Resultados de Evaluación
-                    </CardTitle>
-                    <CardDescription>
-                        Resultados de la evaluación de liveness
-                    </CardDescription>
-                </div>
-            </CardHeader>
-
             <CardContent className="space-y-4">
                 {/* Toolbar mejorado */}
                 <DataTableToolbar />
