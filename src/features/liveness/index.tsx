@@ -68,7 +68,7 @@ export default function LivenessContent() {
                     onBase64Selected={handleBase64Selected}
                     onClear={handleClear}
                     isLoading={loading}
-                    supportedExtensions={supportedExtensions}
+                    supportedExtensions={supportedExtensions.slice()}
                 />
             </div>
         </div>
