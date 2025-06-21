@@ -57,7 +57,7 @@ export function LayoutControls({ variant, collapsible, contentLayout }: LayoutCo
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button size="icon" variant="ghost">
+                <Button variant='secondary' size='icon' className='group/toggle'>
                     <Settings className="h-4 w-4" />
                 </Button>
             </PopoverTrigger>
