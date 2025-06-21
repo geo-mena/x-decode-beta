@@ -4,7 +4,6 @@ import { Separator } from '../ui/separator';
 // import { Breadcrumbs } from '../breadcrumbs';
 import SearchInput from '../search-input';
 import { UserNav } from './user-nav';
-import { ThemeSelector } from '../theme-selector';
 import { ModeToggle } from './ThemeToggle/theme-toggle';
 import { LayoutControls } from './layout-controls';
 import { getSidebarVariant, getSidebarCollapsible, getContentLayout } from '@/lib/layout-preferences';
@@ -37,7 +36,6 @@ export default async function Header() {
                 />
                 <UserNav />
                 <ModeToggle />
-                <ThemeSelector />
             </div>
         </header>
     );
