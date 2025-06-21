@@ -1,3 +1,4 @@
+import PageContainer from '@/components/layout/page-container';
 import LivenessContent from '@/features/liveness';
 
 export const metadata = {
@@ -5,5 +6,11 @@ export const metadata = {
 };
 
 export default function page() {
-    return <LivenessContent />;
+    return (
+        <PageContainer scrollable={false}>
+            <div className='flex flex-1 flex-col space-y-4'>
+                <LivenessContent />
+            </div>
+        </PageContainer>
+    );
 }

@@ -85,7 +85,7 @@ export default function LivenessContent() {
         <div className='h-full w-full'>
             {showInitialLayout && initialLayout}
             {showResultsLayout && (
-                <div className='container mx-auto p-6'>{resultsLayout}</div>
+                <div>{resultsLayout}</div>
             )}
         </div>
     );
