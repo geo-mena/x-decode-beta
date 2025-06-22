@@ -24,3 +24,19 @@ export function formatBytes(
             : (sizes[i] ?? 'Bytes')
     }`;
 }
+
+// URL validation function
+export function isValidUrl(string: string): boolean {
+    try {
+        new URL(string);
+        return true;
+    } catch (_) {
+        return false;
+    }
+}
+
+// Text truncation function
+export function truncateText(text: string, maxLength: number): string {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + '...';
+}

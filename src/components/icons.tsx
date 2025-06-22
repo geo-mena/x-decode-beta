@@ -30,7 +30,10 @@ import {
     IconUserX,
     IconX,
     IconLayoutKanban,
-    IconBrandGithub
+    IconBrandGithub,
+    IconEdit,
+    IconRefresh,
+    IconDeviceFloppy
 } from '@tabler/icons-react';
 import { Route, RouteIcon, Server } from 'lucide-react';
 
@@ -69,5 +72,8 @@ export const Icons = {
     twitter: IconBrandTwitter,
     check: IconCheck,
     server: Server,
-    route: RouteIcon
+    route: RouteIcon,
+    edit: IconEdit,
+    refresh: IconRefresh,
+    save: IconDeviceFloppy
 };
