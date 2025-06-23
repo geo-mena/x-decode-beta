@@ -30,7 +30,7 @@ const Endpoints = () => {
     };
 
     const getStatusText = (): string => {
-        if (!selectedEndpoint) return 'No endpoint selected';
+        if (!isMounted || !selectedEndpoint) return 'No endpoint selected';
         return `${selectedEndpoint.tag} - ${truncateText(selectedEndpoint.url, 20)}`;
     };
 
@@ -42,7 +42,7 @@ const Endpoints = () => {
                 onClick={() => setIsModalOpen(true)}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
-                title={selectedEndpoint ? getStatusText() : 'Click to configure endpoints'}
+                title={isMounted ? (selectedEndpoint ? getStatusText() : 'Click to configure endpoints') : 'Click to configure endpoints'}
             >
                 <Icons.server className='h-4 w-4 flex-shrink-0' />
 
@@ -67,7 +67,11 @@ const Endpoints = () => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.15 }}
                                 className={`block truncate ${
-                                    endpointsCount > 0 ? 'text-foreground' : 'text-muted-foreground'
+                                    !isMounted
+                                        ? 'text-muted-foreground'
+                                        : endpointsCount > 0
+                                        ? 'text-foreground'
+                                        : 'text-muted-foreground'
                                 }`}
                             >
                                 {getDisplayText()}
@@ -78,7 +82,9 @@ const Endpoints = () => {
 
                 <div
                     className={`size-2 flex-shrink-0 rounded-full ${
-                        endpointsCount > 0
+                        !isMounted
+                            ? 'bg-gray-400'
+                            : endpointsCount > 0
                             ? hasActiveEndpoint
                                 ? 'bg-green-500'
                                 : 'bg-red-500'
