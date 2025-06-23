@@ -148,7 +148,7 @@ const EndpointItem = ({
                             transition={{ duration: 0.15 }}
                         >
                             <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="sm"
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -160,7 +160,7 @@ const EndpointItem = ({
                                 <Icons.edit className="h-4 w-4" />
                             </Button>
                             <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="sm"
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -174,13 +174,13 @@ const EndpointItem = ({
                             </Button>
                             {canRemove && (
                                 <Button
-                                    variant="ghost"
+                                    variant="destructive"
                                     size="sm"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onRemove();
                                     }}
-                                    className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                                    className="h-8 w-8 p-0 hover:text-destructive"
                                     title="Remove endpoint"
                                 >
                                     <Icons.x className="h-4 w-4" />
@@ -406,7 +406,7 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
                                     Save
                                 </Button>
                                 <Button
-                                    variant="ghost"
+                                    variant="outline"
                                     size="sm"
                                     onClick={cancelAddingNew}
                                 >
