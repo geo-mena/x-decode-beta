@@ -80,18 +80,19 @@ const EndpointItem = ({
                         />
                     </div>
                     <Button
-                        variant="outline"
+                        variant="secondary"
                         size="sm"
                         onClick={onSave}
                     >
-                        <Icons.save className="h-4 w-4 mr-2" />
+                        <Icons.save className="h-4 w-4" />
                         Save
                     </Button>
                     <Button
-                        variant="ghost"
+                        variant="outline"
                         size="sm"
                         onClick={onCancel}
                     >
+                        <Icons.x className="h-4 w-4" />
                         Cancel
                     </Button>
                 </div>
@@ -398,11 +399,11 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
                                     />
                                 </div>
                                 <Button
-                                    variant="default"
+                                    variant="secondary"
                                     size="sm"
                                     onClick={handleAddNew}
                                 >
-                                    <Icons.save className="h-4 w-4 mr-2" />
+                                    <Icons.save className="h-4 w-4" />
                                     Save
                                 </Button>
                                 <Button
@@ -410,6 +411,7 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
                                     size="sm"
                                     onClick={cancelAddingNew}
                                 >
+                                    <Icons.x className="h-4 w-4" />
                                     Cancel
                                 </Button>
                             </div>
