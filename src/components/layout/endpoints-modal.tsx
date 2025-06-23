@@ -371,7 +371,7 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
                                 onClick={startAddingNew}
                                 disabled={isAddingNew}
                             >
-                                <Icons.plus className="h-4 w-4 mr-2" />
+                                <Icons.plus className="h-4 w-4" />
                                 Add Endpoint
                             </Button>
                         )}
