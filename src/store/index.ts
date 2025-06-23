@@ -1,6 +1,7 @@
 import { PlaygroundChatMessage, SessionEntry } from '@/types/playground';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Agent {
     value: string;
@@ -18,11 +19,20 @@ interface Route {
     description: string;
 }
 
+interface UserEndpoint {
+    id: string;
+    tag: string;
+    url: string;
+    isActive: boolean;
+    isSelected: boolean;
+}
+
 interface PlaygroundStore {
     hydrated: boolean;
     setHydrated: () => void;
     streamingErrorMessage: string;
     setStreamingErrorMessage: (streamingErrorMessage: string) => void;
+    // Legacy endpoints (keeping for compatibility)
     endpoints: {
         endpoint: string;
         id_playground_endpoint: string;
@@ -33,6 +43,14 @@ interface PlaygroundStore {
             id_playground_endpoint: string;
         }[]
     ) => void;
+    // New multiple endpoints with tags
+    userEndpoints: UserEndpoint[];
+    setUserEndpoints: (endpoints: UserEndpoint[]) => void;
+    addUserEndpoint: (tag: string, url: string) => void;
+    updateUserEndpoint: (id: string, updates: Partial<UserEndpoint>) => void;
+    removeUserEndpoint: (id: string) => void;
+    selectUserEndpoint: (id: string) => void;
+    getSelectedEndpoint: () => UserEndpoint | null;
     isStreaming: boolean;
     setIsStreaming: (isStreaming: boolean) => void;
     isEndpointActive: boolean;
@@ -50,6 +68,7 @@ interface PlaygroundStore {
     hasStorage: boolean;
     setHasStorage: (hasStorage: boolean) => void;
     chatInputRef: React.RefObject<HTMLTextAreaElement | null>;
+    // Legacy selected endpoint (keeping for compatibility)
     selectedEndpoint: string;
     setSelectedEndpoint: (selectedEndpoint: string) => void;
     apiKey: string;
@@ -72,7 +91,7 @@ interface PlaygroundStore {
 
 export const usePlaygroundStore = create<PlaygroundStore>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             hydrated: false,
             setHydrated: () => set({ hydrated: true }),
             streamingErrorMessage: '',
@@ -80,6 +99,74 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
                 set(() => ({ streamingErrorMessage })),
             endpoints: [],
             setEndpoints: (endpoints) => set(() => ({ endpoints })),
+            // New multiple endpoints functionality
+            userEndpoints: [
+                {
+                    id: uuidv4(),
+                    tag: 'Development',
+                    url: 'http://localhost:7777',
+                    isActive: false,
+                    isSelected: true
+                }
+            ],
+            setUserEndpoints: (userEndpoints) => set({ userEndpoints }),
+            addUserEndpoint: (tag: string, url: string) => {
+                const currentEndpoints = get().userEndpoints;
+                if (currentEndpoints.length >= 3) return; // Max 3 endpoints
+                
+                const newEndpoint: UserEndpoint = {
+                    id: uuidv4(),
+                    tag,
+                    url,
+                    isActive: false,
+                    isSelected: false
+                };
+                
+                set({ userEndpoints: [...currentEndpoints, newEndpoint] });
+            },
+            updateUserEndpoint: (id: string, updates: Partial<UserEndpoint>) => {
+                const currentEndpoints = get().userEndpoints;
+                const updatedEndpoints = currentEndpoints.map(endpoint =>
+                    endpoint.id === id ? { ...endpoint, ...updates } : endpoint
+                );
+                set({ userEndpoints: updatedEndpoints });
+            },
+            removeUserEndpoint: (id: string) => {
+                const currentEndpoints = get().userEndpoints;
+                if (currentEndpoints.length <= 1) return; // Keep at least 1
+                
+                const filteredEndpoints = currentEndpoints.filter(endpoint => endpoint.id !== id);
+                const removedEndpoint = currentEndpoints.find(endpoint => endpoint.id === id);
+                
+                // If we're removing the selected endpoint, select the first one
+                if (removedEndpoint?.isSelected && filteredEndpoints.length > 0) {
+                    filteredEndpoints[0].isSelected = true;
+                }
+                
+                set({ userEndpoints: filteredEndpoints });
+            },
+            selectUserEndpoint: (id: string) => {
+                const currentEndpoints = get().userEndpoints;
+                const updatedEndpoints = currentEndpoints.map(endpoint => ({
+                    ...endpoint,
+                    isSelected: endpoint.id === id
+                }));
+                
+                // Update legacy selectedEndpoint for compatibility
+                const selectedEndpoint = updatedEndpoints.find(e => e.isSelected);
+                if (selectedEndpoint) {
+                    set({ 
+                        userEndpoints: updatedEndpoints, 
+                        selectedEndpoint: selectedEndpoint.url 
+                    });
+                } else {
+                    set({ userEndpoints: updatedEndpoints });
+                }
+            },
+            getSelectedEndpoint: () => {
+                const endpoints = get().userEndpoints;
+                return endpoints.find(endpoint => endpoint.isSelected) || null;
+            },
             isStreaming: false,
             setIsStreaming: (isStreaming) => set(() => ({ isStreaming })),
             isEndpointActive: false,
@@ -140,7 +227,8 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
                 selectedEndpoint: state.selectedEndpoint,
-                apiKey: state.apiKey
+                apiKey: state.apiKey,
+                userEndpoints: state.userEndpoints
             }),
             onRehydrateStorage: () => (state) => {
                 state?.setHydrated?.();
