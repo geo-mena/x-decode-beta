@@ -33,7 +33,8 @@ import {
     IconBrandGithub,
     IconEdit,
     IconRefresh,
-    IconDeviceFloppy
+    IconDeviceFloppy,
+    IconRotateClockwise
 } from '@tabler/icons-react';
 import { Route, RouteIcon, Server } from 'lucide-react';
 
@@ -75,5 +76,8 @@ export const Icons = {
     route: RouteIcon,
     edit: IconEdit,
     refresh: IconRefresh,
-    save: IconDeviceFloppy
+    save: IconDeviceFloppy,
+    rotateCw: IconRotateClockwise,
+    x: IconX,
+    plus: IconPlus
 };

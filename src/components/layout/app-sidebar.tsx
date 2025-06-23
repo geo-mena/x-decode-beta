@@ -50,7 +50,7 @@ import * as React from 'react';
 import { Icons } from '../icons';
 import { OrgSwitcher } from '../org-switcher';
 import ApiKey from './api-key';
-import Endpoint from './endpoint';
+import Endpoints from './endpoints';
 import type { SidebarVariant, SidebarCollapsible } from '@/lib/layout-preferences';
 
 export const company = {
@@ -109,7 +109,7 @@ export default function AppSidebar({
                                     <ApiKey />
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
-                                    <Endpoint />
+                                    <Endpoints />
                                 </SidebarMenuItem>
                             </SidebarMenu>
                         </>
