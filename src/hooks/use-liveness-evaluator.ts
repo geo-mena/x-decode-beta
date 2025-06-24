@@ -25,6 +25,10 @@ const VALID_IMAGE_EXTENSIONS = [
 const SDK_ENDPOINT = '/api/v1/selphid/passive-liveness/evaluate';
 const SDK_TIMEOUT = 10000; // 10 seconds
 
+const needsProxy = (endpoint: string): boolean => {
+    return !endpoint.includes('localhost') && !endpoint.includes('127.0.0.1');
+};
+
 export const useLivenessEvaluator = () => {
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState<LivenessResult[]>([]);
@@ -130,7 +134,27 @@ export const useLivenessEvaluator = () => {
             
             // Si la URL tiene un formato válido y un protocolo HTTP/HTTPS, marcarla como activa
             if (urlObj.protocol === 'http:' || urlObj.protocol === 'https:') {
-                return true;
+                const fullUrl = `${url}${SDK_ENDPOINT}`;
+                
+                try {
+                    if (needsProxy(fullUrl)) {
+                        const response = await fetch('/api/sdk-proxy', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                endpoint: fullUrl,
+                                payload: { image: 'test' }
+                            }),
+                        });
+                        
+                        return response.ok || response.status === 500;
+                    } else {
+                        const response = await fetch(fullUrl, { method: 'OPTIONS' });
+                        return response.ok || response.status === 405;
+                    }
+                } catch (error) {
+                    return false;
+                }
             }
             
             return false;
@@ -161,14 +185,32 @@ export const useLivenessEvaluator = () => {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), SDK_TIMEOUT);
 
-                const response = await fetch(fullUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload),
-                    signal: controller.signal
-                });
+                let response;
+
+                if (needsProxy(fullUrl)) {
+                    // Usar proxy para endpoints externos
+                    response = await fetch('/api/sdk-proxy', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            endpoint: fullUrl,
+                            payload: payload
+                        }),
+                        signal: controller.signal
+                    });
+                } else {
+                    // Llamada directa para localhost
+                    response = await fetch(fullUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
+                }
 
                 clearTimeout(timeoutId);
 
