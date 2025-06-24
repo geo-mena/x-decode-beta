@@ -537,33 +537,33 @@ export function ResultsTable({
                         <TableHeader>
                             <TableRow>
                                 {visibleColumns.imagen && (
-                                    <TableHead className='w-20'>
+                                    <TableHead className='w-20 text-center'>
                                         Imagen
                                     </TableHead>
                                 )}
                                 {visibleColumns.titulo && (
-                                    <TableHead>Título</TableHead>
+                                    <TableHead className='text-center'>Título</TableHead>
                                 )}
                                 {visibleColumns.resolucion && (
-                                    <TableHead>Resolución</TableHead>
+                                    <TableHead className='text-center'>Resolución</TableHead>
                                 )}
                                 {visibleColumns.tamaño && (
-                                    <TableHead>Tamaño</TableHead>
+                                    <TableHead className='text-center'>Tamaño</TableHead>
                                 )}
                                 {visibleColumns.diagnosticoSaaS && (
-                                    <TableHead>Diagnóstico SaaS</TableHead>
+                                    <TableHead className='text-center'>Diagnóstico SaaS</TableHead>
                                 )}
                                 {/* Columnas SDK dinámicas */}
                                 {useSDK && sdkTags.map(tag => {
                                     const columnKey = `sdk_${tag}`;
                                     return visibleColumns[columnKey] && (
-                                        <TableHead key={tag}>
+                                        <TableHead key={tag} className='text-center'>
                                             Diagnóstico SDK {tag}
                                         </TableHead>
                                     );
                                 })}
                                 {visibleColumns.acciones && (
-                                    <TableHead className='w-20'>
+                                    <TableHead className='w-20 text-center'>
                                         Acciones
                                     </TableHead>
                                 )}
@@ -591,9 +591,9 @@ export function ResultsTable({
                                     >
                                         {/* Imagen */}
                                         {visibleColumns.imagen && (
-                                            <TableCell>
+                                            <TableCell className='text-center'>
                                                 {result.imageUrl ? (
-                                                    <div className='relative aspect-square h-20 w-20 overflow-hidden rounded border'>
+                                                    <div className='relative aspect-square h-20 w-20 overflow-hidden rounded border mx-auto'>
                                                         <img
                                                             src={result.imageUrl}
                                                             alt={result.title}
@@ -601,7 +601,7 @@ export function ResultsTable({
                                                         />
                                                     </div>
                                                 ) : (
-                                                    <div className='bg-muted flex h-12 w-12 items-center justify-center rounded border'>
+                                                    <div className='bg-muted flex h-12 w-12 items-center justify-center rounded border mx-auto'>
                                                         <X className='text-muted-foreground h-4 w-4' />
                                                     </div>
                                                 )}
@@ -610,7 +610,7 @@ export function ResultsTable({
 
                                         {/* Título */}
                                         {visibleColumns.titulo && (
-                                            <TableCell className='font-medium'>
+                                            <TableCell className='font-medium text-center'>
                                                 <div className='space-y-1'>
                                                     <p className='text-sm leading-none font-medium'>
                                                         {result.title}
@@ -621,7 +621,7 @@ export function ResultsTable({
 
                                         {/* Resolución */}
                                         {visibleColumns.resolucion && (
-                                            <TableCell>
+                                            <TableCell className='text-center'>
                                                 <span className='font-sm font-medium'>
                                                     {result.resolution} px
                                                 </span>
@@ -630,7 +630,7 @@ export function ResultsTable({
 
                                         {/* Tamaño */}
                                         {visibleColumns.tamaño && (
-                                            <TableCell>
+                                            <TableCell className='text-center'>
                                                 <span className='text-sm font-medium'>
                                                     {result.size}
                                                 </span>
@@ -639,7 +639,7 @@ export function ResultsTable({
 
                                         {/* Diagnóstico SaaS */}
                                         {visibleColumns.diagnosticoSaaS && (
-                                            <TableCell>
+                                            <TableCell className='text-center'>
                                                 <div className='space-y-1'>
                                                     <Badge
                                                         variant={getDiagnosticBadgeVariant(
@@ -658,7 +658,7 @@ export function ResultsTable({
                                         {useSDK && sdkTags.map(tag => {
                                             const columnKey = `sdk_${tag}`;
                                             return visibleColumns[columnKey] && (
-                                                <TableCell key={tag}>
+                                                <TableCell key={tag} className='text-center'>
                                                     <div className='space-y-1'>
                                                         <Badge
                                                             variant={getDiagnosticBadgeVariant(
@@ -676,7 +676,7 @@ export function ResultsTable({
 
                                         {/* Acciones */}
                                         {visibleColumns.acciones && (
-                                            <TableCell>
+                                            <TableCell className='text-center'>
                                                 <CellAction
                                                     result={result}
                                                     onViewImage={handleViewImage}
