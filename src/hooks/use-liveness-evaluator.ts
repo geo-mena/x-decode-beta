@@ -6,7 +6,10 @@ import {
     LivenessResult,
     ImageInfo,
     EvaluatePassiveLivenessResponse,
-    LivenessApiError
+    LivenessApiError,
+    SDKEvaluateRequest,
+    SDKEvaluateResponse,
+    SDKEndpointInfo
 } from '@/types/liveness';
 
 const VALID_IMAGE_EXTENSIONS = [
@@ -18,11 +21,17 @@ const VALID_IMAGE_EXTENSIONS = [
     '.webp'
 ];
 
+// SDK Configuration
+const SDK_ENDPOINT = '/api/v1/selphid/passive-liveness/evaluate';
+const SDK_TIMEOUT = 10000; // 10 seconds
+
 export const useLivenessEvaluator = () => {
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState<LivenessResult[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const { apiKey } = usePlaygroundStore();
+    const [useSDK, setUseSDK] = useState(false);
+    const [selectedSDKEndpoints, setSelectedSDKEndpoints] = useState<string[]>([]);
+    const { apiKey, userEndpoints } = usePlaygroundStore();
 
     // Función para convertir imagen a base64
     const convertImageToBase64 = useCallback((file: File): Promise<string> => {
@@ -113,6 +122,86 @@ export const useLivenessEvaluator = () => {
         });
     }, []);
 
+    // Función para verificar si un endpoint SDK está activo
+    const checkSDKEndpointStatus = useCallback(async (url: string): Promise<boolean> => {
+        try {
+            // Verificación básica de formato de URL
+            const urlObj = new URL(url);
+            
+            // Si la URL tiene un formato válido y un protocolo HTTP/HTTPS, marcarla como activa
+            if (urlObj.protocol === 'http:' || urlObj.protocol === 'https:') {
+                return true;
+            }
+            
+            return false;
+        } catch (error) {
+            // Si no es una URL válida, marcarla como inactiva
+            return false;
+        }
+    }, []);
+
+    // Función para evaluar con SDK
+    const evaluateWithSDK = useCallback(
+        async (
+            imageBase64: string,
+            endpointUrl: string,
+            tag: string
+        ): Promise<{
+            diagnostic: string;
+            rawResponse?: SDKEvaluateResponse;
+        }> => {
+            try {
+                const cleanedBase64 = cleanBase64(imageBase64);
+                const fullUrl = `${endpointUrl}${SDK_ENDPOINT}`;
+
+                const payload: SDKEvaluateRequest = {
+                    image: cleanedBase64
+                };
+
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), SDK_TIMEOUT);
+
+                const response = await fetch(fullUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    return {
+                        diagnostic: `Error ${response.status}: ${response.statusText}`
+                    };
+                }
+
+                const result = await response.json();
+                return {
+                    diagnostic: result.diagnostic || `Evaluado con ${tag}`,
+                    rawResponse: result
+                };
+            } catch (error) {
+                if (error instanceof Error) {
+                    if (error.name === 'AbortError') {
+                        return {
+                            diagnostic: `Timeout: ${tag} no responde`
+                        };
+                    }
+                    return {
+                        diagnostic: `Error de conexión: ${error.message}`
+                    };
+                }
+                return {
+                    diagnostic: `Error desconocido en ${tag}`
+                };
+            }
+        },
+        [cleanBase64]
+    );
+
     // Función para evaluar con SaaS usando base64 directo
     const evaluateWithSaaS = useCallback(
         async (
@@ -185,12 +274,20 @@ export const useLivenessEvaluator = () => {
         return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
     }, []);
 
+    // Función para obtener endpoints SDK activos
+    const getActiveSDKEndpoints = useCallback(() => {
+        return userEndpoints.filter(endpoint => 
+            selectedSDKEndpoints.includes(endpoint.id) && endpoint.isActive
+        );
+    }, [userEndpoints, selectedSDKEndpoints]);
+
     // Función para procesar una imagen individual desde archivo
     const processImage = useCallback(
         async (file: File): Promise<LivenessResult> => {
             try {
                 const imageInfo = await getImageInfo(file);
                 const imageUrl = URL.createObjectURL(file);
+                const imageBase64 = await convertImageToBase64(file);
 
                 const title = file.name.split('.')[0];
 
@@ -203,17 +300,36 @@ export const useLivenessEvaluator = () => {
                     imageInfo
                 };
 
-                // Evaluar con SaaS
+                // Evaluar con SaaS (siempre habilitado)
                 try {
                     const saasResult = await evaluateFileWithSaaS(file);
                     result.diagnosticSaaS = saasResult.diagnostic;
                     result.rawResponse = saasResult.rawResponse;
                 } catch (error) {
                     result.diagnosticSaaS = `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
-                    result.error =
-                        error instanceof Error
-                            ? error.message
-                            : 'Error desconocido';
+                }
+
+                // Evaluar con SDK si está habilitado
+                if (useSDK) {
+                    const activeEndpoints = getActiveSDKEndpoints();
+                    result.sdkDiagnostics = {};
+                    result.sdkRawResponses = {};
+
+                    for (const endpoint of activeEndpoints) {
+                        try {
+                            const sdkResult = await evaluateWithSDK(
+                                imageBase64,
+                                endpoint.url,
+                                endpoint.tag
+                            );
+                            result.sdkDiagnostics[endpoint.tag] = sdkResult.diagnostic;
+                            if (sdkResult.rawResponse) {
+                                result.sdkRawResponses[endpoint.tag] = sdkResult.rawResponse;
+                            }
+                        } catch (error) {
+                            result.sdkDiagnostics[endpoint.tag] = `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
+                        }
+                    }
                 }
 
                 return result;
@@ -231,7 +347,7 @@ export const useLivenessEvaluator = () => {
                 };
             }
         },
-        [getImageInfo, formatFileSize, evaluateFileWithSaaS]
+        [getImageInfo, formatFileSize, evaluateFileWithSaaS, convertImageToBase64, useSDK, getActiveSDKEndpoints, evaluateWithSDK]
     );
 
     // Función para procesar base64 directamente
@@ -259,17 +375,36 @@ export const useLivenessEvaluator = () => {
                     imageInfo
                 };
 
-                // Evaluar con SaaS
+                // Evaluar con SaaS (siempre habilitado)
                 try {
                     const saasResult = await evaluateWithSaaS(base64String);
                     result.diagnosticSaaS = saasResult.diagnostic;
                     result.rawResponse = saasResult.rawResponse;
                 } catch (error) {
                     result.diagnosticSaaS = `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
-                    result.error =
-                        error instanceof Error
-                            ? error.message
-                            : 'Error desconocido';
+                }
+
+                // Evaluar con SDK si está habilitado
+                if (useSDK) {
+                    const activeEndpoints = getActiveSDKEndpoints();
+                    result.sdkDiagnostics = {};
+                    result.sdkRawResponses = {};
+
+                    for (const endpoint of activeEndpoints) {
+                        try {
+                            const sdkResult = await evaluateWithSDK(
+                                base64String,
+                                endpoint.url,
+                                endpoint.tag
+                            );
+                            result.sdkDiagnostics[endpoint.tag] = sdkResult.diagnostic;
+                            if (sdkResult.rawResponse) {
+                                result.sdkRawResponses[endpoint.tag] = sdkResult.rawResponse;
+                            }
+                        } catch (error) {
+                            result.sdkDiagnostics[endpoint.tag] = `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
+                        }
+                    }
                 }
 
                 return result;
@@ -287,7 +422,7 @@ export const useLivenessEvaluator = () => {
                 };
             }
         },
-        [getImageInfoFromBase64, cleanBase64, formatFileSize, evaluateWithSaaS]
+        [getImageInfoFromBase64, cleanBase64, formatFileSize, evaluateWithSaaS, useSDK, getActiveSDKEndpoints, evaluateWithSDK]
     );
 
     // Función principal para evaluar imágenes desde archivos
@@ -453,6 +588,13 @@ export const useLivenessEvaluator = () => {
         clearResults,
         isValidImageFile,
         validateBase64,
-        supportedExtensions: VALID_IMAGE_EXTENSIONS
+        supportedExtensions: VALID_IMAGE_EXTENSIONS,
+        // SDK related functions and state
+        useSDK,
+        setUseSDK,
+        selectedSDKEndpoints,
+        setSelectedSDKEndpoints,
+        checkSDKEndpointStatus,
+        getActiveSDKEndpoints
     };
 };

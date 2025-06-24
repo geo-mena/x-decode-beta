@@ -66,9 +66,37 @@ export interface LivenessResult {
     resolution: string;
     size: string;
     diagnosticSaaS?: string;
+    // SDK diagnostics - dynamic object for multiple endpoints
+    sdkDiagnostics?: Record<string, string>; // key: endpoint tag, value: diagnostic
     error?: string;
     imageInfo?: ImageInfo;
     rawResponse?: EvaluatePassiveLivenessResponse;
+    // SDK raw responses - dynamic object for multiple endpoints  
+    sdkRawResponses?: Record<string, SDKEvaluateResponse>; // key: endpoint tag, value: response
+}
+
+// SDK specific types
+export interface SDKEvaluateRequest {
+    image: string; // Base64 image data
+}
+
+export interface SDKEvaluateResponse {
+    diagnostic: string;
+    // Add other SDK response fields as needed
+}
+
+export interface SDKEndpointInfo {
+    id: string;
+    tag: string;
+    url: string;
+    isActive: boolean;
+    isSelected: boolean;
+}
+
+export interface LivenessEvaluationConfig {
+    useSaaS: boolean;
+    useSDK: boolean;
+    selectedSDKEndpoints: SDKEndpointInfo[];
 }
 
 export interface LivenessEvaluationOptions {
