@@ -347,7 +347,7 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogContent className="min-w-xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <Icons.server className="h-5 w-5" />
