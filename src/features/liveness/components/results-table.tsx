@@ -39,6 +39,7 @@ interface ResultsTableProps {
     results: LivenessResult[];
     isLoading: boolean;
     onClear: () => void;
+    useSDK: boolean;
 }
 
 const CellAction = ({
@@ -97,37 +98,88 @@ const CellAction = ({
 export function ResultsTable({
     results,
     isLoading,
-    onClear
+    onClear,
+    useSDK
 }: ResultsTableProps) {
     // Estados para filtros
     const [searchValue, setSearchValue] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('all');
-    const [visibleColumns, setVisibleColumns] = useState({
-        imagen: true,
-        titulo: true,
-        resolucion: true,
-        tamaño: true,
-        diagnostico: true,
-        acciones: true
-    });
-
+    
     // Estados para el modal de imagen
     const [imageModalOpen, setImageModalOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<LivenessResult | null>(
-        null
-    );
+    const [selectedImage, setSelectedImage] = useState<LivenessResult | null>(null);
 
-    // Obtener valores únicos de diagnóstico SaaS
+    // Obtener tags únicos de SDK para columnas dinámicas
+    const sdkTags = useMemo(() => {
+        if (!useSDK) return [];
+        
+        const tags = new Set<string>();
+        results.forEach(result => {
+            if (result.sdkDiagnostics) {
+                Object.keys(result.sdkDiagnostics).forEach(tag => tags.add(tag));
+            }
+        });
+        return Array.from(tags).sort();
+    }, [results, useSDK]);
+
+    // Estado para columnas visibles (dinámico basado en SDK)
+    const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(() => {
+        const baseColumns: Record<string, boolean> = {
+            imagen: true,
+            titulo: true,
+            resolucion: true,
+            tamaño: true,
+            diagnosticoSaaS: true,
+            acciones: true
+        };
+
+        // Agregar columnas SDK dinámicamente
+        sdkTags.forEach(tag => {
+            baseColumns[`sdk_${tag}`] = true;
+        });
+
+        return baseColumns;
+    });
+
+    // Actualizar columnas visibles cuando cambien los tags SDK
+    React.useEffect(() => {
+        if (useSDK && sdkTags.length > 0) {
+            setVisibleColumns(prev => {
+                const newColumns = { ...prev };
+                sdkTags.forEach(tag => {
+                    const key = `sdk_${tag}`;
+                    if (!newColumns.hasOwnProperty(key)) {
+                        newColumns[key] = true;
+                    }
+                });
+                return newColumns;
+            });
+        }
+    }, [sdkTags, useSDK]);
+
+    // Obtener valores únicos de diagnóstico para filtros
     const uniqueDiagnosticValues = useMemo(() => {
         const values = new Set<string>();
 
         results.forEach((result) => {
+            // SaaS diagnostics
             if (result.diagnosticSaaS && result.diagnosticSaaS.trim()) {
-                values.add(result.diagnosticSaaS.trim());
-            } else {
-                values.add('Pendiente');
+                values.add(`SaaS: ${result.diagnosticSaaS.trim()}`);
+            }
+            
+            // SDK diagnostics
+            if (result.sdkDiagnostics) {
+                Object.entries(result.sdkDiagnostics).forEach(([tag, diagnostic]) => {
+                    if (diagnostic && diagnostic.trim()) {
+                        values.add(`${tag}: ${diagnostic.trim()}`);
+                    }
+                });
             }
         });
+
+        if (values.size === 0) {
+            values.add('Pendiente');
+        }
 
         return Array.from(values).sort();
     }, [results]);
@@ -145,12 +197,22 @@ export function ResultsTable({
                     .toLowerCase()
                     .includes(searchValue.toLowerCase());
 
-            // Filtro por estado basado en valores reales
+            // Filtro por estado
             let matchesStatus = true;
             if (statusFilter !== 'all') {
-                const diagnosticValue =
-                    result.diagnosticSaaS?.trim() || 'Pendiente';
-                matchesStatus = diagnosticValue === statusFilter;
+                // Verificar si coincide con SaaS
+                const saasMatch = result.diagnosticSaaS && 
+                    statusFilter === `SaaS: ${result.diagnosticSaaS.trim()}`;
+                
+                // Verificar si coincide con algún SDK
+                let sdkMatch = false;
+                if (result.sdkDiagnostics) {
+                    sdkMatch = Object.entries(result.sdkDiagnostics).some(([tag, diagnostic]) => 
+                        statusFilter === `${tag}: ${diagnostic.trim()}`
+                    );
+                }
+
+                matchesStatus = saasMatch || sdkMatch || statusFilter === 'Pendiente';
             }
 
             return matchesSearch && matchesStatus;
@@ -162,9 +224,17 @@ export function ResultsTable({
         if (filterValue === 'all') return results.length;
 
         return results.filter((result) => {
-            const diagnosticValue =
-                result.diagnosticSaaS?.trim() || 'Pendiente';
-            return diagnosticValue === filterValue;
+            const saasMatch = result.diagnosticSaaS && 
+                filterValue === `SaaS: ${result.diagnosticSaaS.trim()}`;
+            
+            let sdkMatch = false;
+            if (result.sdkDiagnostics) {
+                sdkMatch = Object.entries(result.sdkDiagnostics).some(([tag, diagnostic]) => 
+                    filterValue === `${tag}: ${diagnostic.trim()}`
+                );
+            }
+
+            return saasMatch || sdkMatch || filterValue === 'Pendiente';
         }).length;
     };
 
@@ -177,6 +247,14 @@ export function ResultsTable({
     const handleCloseImageModal = () => {
         setImageModalOpen(false);
         setSelectedImage(null);
+    };
+
+    // Función para actualizar visibilidad de columna
+    const updateColumnVisibility = (columnKey: string, checked: boolean) => {
+        setVisibleColumns(prev => ({
+            ...prev,
+            [columnKey]: checked
+        }));
     };
 
     // Componente Toolbar
@@ -224,7 +302,7 @@ export function ResultsTable({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                             align='start'
-                            className='w-[250px]'
+                            className='w-[300px] max-h-[400px] overflow-y-auto'
                         >
                             <DropdownMenuLabel>
                                 Filtrar por diagnóstico
@@ -249,7 +327,7 @@ export function ResultsTable({
 
                             <DropdownMenuSeparator />
 
-                            {/* Opciones dinámicas basadas en valores reales */}
+                            {/* Opciones dinámicas */}
                             {uniqueDiagnosticValues.map((diagnosticValue) => (
                                 <DropdownMenuCheckboxItem
                                     key={diagnosticValue}
@@ -259,7 +337,7 @@ export function ResultsTable({
                                     }
                                 >
                                     <div className='flex w-full items-center justify-between'>
-                                        <span className='truncate'>
+                                        <span className='truncate text-xs'>
                                             {diagnosticValue}
                                         </span>
                                         <Badge
@@ -315,10 +393,7 @@ export function ResultsTable({
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.imagen}
                                 onCheckedChange={(checked) =>
-                                    setVisibleColumns((prev) => ({
-                                        ...prev,
-                                        imagen: checked
-                                    }))
+                                    updateColumnVisibility('imagen', checked as boolean)
                                 }
                             >
                                 Imagen
@@ -326,10 +401,7 @@ export function ResultsTable({
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.titulo}
                                 onCheckedChange={(checked) =>
-                                    setVisibleColumns((prev) => ({
-                                        ...prev,
-                                        titulo: checked
-                                    }))
+                                    updateColumnVisibility('titulo', checked as boolean)
                                 }
                             >
                                 Título
@@ -337,10 +409,7 @@ export function ResultsTable({
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.resolucion}
                                 onCheckedChange={(checked) =>
-                                    setVisibleColumns((prev) => ({
-                                        ...prev,
-                                        resolucion: checked
-                                    }))
+                                    updateColumnVisibility('resolucion', checked as boolean)
                                 }
                             >
                                 Resolución
@@ -348,25 +417,43 @@ export function ResultsTable({
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.tamaño}
                                 onCheckedChange={(checked) =>
-                                    setVisibleColumns((prev) => ({
-                                        ...prev,
-                                        tamaño: checked
-                                    }))
+                                    updateColumnVisibility('tamaño', checked as boolean)
                                 }
                             >
                                 Tamaño
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
-                                checked={visibleColumns.diagnostico}
+                                checked={visibleColumns.diagnosticoSaaS}
                                 onCheckedChange={(checked) =>
-                                    setVisibleColumns((prev) => ({
-                                        ...prev,
-                                        diagnostico: checked
-                                    }))
+                                    updateColumnVisibility('diagnosticoSaaS', checked as boolean)
                                 }
                             >
                                 Diagnóstico SaaS
                             </DropdownMenuCheckboxItem>
+                            
+                            {/* Columnas SDK dinámicas */}
+                            {useSDK && sdkTags.length > 0 && (
+                                <>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuLabel className='text-xs'>
+                                        SDK Diagnósticos
+                                    </DropdownMenuLabel>
+                                    {sdkTags.map(tag => {
+                                        const columnKey = `sdk_${tag}`;
+                                        return (
+                                            <DropdownMenuCheckboxItem
+                                                key={tag}
+                                                checked={visibleColumns[columnKey]}
+                                                onCheckedChange={(checked) =>
+                                                    updateColumnVisibility(columnKey, checked as boolean)
+                                                }
+                                            >
+                                                SDK {tag}
+                                            </DropdownMenuCheckboxItem>
+                                        );
+                                    })}
+                                </>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
 
@@ -463,9 +550,18 @@ export function ResultsTable({
                                 {visibleColumns.tamaño && (
                                     <TableHead>Tamaño</TableHead>
                                 )}
-                                {visibleColumns.diagnostico && (
+                                {visibleColumns.diagnosticoSaaS && (
                                     <TableHead>Diagnóstico SaaS</TableHead>
                                 )}
+                                {/* Columnas SDK dinámicas */}
+                                {useSDK && sdkTags.map(tag => {
+                                    const columnKey = `sdk_${tag}`;
+                                    return visibleColumns[columnKey] && (
+                                        <TableHead key={tag}>
+                                            SDK {tag}
+                                        </TableHead>
+                                    );
+                                })}
                                 {visibleColumns.acciones && (
                                     <TableHead className='w-20'>
                                         Acciones
@@ -478,9 +574,7 @@ export function ResultsTable({
                                 <TableRow>
                                     <TableCell
                                         colSpan={
-                                            Object.values(
-                                                visibleColumns
-                                            ).filter(Boolean).length
+                                            Object.values(visibleColumns).filter(Boolean).length
                                         }
                                         className='h-24 text-center'
                                     >
@@ -501,9 +595,7 @@ export function ResultsTable({
                                                 {result.imageUrl ? (
                                                     <div className='relative aspect-square h-20 w-20 overflow-hidden rounded border'>
                                                         <img
-                                                            src={
-                                                                result.imageUrl
-                                                            }
+                                                            src={result.imageUrl}
                                                             alt={result.title}
                                                             className='h-full w-full object-cover'
                                                         />
@@ -523,7 +615,6 @@ export function ResultsTable({
                                                     <p className='text-sm leading-none font-medium'>
                                                         {result.title}
                                                     </p>
-                                                    {/* <p className="text-xs text-muted-foreground">{result.imagePath}</p> */}
                                                 </div>
                                             </TableCell>
                                         )}
@@ -547,7 +638,7 @@ export function ResultsTable({
                                         )}
 
                                         {/* Diagnóstico SaaS */}
-                                        {visibleColumns.diagnostico && (
+                                        {visibleColumns.diagnosticoSaaS && (
                                             <TableCell>
                                                 <div className='space-y-1'>
                                                     <Badge
@@ -563,14 +654,32 @@ export function ResultsTable({
                                             </TableCell>
                                         )}
 
+                                        {/* Columnas SDK dinámicas */}
+                                        {useSDK && sdkTags.map(tag => {
+                                            const columnKey = `sdk_${tag}`;
+                                            return visibleColumns[columnKey] && (
+                                                <TableCell key={tag}>
+                                                    <div className='space-y-1'>
+                                                        <Badge
+                                                            variant={getDiagnosticBadgeVariant(
+                                                                result.sdkDiagnostics?.[tag]
+                                                            )}
+                                                        >
+                                                            {getDiagnosticDisplay(
+                                                                result.sdkDiagnostics?.[tag]
+                                                            )}
+                                                        </Badge>
+                                                    </div>
+                                                </TableCell>
+                                            );
+                                        })}
+
                                         {/* Acciones */}
                                         {visibleColumns.acciones && (
                                             <TableCell>
                                                 <CellAction
                                                     result={result}
-                                                    onViewImage={
-                                                        handleViewImage
-                                                    }
+                                                    onViewImage={handleViewImage}
                                                 />
                                             </TableCell>
                                         )}

@@ -12,6 +12,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import {
     CloudUpload,
@@ -24,8 +27,14 @@ import {
     FileText,
     Plus,
     X,
-    Copy
+    Copy,
+    Settings,
+    Server,
+    CheckCircle,
+    XCircle,
+    RefreshCw
 } from 'lucide-react';
+import { usePlaygroundStore } from '@/store';
 
 interface ImageUploadProps {
     onFilesSelected: (files: File[], isDirectory: boolean) => void;
@@ -33,6 +42,11 @@ interface ImageUploadProps {
     onClear: () => void;
     isLoading: boolean;
     supportedExtensions: string[];
+    useSDK: boolean;
+    setUseSDK: (useSDK: boolean) => void;
+    selectedSDKEndpoints: string[];
+    setSelectedSDKEndpoints: (endpointIds: string[]) => void;
+    checkSDKEndpointStatus: (url: string) => Promise<boolean>;
 }
 
 export function ImageUpload({
@@ -40,15 +54,43 @@ export function ImageUpload({
     onBase64Selected,
     onClear,
     isLoading,
-    supportedExtensions
+    supportedExtensions,
+    useSDK,
+    setUseSDK,
+    selectedSDKEndpoints,
+    setSelectedSDKEndpoints,
+    checkSDKEndpointStatus
 }: ImageUploadProps) {
     const [dragActive, setDragActive] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [isDirectoryMode, setIsDirectoryMode] = useState(false);
     const [inputMethod, setInputMethod] = useState<'files' | 'base64'>('files');
     const [base64Inputs, setBase64Inputs] = useState<string[]>(['']);
+    const [checkingEndpoints, setCheckingEndpoints] = useState(false);
+    
+    const { userEndpoints, updateUserEndpoint } = usePlaygroundStore();
 
     const MAX_BASE64_INPUTS = 5;
+
+    // Check endpoint statuses - simplified to avoid dependency loops
+    const checkAllEndpointStatuses = async () => {
+        if (!useSDK || userEndpoints.length === 0) return;
+        
+        setCheckingEndpoints(true);
+        
+        try {
+            for (const endpoint of userEndpoints) {
+                try {
+                    const isActive = await checkSDKEndpointStatus(endpoint.url);
+                    updateUserEndpoint(endpoint.id, { isActive });
+                } catch (error) {
+                    updateUserEndpoint(endpoint.id, { isActive: false });
+                }
+            }
+        } finally {
+            setCheckingEndpoints(false);
+        }
+    };
 
     const isValidFile = useCallback(
         (file: File): boolean => {
@@ -183,6 +225,32 @@ export function ImageUpload({
         }
     }, []);
 
+    // Funciones para manejar SDK endpoints - simplified
+    const handleSDKToggle = (checked: boolean) => {
+        setUseSDK(checked);
+        if (checked) {
+            // Check endpoints when enabling SDK
+            checkAllEndpointStatuses();
+        } else {
+            // Clear selection when disabling SDK
+            setSelectedSDKEndpoints([]);
+        }
+    };
+
+    const handleEndpointSelection = useCallback((endpointId: string, checked: boolean) => {
+        if (checked) {
+            setSelectedSDKEndpoints([...selectedSDKEndpoints, endpointId]);
+        } else {
+            setSelectedSDKEndpoints(selectedSDKEndpoints.filter(id => id !== endpointId));
+        }
+    }, [selectedSDKEndpoints, setSelectedSDKEndpoints]);
+
+    const getSelectedActiveEndpoints = useCallback(() => {
+        return userEndpoints.filter(endpoint => 
+            selectedSDKEndpoints.includes(endpoint.id) && endpoint.isActive
+        );
+    }, [userEndpoints, selectedSDKEndpoints]);
+
     const handleSubmit = useCallback(() => {
         if (inputMethod === 'files') {
             if (selectedFiles.length === 0) {
@@ -190,6 +258,17 @@ export function ImageUpload({
                     description: 'Seleccione al menos una imagen para evaluar'
                 });
                 return;
+            }
+
+            // Verificar que si SDK está habilitado, al menos un endpoint esté seleccionado y activo
+            if (useSDK) {
+                const activeSelected = getSelectedActiveEndpoints();
+                if (activeSelected.length === 0) {
+                    toast.error('Error', {
+                        description: 'Debe seleccionar al menos un endpoint SDK activo o deshabilitar la evaluación SDK'
+                    });
+                    return;
+                }
             }
 
             const isDirectory = selectedFiles.length > 1 || isDirectoryMode;
@@ -209,6 +288,17 @@ export function ImageUpload({
                 return;
             }
 
+            // Verificar que si SDK está habilitado, al menos un endpoint esté seleccionado y activo
+            if (useSDK) {
+                const activeSelected = getSelectedActiveEndpoints();
+                if (activeSelected.length === 0) {
+                    toast.error('Error', {
+                        description: 'Debe seleccionar al menos un endpoint SDK activo o deshabilitar la evaluación SDK'
+                    });
+                    return;
+                }
+            }
+
             onBase64Selected(validBase64s);
         }
     }, [
@@ -218,7 +308,9 @@ export function ImageUpload({
         isDirectoryMode,
         base64Inputs,
         validateBase64,
-        onBase64Selected
+        onBase64Selected,
+        useSDK,
+        getSelectedActiveEndpoints
     ]);
 
     const handleClear = useCallback(() => {
@@ -301,7 +393,105 @@ export function ImageUpload({
                 </CardDescription>
             </CardHeader>
 
-            <CardContent className='space-y-4'>
+            <CardContent className='space-y-6'>
+                {/* SDK Configuration Section */}
+                <div className='space-y-4 rounded-lg border p-4'>
+                    <div className='flex items-center justify-between'>
+                        <div className='flex items-center space-x-2'>
+                            <Server className='h-4 w-4' />
+                            <Label htmlFor='sdk-toggle' className='text-sm font-medium'>
+                                Evaluación con SDK Local
+                            </Label>
+                        </div>
+                        <Switch
+                            id='sdk-toggle'
+                            checked={useSDK}
+                            onCheckedChange={handleSDKToggle}
+                            disabled={isLoading}
+                        />
+                    </div>
+
+                    {useSDK && (
+                        <div className='space-y-3'>
+                            <div className='flex items-center justify-between'>
+                                <Label className='text-sm text-muted-foreground'>
+                                    Seleccionar endpoints SDK:
+                                </Label>
+                                <Button
+                                    variant='outline'
+                                    size='sm'
+                                    onClick={checkAllEndpointStatuses}
+                                    disabled={checkingEndpoints || isLoading}
+                                >
+                                    {checkingEndpoints ? (
+                                        <Loader className='mr-2 h-3 w-3 animate-spin' />
+                                    ) : (
+                                        <RefreshCw className='mr-2 h-3 w-3' />
+                                    )}
+                                    Verificar estado
+                                </Button>
+                            </div>
+
+                            <div className='space-y-2 max-h-40 overflow-y-auto'>
+                                {userEndpoints.map((endpoint) => (
+                                    <div key={endpoint.id} className='flex items-center space-x-3 p-2 rounded border'>
+                                        <Checkbox
+                                            id={endpoint.id}
+                                            checked={selectedSDKEndpoints.includes(endpoint.id)}
+                                            onCheckedChange={(checked) => 
+                                                handleEndpointSelection(endpoint.id, checked as boolean)
+                                            }
+                                            disabled={!endpoint.isActive || isLoading}
+                                        />
+                                        <div className='flex-1 min-w-0'>
+                                            <div className='flex items-center space-x-2'>
+                                                <Label 
+                                                    htmlFor={endpoint.id} 
+                                                    className={`text-sm cursor-pointer ${
+                                                        !endpoint.isActive ? 'text-muted-foreground' : ''
+                                                    }`}
+                                                >
+                                                    {endpoint.tag}
+                                                </Label>
+                                                {endpoint.isActive ? (
+                                                    <CheckCircle className='h-3 w-3 text-green-500' />
+                                                ) : (
+                                                    <XCircle className='h-3 w-3 text-red-500' />
+                                                )}
+                                            </div>
+                                            <p className={`text-xs truncate ${
+                                                !endpoint.isActive ? 'text-muted-foreground' : 'text-muted-foreground'
+                                            }`}>
+                                                {endpoint.url}
+                                            </p>
+                                        </div>
+                                        <Badge 
+                                            variant={endpoint.isActive ? 'default' : 'secondary'}
+                                            className='text-xs'
+                                        >
+                                            {endpoint.isActive ? 'Activo' : 'Inactivo'}
+                                        </Badge>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {userEndpoints.length === 0 && (
+                                <p className='text-sm text-muted-foreground'>
+                                    No hay endpoints configurados. Configure endpoints en la configuración.
+                                </p>
+                            )}
+
+                            {selectedSDKEndpoints.length > 0 && (
+                                <div className='text-sm text-muted-foreground'>
+                                    {selectedSDKEndpoints.length} endpoint{selectedSDKEndpoints.length > 1 ? 's' : ''} seleccionado{selectedSDKEndpoints.length > 1 ? 's' : ''}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                <Separator />
+
                 {/* Method selector tabs */}
                 <Tabs
                     value={inputMethod}

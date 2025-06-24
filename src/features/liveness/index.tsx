@@ -18,7 +18,13 @@ export default function LivenessContent() {
         evaluateImages,
         evaluateBase64Images,
         clearResults,
-        supportedExtensions
+        supportedExtensions,
+        // SDK related
+        useSDK,
+        setUseSDK,
+        selectedSDKEndpoints,
+        setSelectedSDKEndpoints,
+        checkSDKEndpointStatus
     } = useLivenessEvaluator();
 
     const handleFilesSelected = async (files: File[], isDir: boolean) => {
@@ -56,6 +62,7 @@ export default function LivenessContent() {
                 results={results}
                 isLoading={loading}
                 onClear={handleClear}
+                useSDK={useSDK}
             />
         </div>
     );
@@ -69,6 +76,11 @@ export default function LivenessContent() {
                     onClear={handleClear}
                     isLoading={loading}
                     supportedExtensions={supportedExtensions.slice()}
+                    useSDK={useSDK}
+                    setUseSDK={setUseSDK}
+                    selectedSDKEndpoints={selectedSDKEndpoints}
+                    setSelectedSDKEndpoints={setSelectedSDKEndpoints}
+                    checkSDKEndpointStatus={checkSDKEndpointStatus}
                 />
             </div>
         </div>

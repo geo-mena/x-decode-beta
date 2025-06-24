@@ -11,14 +11,7 @@ import {
 } from '@/components/ui/table';
 
 interface ResultsTableSkeletonProps {
-    visibleColumns: {
-        imagen: boolean;
-        titulo: boolean;
-        resolucion: boolean;
-        tamaño: boolean;
-        diagnostico: boolean;
-        acciones: boolean;
-    };
+    visibleColumns: Record<string, boolean>;
     rows?: number;
 }
 
@@ -26,6 +19,9 @@ export function ResultsTableSkeleton({
     visibleColumns,
     rows = 5
 }: ResultsTableSkeletonProps) {
+    // Contar columnas visibles para el colspan
+    const visibleColumnCount = Object.values(visibleColumns).filter(Boolean).length;
+
     return (
         <Card className='w-full'>
             <CardContent className='space-y-4'>
@@ -69,11 +65,22 @@ export function ResultsTableSkeleton({
                                         <Skeleton className='h-4 w-16' />
                                     </TableHead>
                                 )}
-                                {visibleColumns.diagnostico && (
+                                {visibleColumns.diagnosticoSaaS && (
                                     <TableHead>
                                         <Skeleton className='h-4 w-32' />
                                     </TableHead>
                                 )}
+                                
+                                {/* Columnas SDK dinámicas */}
+                                {Object.keys(visibleColumns)
+                                    .filter(key => key.startsWith('sdk_') && visibleColumns[key])
+                                    .map(key => (
+                                        <TableHead key={key}>
+                                            <Skeleton className='h-4 w-24' />
+                                        </TableHead>
+                                    ))
+                                }
+                                
                                 {visibleColumns.acciones && (
                                     <TableHead className='w-20'>
                                         <Skeleton className='h-4 w-20' />
@@ -115,12 +122,22 @@ export function ResultsTableSkeleton({
                                         </TableCell>
                                     )}
 
-                                    {/* Skeleton Diagnóstico */}
-                                    {visibleColumns.diagnostico && (
+                                    {/* Skeleton Diagnóstico SaaS */}
+                                    {visibleColumns.diagnosticoSaaS && (
                                         <TableCell>
                                             <Skeleton className='h-6 w-[100px] rounded-full' />
                                         </TableCell>
                                     )}
+
+                                    {/* Skeleton Columnas SDK dinámicas */}
+                                    {Object.keys(visibleColumns)
+                                        .filter(key => key.startsWith('sdk_') && visibleColumns[key])
+                                        .map(key => (
+                                            <TableCell key={key}>
+                                                <Skeleton className='h-6 w-[100px] rounded-full' />
+                                            </TableCell>
+                                        ))
+                                    }
 
                                     {/* Skeleton Acciones */}
                                     {visibleColumns.acciones && (
