@@ -478,7 +478,7 @@ export function ResultsTable({
         const trimmedDiag = diagnostic.trim().toLowerCase();
 
         if (trimmedDiag === 'live') {
-            return 'default';
+            return 'success';
         }
         if (trimmedDiag === 'nolive') {
             return 'destructive';
@@ -558,7 +558,7 @@ export function ResultsTable({
                                     const columnKey = `sdk_${tag}`;
                                     return visibleColumns[columnKey] && (
                                         <TableHead key={tag}>
-                                            SDK {tag}
+                                            Diagnóstico SDK {tag}
                                         </TableHead>
                                     );
                                 })}
