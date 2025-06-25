@@ -120,8 +120,6 @@ export function ImageUpload({
 
             setSelectedFiles(validFiles);
 
-            const isDirectory = validFiles.length > 1 || isDirectoryMode;
-
             toast.success('Archivos seleccionados', {
                 description: `${validFiles.length} imagen${validFiles.length > 1 ? 'es' : ''} seleccionada${validFiles.length > 1 ? 's' : ''}`
             });

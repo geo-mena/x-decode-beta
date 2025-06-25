@@ -23,7 +23,7 @@ export default function LivenessContent() {
         checkSDKEndpointStatus
     } = useLivenessEvaluator();
 
-    const handleFilesSelected = async (files: File[], isDir: boolean) => {
+    const handleFilesSelected = async (files: File[], _isDir: boolean) => {
         setCurrentFiles(files);
         setCurrentBase64s([]);
 
