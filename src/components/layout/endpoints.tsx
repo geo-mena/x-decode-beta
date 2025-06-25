@@ -42,7 +42,13 @@ const Endpoints = () => {
                 onClick={() => setIsModalOpen(true)}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
-                title={isMounted ? (selectedEndpoint ? getStatusText() : 'Click to configure endpoints') : 'Click to configure endpoints'}
+                title={
+                    isMounted
+                        ? selectedEndpoint
+                            ? getStatusText()
+                            : 'Click to configure endpoints'
+                        : 'Click to configure endpoints'
+                }
             >
                 <Icons.server className='h-4 w-4 flex-shrink-0' />
 
@@ -70,8 +76,8 @@ const Endpoints = () => {
                                     !isMounted
                                         ? 'text-muted-foreground'
                                         : endpointsCount > 0
-                                        ? 'text-foreground'
-                                        : 'text-muted-foreground'
+                                          ? 'text-foreground'
+                                          : 'text-muted-foreground'
                                 }`}
                             >
                                 {getDisplayText()}
@@ -85,18 +91,15 @@ const Endpoints = () => {
                         !isMounted
                             ? 'bg-gray-400'
                             : endpointsCount > 0
-                            ? hasActiveEndpoint
-                                ? 'bg-green-500'
-                                : 'bg-red-500'
-                            : 'bg-gray-400'
+                              ? hasActiveEndpoint
+                                  ? 'bg-green-500'
+                                  : 'bg-red-500'
+                              : 'bg-gray-400'
                     }`}
                 />
             </Button>
 
-            <EndpointsModal 
-                isOpen={isModalOpen} 
-                onClose={() => setIsModalOpen(false)} 
-            />
+            <EndpointsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </>
     );
 };

@@ -49,9 +49,7 @@ const ResultItem = React.forwardRef(
                             <span>{action.name}</span>
                         </div>
                         {action.subtitle && (
-                            <span className='text-muted-foreground text-sm'>
-                                {action.subtitle}
-                            </span>
+                            <span className='text-muted-foreground text-sm'>{action.subtitle}</span>
                         )}
                     </div>
                 </div>

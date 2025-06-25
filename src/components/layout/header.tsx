@@ -6,7 +6,11 @@ import SearchInput from '../search-input';
 import { UserNav } from './user-nav';
 import { ModeToggle } from './ThemeToggle/theme-toggle';
 import { LayoutControls } from './layout-controls';
-import { getSidebarVariant, getSidebarCollapsible, getContentLayout } from '@/lib/layout-preferences';
+import {
+    getSidebarVariant,
+    getSidebarCollapsible,
+    getContentLayout
+} from '@/lib/layout-preferences';
 
 export default async function Header() {
     const variant = await getSidebarVariant();
@@ -22,14 +26,11 @@ export default async function Header() {
             </div>
 
             <div className='flex items-center gap-2 px-4'>
-                <Separator
-                    orientation='vertical'
-                    className='hidden h-4 lg:block'
-                />
+                <Separator orientation='vertical' className='hidden h-4 lg:block' />
                 <div className='hidden md:flex'>
                     <SearchInput />
                 </div>
-                <LayoutControls 
+                <LayoutControls
                     variant={variant}
                     collapsible={collapsible}
                     contentLayout={contentLayout}

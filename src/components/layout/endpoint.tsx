@@ -12,16 +12,16 @@ import { Server, Save } from 'lucide-react';
 const ENDPOINT_PLACEHOLDER = 'Add Endpoint';
 
 const Endpoint = () => {
-    const { 
-        selectedEndpoint, 
-        isEndpointActive, 
-        setSelectedEndpoint, 
-        setIsEndpointActive, 
-        setAgents, 
-        setSessionsData, 
-        setMessages 
+    const {
+        selectedEndpoint,
+        isEndpointActive,
+        setSelectedEndpoint,
+        setIsEndpointActive,
+        setAgents,
+        setSessionsData,
+        setMessages
     } = usePlaygroundStore();
-    
+
     const [isEditing, setIsEditing] = useState(false);
     const [endpointValue, setEndpointValue] = useState('');
     const [isMounted, setIsMounted] = useState(false);
@@ -50,7 +50,7 @@ const Endpoint = () => {
         setSessionsData([]);
         setMessages([]);
         toast.success('Endpoint saved successfully');
-        
+
         // Test endpoint after saving
         await testEndpoint(cleanEndpoint);
     };
@@ -75,19 +75,20 @@ const Endpoint = () => {
             toast.error('No endpoint to test');
             return;
         }
-        
+
         setIsRotating(true);
         try {
             const response = await fetch(`${testUrl}/liveness`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                },
+                    'Content-Type': 'application/json'
+                }
             });
-            
+
             if (response.ok) {
                 setIsEndpointActive(true);
-                if (!endpoint) { // Only show toast if manually testing
+                if (!endpoint) {
+                    // Only show toast if manually testing
                     toast.success('Endpoint is active');
                 }
             } else {
@@ -102,7 +103,7 @@ const Endpoint = () => {
                 toast.error('Failed to connect to endpoint');
             }
         }
-        
+
         setTimeout(() => setIsRotating(false), 500);
     };
 
@@ -147,7 +148,9 @@ const Endpoint = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onDoubleClick={() => testEndpoint()}
-            title={selectedEndpoint ? 'Click to edit, double-click to test' : 'Click to add endpoint'}
+            title={
+                selectedEndpoint ? 'Click to edit, double-click to test' : 'Click to add endpoint'
+            }
         >
             <Server className='h-4 w-4 flex-shrink-0' />
 

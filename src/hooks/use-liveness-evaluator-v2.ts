@@ -10,14 +10,7 @@ import {
 } from '@/types/liveness';
 
 // =================== CONSTANTS ===================
-const VALID_IMAGE_EXTENSIONS = [
-    '.jpg',
-    '.jpeg',
-    '.png',
-    '.bmp',
-    '.gif',
-    '.webp'
-] as const;
+const VALID_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'] as const;
 const MAX_FILE_SIZE_MB = 10;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 const MAX_BASE64_SIZE_MB = 15; // Base64 es ~33% más grande
@@ -73,12 +66,7 @@ export const useLivenessEvaluator = () => {
     // =================== UTILITY FUNCTIONS ===================
 
     const createProcessingError = useCallback(
-        (
-            code: string,
-            message: string,
-            details?: string,
-            retryable = false
-        ): ProcessingError => ({
+        (code: string, message: string, details?: string, retryable = false): ProcessingError => ({
             code,
             message,
             details,
@@ -88,8 +76,7 @@ export const useLivenessEvaluator = () => {
     );
 
     const sleep = useCallback(
-        (ms: number): Promise<void> =>
-            new Promise((resolve) => setTimeout(resolve, ms)),
+        (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms)),
         []
     );
 
@@ -121,18 +108,12 @@ export const useLivenessEvaluator = () => {
                 try {
                     return await operation();
                 } catch (error) {
-                    lastError =
-                        error instanceof Error
-                            ? error
-                            : new Error(String(error));
+                    lastError = error instanceof Error ? error : new Error(String(error));
 
                     if (attempt === maxAttempts) break;
 
                     // No retry en ciertos errores
-                    if (
-                        error instanceof LivenessApiError &&
-                        error.message.includes('401')
-                    ) {
+                    if (error instanceof LivenessApiError && error.message.includes('401')) {
                         break;
                     }
 
@@ -168,10 +149,7 @@ export const useLivenessEvaluator = () => {
             if (!file || !(file instanceof File)) {
                 return {
                     isValid: false,
-                    error: createProcessingError(
-                        'INVALID_FILE',
-                        'Archivo no válido'
-                    )
+                    error: createProcessingError('INVALID_FILE', 'Archivo no válido')
                 };
             }
 
@@ -215,10 +193,7 @@ export const useLivenessEvaluator = () => {
             if (file.size === 0) {
                 return {
                     isValid: false,
-                    error: createProcessingError(
-                        'EMPTY_FILE',
-                        'El archivo está vacío'
-                    )
+                    error: createProcessingError('EMPTY_FILE', 'El archivo está vacío')
                 };
             }
 
@@ -232,10 +207,7 @@ export const useLivenessEvaluator = () => {
             if (!base64String || typeof base64String !== 'string') {
                 return {
                     isValid: false,
-                    error: createProcessingError(
-                        'INVALID_BASE64',
-                        'Base64 no válido o vacío'
-                    )
+                    error: createProcessingError('INVALID_BASE64', 'Base64 no válido o vacío')
                 };
             }
 
@@ -246,10 +218,7 @@ export const useLivenessEvaluator = () => {
                 if (cleanString.length === 0) {
                     return {
                         isValid: false,
-                        error: createProcessingError(
-                            'EMPTY_BASE64',
-                            'Base64 está vacío'
-                        )
+                        error: createProcessingError('EMPTY_BASE64', 'Base64 está vacío')
                     };
                 }
 
@@ -362,34 +331,20 @@ export const useLivenessEvaluator = () => {
                             if (typeof reader.result === 'string') {
                                 const base64 = reader.result.split(',')[1];
                                 if (!base64) {
-                                    reject(
-                                        new Error(
-                                            'No se pudo extraer base64 del archivo'
-                                        )
-                                    );
+                                    reject(new Error('No se pudo extraer base64 del archivo'));
                                     return;
                                 }
                                 resolve(base64);
                             } else {
-                                reject(
-                                    new Error(
-                                        'Resultado de FileReader no es string'
-                                    )
-                                );
+                                reject(new Error('Resultado de FileReader no es string'));
                             }
                         } catch (error) {
-                            reject(
-                                new Error(
-                                    `Error procesando FileReader: ${error}`
-                                )
-                            );
+                            reject(new Error(`Error procesando FileReader: ${error}`));
                         }
                     };
 
-                    reader.onerror = () =>
-                        reject(new Error('Error leyendo archivo'));
-                    reader.onabort = () =>
-                        reject(new Error('Lectura de archivo abortada'));
+                    reader.onerror = () => reject(new Error('Error leyendo archivo'));
+                    reader.onabort = () => reject(new Error('Lectura de archivo abortada'));
 
                     try {
                         reader.readAsDataURL(file);
@@ -456,23 +411,17 @@ export const useLivenessEvaluator = () => {
                                 type: 'image/jpeg'
                             });
                         } catch (error) {
-                            reject(
-                                new Error(`Error procesando imagen: ${error}`)
-                            );
+                            reject(new Error(`Error procesando imagen: ${error}`));
                         }
                     };
 
-                    img.onerror = () =>
-                        reject(new Error('Error cargando imagen desde base64'));
-                    img.onabort = () =>
-                        reject(new Error('Carga de imagen abortada'));
+                    img.onerror = () => reject(new Error('Error cargando imagen desde base64'));
+                    img.onabort = () => reject(new Error('Carga de imagen abortada'));
 
                     try {
                         img.src = dataUrl;
                     } catch (error) {
-                        reject(
-                            new Error(`Error asignando src a imagen: ${error}`)
-                        );
+                        reject(new Error(`Error asignando src a imagen: ${error}`));
                     }
                 }),
                 IMAGE_LOAD_TIMEOUT_MS,
@@ -534,18 +483,12 @@ export const useLivenessEvaluator = () => {
                                     type: file.type
                                 });
                             } catch (error) {
-                                reject(
-                                    new Error(
-                                        `Error procesando imagen: ${error}`
-                                    )
-                                );
+                                reject(new Error(`Error procesando imagen: ${error}`));
                             }
                         };
 
-                        img.onerror = () =>
-                            reject(new Error('Error cargando imagen'));
-                        img.onabort = () =>
-                            reject(new Error('Carga de imagen abortada'));
+                        img.onerror = () => reject(new Error('Error cargando imagen'));
+                        img.onabort = () => reject(new Error('Carga de imagen abortada'));
 
                         try {
                             img.src = objectUrl!;
@@ -589,9 +532,7 @@ export const useLivenessEvaluator = () => {
 
             try {
                 const cleanedBase64 = cleanBase64(imageBase64);
-                const livenessService = createLivenessServiceWithApiKey(
-                    apiKey!
-                );
+                const livenessService = createLivenessServiceWithApiKey(apiKey!);
 
                 const response = await retryWithBackoff(async () => {
                     return withTimeout(
@@ -604,9 +545,7 @@ export const useLivenessEvaluator = () => {
                 });
 
                 return {
-                    diagnostic:
-                        response.serviceResultLog ||
-                        'Sin diagnóstico disponible',
+                    diagnostic: response.serviceResultLog || 'Sin diagnóstico disponible',
                     rawResponse: response
                 };
             } catch (error) {
@@ -618,14 +557,7 @@ export const useLivenessEvaluator = () => {
                 };
             }
         },
-        [
-            validateApiKey,
-            validateBase64,
-            cleanBase64,
-            apiKey,
-            retryWithBackoff,
-            withTimeout
-        ]
+        [validateApiKey, validateBase64, cleanBase64, apiKey, retryWithBackoff, withTimeout]
     );
 
     const formatFileSize = useCallback((bytes: number): string => {
@@ -666,10 +598,7 @@ export const useLivenessEvaluator = () => {
                     result.diagnosticSaaS = saasResult.diagnostic;
                     result.rawResponse = saasResult.rawResponse;
                 } catch (error) {
-                    const errorMsg =
-                        error instanceof Error
-                            ? error.message
-                            : 'Error desconocido';
+                    const errorMsg = error instanceof Error ? error.message : 'Error desconocido';
                     result.diagnosticSaaS = `Error: ${errorMsg}`;
                     result.error = errorMsg;
                 }
@@ -684,10 +613,7 @@ export const useLivenessEvaluator = () => {
                     pendingImageUrlsRef.current.delete(imageUrl);
                 }
 
-                const errorMsg =
-                    error instanceof Error
-                        ? error.message
-                        : 'Error desconocido';
+                const errorMsg = error instanceof Error ? error.message : 'Error desconocido';
                 return {
                     title: file.name || 'unnamed',
                     imagePath: file.name || 'unknown',
@@ -702,17 +628,11 @@ export const useLivenessEvaluator = () => {
     );
 
     const processBase64 = useCallback(
-        async (
-            base64String: string,
-            index: number
-        ): Promise<LivenessResult> => {
+        async (base64String: string, index: number): Promise<LivenessResult> => {
             const startTime = Date.now();
 
             try {
-                const imageInfo = await getImageInfoFromBase64(
-                    base64String,
-                    index
-                );
+                const imageInfo = await getImageInfoFromBase64(base64String, index);
                 const cleanedBase64 = cleanBase64(base64String);
                 const imageUrl = `data:image/jpeg;base64,${cleanedBase64}`;
 
@@ -733,10 +653,7 @@ export const useLivenessEvaluator = () => {
                     result.diagnosticSaaS = saasResult.diagnostic;
                     result.rawResponse = saasResult.rawResponse;
                 } catch (error) {
-                    const errorMsg =
-                        error instanceof Error
-                            ? error.message
-                            : 'Error desconocido';
+                    const errorMsg = error instanceof Error ? error.message : 'Error desconocido';
                     result.diagnosticSaaS = `Error: ${errorMsg}`;
                     result.error = errorMsg;
                 }
@@ -746,10 +663,7 @@ export const useLivenessEvaluator = () => {
 
                 return result;
             } catch (error) {
-                const errorMsg =
-                    error instanceof Error
-                        ? error.message
-                        : 'Error desconocido';
+                const errorMsg = error instanceof Error ? error.message : 'Error desconocido';
                 return {
                     title: `Base64_${index + 1}`,
                     imagePath: `base64_image_${index + 1}`,
@@ -796,9 +710,7 @@ export const useLivenessEvaluator = () => {
                 if (validation.isValid) {
                     validFiles.push(file);
                 } else {
-                    invalidFiles.push(
-                        `${file?.name || 'unnamed'}: ${validation.error!.message}`
-                    );
+                    invalidFiles.push(`${file?.name || 'unnamed'}: ${validation.error!.message}`);
                 }
             }
 
@@ -837,37 +749,24 @@ export const useLivenessEvaluator = () => {
                 const results: LivenessResult[] = [];
 
                 // Procesar en lotes para evitar sobrecarga
-                for (
-                    let i = 0;
-                    i < validFiles.length;
-                    i += MAX_CONCURRENT_EVALUATIONS
-                ) {
+                for (let i = 0; i < validFiles.length; i += MAX_CONCURRENT_EVALUATIONS) {
                     if (abortControllerRef.current?.signal.aborted) {
-                        throw new Error(
-                            'Procesamiento cancelado por el usuario'
-                        );
+                        throw new Error('Procesamiento cancelado por el usuario');
                     }
 
-                    const batch = validFiles.slice(
-                        i,
-                        i + MAX_CONCURRENT_EVALUATIONS
-                    );
-                    const batchPromises = batch.map((file) =>
-                        processImage(file)
-                    );
+                    const batch = validFiles.slice(i, i + MAX_CONCURRENT_EVALUATIONS);
+                    const batchPromises = batch.map((file) => processImage(file));
 
                     try {
                         const batchResults = await Promise.all(batchPromises);
                         results.push(...batchResults);
 
-                        processingContextRef.current!.processedItems +=
-                            batch.length;
+                        processingContextRef.current!.processedItems += batch.length;
 
                         // Mostrar progreso
                         if (validFiles.length > 3) {
                             const progress = Math.round(
-                                (processingContextRef.current!.processedItems /
-                                    validFiles.length) *
+                                (processingContextRef.current!.processedItems / validFiles.length) *
                                     100
                             );
                             toast.info(`Progreso: ${progress}%`, {
@@ -884,9 +783,7 @@ export const useLivenessEvaluator = () => {
                 results.sort((a, b) => a.title.localeCompare(b.title));
                 setResults(results);
 
-                const elapsed =
-                    (Date.now() - processingContextRef.current.startTime) /
-                    1000;
+                const elapsed = (Date.now() - processingContextRef.current.startTime) / 1000;
                 toast.success('Evaluación completada', {
                     description: `${results.length} imagen${results.length > 1 ? 'es' : ''} procesada${results.length > 1 ? 's' : ''} en ${elapsed.toFixed(1)}s`
                 });
@@ -938,9 +835,7 @@ export const useLivenessEvaluator = () => {
                 if (validation.isValid) {
                     validBase64s.push(base64);
                 } else {
-                    invalidBase64s.push(
-                        `Base64 ${index + 1}: ${validation.error!.message}`
-                    );
+                    invalidBase64s.push(`Base64 ${index + 1}: ${validation.error!.message}`);
                 }
             });
 
@@ -979,21 +874,12 @@ export const useLivenessEvaluator = () => {
                 const results: LivenessResult[] = [];
 
                 // Procesar en lotes
-                for (
-                    let i = 0;
-                    i < validBase64s.length;
-                    i += MAX_CONCURRENT_EVALUATIONS
-                ) {
+                for (let i = 0; i < validBase64s.length; i += MAX_CONCURRENT_EVALUATIONS) {
                     if (abortControllerRef.current?.signal.aborted) {
-                        throw new Error(
-                            'Procesamiento cancelado por el usuario'
-                        );
+                        throw new Error('Procesamiento cancelado por el usuario');
                     }
 
-                    const batch = validBase64s.slice(
-                        i,
-                        i + MAX_CONCURRENT_EVALUATIONS
-                    );
+                    const batch = validBase64s.slice(i, i + MAX_CONCURRENT_EVALUATIONS);
                     const batchPromises = batch.map((base64, batchIndex) =>
                         processBase64(base64, i + batchIndex)
                     );
@@ -1002,8 +888,7 @@ export const useLivenessEvaluator = () => {
                         const batchResults = await Promise.all(batchPromises);
                         results.push(...batchResults);
 
-                        processingContextRef.current!.processedItems +=
-                            batch.length;
+                        processingContextRef.current!.processedItems += batch.length;
 
                         // Mostrar progreso
                         if (validBase64s.length > 3) {
@@ -1026,9 +911,7 @@ export const useLivenessEvaluator = () => {
                 results.sort((a, b) => a.title.localeCompare(b.title));
                 setResults(results);
 
-                const elapsed =
-                    (Date.now() - processingContextRef.current.startTime) /
-                    1000;
+                const elapsed = (Date.now() - processingContextRef.current.startTime) / 1000;
                 toast.success('Evaluación completada', {
                     description: `${results.length} base64${results.length > 1 ? 's' : ''} procesado${results.length > 1 ? 's' : ''} en ${elapsed.toFixed(1)}s`
                 });
@@ -1085,8 +968,7 @@ export const useLivenessEvaluator = () => {
             processingContextRef.current = null;
 
             toast.info('Resultados limpiados', {
-                description:
-                    'Todos los datos han sido borrados para una nueva evaluación'
+                description: 'Todos los datos han sido borrados para una nueva evaluación'
             });
         } catch (error) {
             console.error('Error clearing results:', error);
@@ -1123,10 +1005,7 @@ export const useLivenessEvaluator = () => {
         evaluateImages,
         evaluateBase64Images,
         clearResults,
-        isValidImageFile: useCallback(
-            (file: File) => validateFile(file).isValid,
-            [validateFile]
-        ),
+        isValidImageFile: useCallback((file: File) => validateFile(file).isValid, [validateFile]),
         validateBase64: useCallback(
             (base64: string) => validateBase64(base64).isValid,
             [validateBase64]

@@ -1,11 +1,7 @@
 import React from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Download } from 'lucide-react';
 import { LivenessResult } from '@/types/liveness';
 
@@ -15,11 +11,7 @@ interface ImagePreviewModalProps {
     result: LivenessResult | null;
 }
 
-export function ImagePreviewModal({
-    isOpen,
-    onClose,
-    result
-}: ImagePreviewModalProps) {
+export function ImagePreviewModal({ isOpen, onClose, result }: ImagePreviewModalProps) {
     if (!result || !result.imageUrl) return null;
 
     const handleDownload = () => {
@@ -40,22 +32,20 @@ export function ImagePreviewModal({
                 {/* Imagen */}
                 <div className='flex items-center justify-center px-6'>
                     <div className='relative max-h-[70vh] max-w-full overflow-hidden rounded-lg border'>
-                        <img
+                        <Image
                             src={result.imageUrl}
                             alt={result.title}
                             className='max-h-[70vh] max-w-full object-contain'
+                            width={800}
+                            height={600}
+                            style={{ objectFit: 'contain' }}
                         />
                     </div>
                 </div>
 
                 {/* Botón descargar */}
                 <div className='flex justify-center p-6 pt-4'>
-                    <Button
-                        variant='outline'
-                        size='sm'
-                        onClick={handleDownload}
-                        className='gap-2'
-                    >
+                    <Button variant='outline' size='sm' onClick={handleDownload} className='gap-2'>
                         <Download className='h-4 w-4' />
                         Descargar imagen
                     </Button>

@@ -11,14 +11,7 @@ import {
     SDKEvaluateResponse
 } from '@/types/liveness';
 
-const VALID_IMAGE_EXTENSIONS = [
-    '.jpg',
-    '.jpeg',
-    '.png',
-    '.bmp',
-    '.gif',
-    '.webp'
-];
+const VALID_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'];
 
 // SDK Configuration
 const SDK_ENDPOINT = '/api/v1/selphid/passive-liveness/evaluate';
@@ -33,9 +26,7 @@ export const useLivenessEvaluator = () => {
     const [results, setResults] = useState<LivenessResult[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [useSDK, setUseSDK] = useState(false);
-    const [selectedSDKEndpoints, setSelectedSDKEndpoints] = useState<string[]>(
-        []
-    );
+    const [selectedSDKEndpoints, setSelectedSDKEndpoints] = useState<string[]>([]);
     const { apiKey, userEndpoints } = usePlaygroundStore();
 
     // Función para convertir imagen a base64
@@ -51,8 +42,7 @@ export const useLivenessEvaluator = () => {
                     reject(new Error('Error al convertir imagen a base64'));
                 }
             };
-            reader.onerror = () =>
-                reject(new Error('Error al leer el archivo'));
+            reader.onerror = () => reject(new Error('Error al leer el archivo'));
             reader.readAsDataURL(file);
         });
     }, []);
@@ -128,50 +118,44 @@ export const useLivenessEvaluator = () => {
     }, []);
 
     // Función para verificar si un endpoint SDK está activo
-    const checkSDKEndpointStatus = useCallback(
-        async (url: string): Promise<boolean> => {
-            try {
-                // Verificación básica de formato de URL
-                const urlObj = new URL(url);
+    const checkSDKEndpointStatus = useCallback(async (url: string): Promise<boolean> => {
+        try {
+            // Verificación básica de formato de URL
+            const urlObj = new URL(url);
 
-                // Si la URL tiene un formato válido y un protocolo HTTP/HTTPS, marcarla como activa
-                if (
-                    urlObj.protocol === 'http:' ||
-                    urlObj.protocol === 'https:'
-                ) {
-                    const fullUrl = `${url}${SDK_ENDPOINT}`;
+            // Si la URL tiene un formato válido y un protocolo HTTP/HTTPS, marcarla como activa
+            if (urlObj.protocol === 'http:' || urlObj.protocol === 'https:') {
+                const fullUrl = `${url}${SDK_ENDPOINT}`;
 
-                    try {
-                        if (needsProxy(fullUrl)) {
-                            const response = await fetch('/api/sdk-proxy', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    endpoint: fullUrl,
-                                    payload: { image: 'test' }
-                                })
-                            });
+                try {
+                    if (needsProxy(fullUrl)) {
+                        const response = await fetch('/api/sdk-proxy', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                endpoint: fullUrl,
+                                payload: { image: 'test' }
+                            })
+                        });
 
-                            return response.ok || response.status === 500;
-                        } else {
-                            const response = await fetch(fullUrl, {
-                                method: 'OPTIONS'
-                            });
-                            return response.ok || response.status === 405;
-                        }
-                    } catch (error) {
-                        return false;
+                        return response.ok || response.status === 500;
+                    } else {
+                        const response = await fetch(fullUrl, {
+                            method: 'OPTIONS'
+                        });
+                        return response.ok || response.status === 405;
                     }
+                } catch (error) {
+                    return false;
                 }
-
-                return false;
-            } catch (error) {
-                // Si no es una URL válida, marcarla como inactiva
-                return false;
             }
-        },
-        []
-    );
+
+            return false;
+        } catch (error) {
+            // Si no es una URL válida, marcarla como inactiva
+            return false;
+        }
+    }, []);
 
     // Función para evaluar con SDK
     const evaluateWithSDK = useCallback(
@@ -192,10 +176,7 @@ export const useLivenessEvaluator = () => {
                 };
 
                 const controller = new AbortController();
-                const timeoutId = setTimeout(
-                    () => controller.abort(),
-                    SDK_TIMEOUT
-                );
+                const timeoutId = setTimeout(() => controller.abort(), SDK_TIMEOUT);
 
                 let response;
 
@@ -281,9 +262,7 @@ export const useLivenessEvaluator = () => {
                 });
 
                 return {
-                    diagnostic:
-                        response.serviceResultLog ||
-                        'Sin diagnóstico disponible',
+                    diagnostic: response.serviceResultLog || 'Sin diagnóstico disponible',
                     rawResponse: response
                 };
             } catch (error) {
@@ -331,8 +310,7 @@ export const useLivenessEvaluator = () => {
     // Función para obtener endpoints SDK activos
     const getActiveSDKEndpoints = useCallback(() => {
         return userEndpoints.filter(
-            (endpoint) =>
-                selectedSDKEndpoints.includes(endpoint.id) && endpoint.isActive
+            (endpoint) => selectedSDKEndpoints.includes(endpoint.id) && endpoint.isActive
         );
     }, [userEndpoints, selectedSDKEndpoints]);
 
@@ -377,11 +355,9 @@ export const useLivenessEvaluator = () => {
                                 endpoint.url,
                                 endpoint.tag
                             );
-                            result.sdkDiagnostics[endpoint.tag] =
-                                sdkResult.diagnostic;
+                            result.sdkDiagnostics[endpoint.tag] = sdkResult.diagnostic;
                             if (sdkResult.rawResponse) {
-                                result.sdkRawResponses[endpoint.tag] =
-                                    sdkResult.rawResponse;
+                                result.sdkRawResponses[endpoint.tag] = sdkResult.rawResponse;
                             }
                         } catch (error) {
                             result.sdkDiagnostics[endpoint.tag] =
@@ -398,10 +374,7 @@ export const useLivenessEvaluator = () => {
                     resolution: 'N/A',
                     size: 'N/A',
                     diagnosticSaaS: 'Error al procesar',
-                    error:
-                        error instanceof Error
-                            ? error.message
-                            : 'Error desconocido'
+                    error: error instanceof Error ? error.message : 'Error desconocido'
                 };
             }
         },
@@ -418,15 +391,9 @@ export const useLivenessEvaluator = () => {
 
     // Función para procesar base64 directamente
     const processBase64 = useCallback(
-        async (
-            base64String: string,
-            index: number
-        ): Promise<LivenessResult> => {
+        async (base64String: string, index: number): Promise<LivenessResult> => {
             try {
-                const imageInfo = await getImageInfoFromBase64(
-                    base64String,
-                    index
-                );
+                const imageInfo = await getImageInfoFromBase64(base64String, index);
                 const cleanedBase64 = cleanBase64(base64String);
                 const imageUrl = `data:image/jpeg;base64,${cleanedBase64}`;
 
@@ -463,11 +430,9 @@ export const useLivenessEvaluator = () => {
                                 endpoint.url,
                                 endpoint.tag
                             );
-                            result.sdkDiagnostics[endpoint.tag] =
-                                sdkResult.diagnostic;
+                            result.sdkDiagnostics[endpoint.tag] = sdkResult.diagnostic;
                             if (sdkResult.rawResponse) {
-                                result.sdkRawResponses[endpoint.tag] =
-                                    sdkResult.rawResponse;
+                                result.sdkRawResponses[endpoint.tag] = sdkResult.rawResponse;
                             }
                         } catch (error) {
                             result.sdkDiagnostics[endpoint.tag] =
@@ -484,10 +449,7 @@ export const useLivenessEvaluator = () => {
                     resolution: 'N/A',
                     size: 'N/A',
                     diagnosticSaaS: 'Error al procesar base64',
-                    error:
-                        error instanceof Error
-                            ? error.message
-                            : 'Error desconocido'
+                    error: error instanceof Error ? error.message : 'Error desconocido'
                 };
             }
         },
@@ -504,11 +466,10 @@ export const useLivenessEvaluator = () => {
 
     // Función principal para evaluar imágenes desde archivos
     const evaluateImages = useCallback(
-        async (files: File[], isDirectory: boolean = false) => {
+        async (files: File[]) => {
             // Filtrar solo archivos de imagen válidos
             const validFiles = files.filter((file) => {
-                const extension =
-                    '.' + file.name.split('.').pop()?.toLowerCase();
+                const extension = '.' + file.name.split('.').pop()?.toLowerCase();
                 return VALID_IMAGE_EXTENSIONS.includes(extension);
             });
 
@@ -626,8 +587,7 @@ export const useLivenessEvaluator = () => {
         setError(null);
 
         toast.info('Resultados limpiados', {
-            description:
-                'Todos los datos han sido borrados para una nueva evaluación'
+            description: 'Todos los datos han sido borrados para una nueva evaluación'
         });
     }, [results]);
 

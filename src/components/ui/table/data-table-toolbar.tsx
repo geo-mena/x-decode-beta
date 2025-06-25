@@ -37,10 +37,7 @@ export function DataTableToolbar<TData>({
         <div
             role='toolbar'
             aria-orientation='horizontal'
-            className={cn(
-                'flex w-full items-start justify-between gap-2 p-1',
-                className
-            )}
+            className={cn('flex w-full items-start justify-between gap-2 p-1', className)}
             {...props}
         >
             <div className='flex flex-1 flex-wrap items-center gap-2'>
@@ -71,9 +68,7 @@ interface DataTableToolbarFilterProps<TData> {
     column: Column<TData>;
 }
 
-function DataTableToolbarFilter<TData>({
-    column
-}: DataTableToolbarFilterProps<TData>) {
+function DataTableToolbarFilter<TData>({ column }: DataTableToolbarFilterProps<TData>) {
     {
         const columnMeta = column.columnDef.meta;
 
@@ -84,13 +79,9 @@ function DataTableToolbarFilter<TData>({
                 case 'text':
                     return (
                         <Input
-                            placeholder={
-                                columnMeta.placeholder ?? columnMeta.label
-                            }
+                            placeholder={columnMeta.placeholder ?? columnMeta.label}
                             value={(column.getFilterValue() as string) ?? ''}
-                            onChange={(event) =>
-                                column.setFilterValue(event.target.value)
-                            }
+                            onChange={(event) => column.setFilterValue(event.target.value)}
                             className='h-8 w-40 lg:w-56'
                         />
                     );
@@ -101,19 +92,10 @@ function DataTableToolbarFilter<TData>({
                             <Input
                                 type='number'
                                 inputMode='numeric'
-                                placeholder={
-                                    columnMeta.placeholder ?? columnMeta.label
-                                }
-                                value={
-                                    (column.getFilterValue() as string) ?? ''
-                                }
-                                onChange={(event) =>
-                                    column.setFilterValue(event.target.value)
-                                }
-                                className={cn(
-                                    'h-8 w-[120px]',
-                                    columnMeta.unit && 'pr-8'
-                                )}
+                                placeholder={columnMeta.placeholder ?? columnMeta.label}
+                                value={(column.getFilterValue() as string) ?? ''}
+                                onChange={(event) => column.setFilterValue(event.target.value)}
+                                className={cn('h-8 w-[120px]', columnMeta.unit && 'pr-8')}
                             />
                             {columnMeta.unit && (
                                 <span className='bg-accent text-muted-foreground absolute top-0 right-0 bottom-0 flex items-center rounded-r-md px-2 text-sm'>

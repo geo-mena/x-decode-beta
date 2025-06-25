@@ -6,7 +6,7 @@ import {
     DialogContent,
     DialogDescription,
     DialogHeader,
-    DialogTitle,
+    DialogTitle
 } from '@/components/ui/dialog';
 import { usePlaygroundStore } from '@/store';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -65,47 +65,39 @@ const EndpointItem = ({
 
     if (isEditing) {
         return (
-            <div className="space-y-3 p-4 rounded-lg border border-input bg-card">
-                <div className="flex items-center gap-2">
-                    <div className="relative flex-1">
-                        <Icons.edit className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+            <div className='border-input bg-card space-y-3 rounded-lg border p-4'>
+                <div className='flex items-center gap-2'>
+                    <div className='relative flex-1'>
+                        <Icons.edit className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
                         <Input
-                            type="text"
+                            type='text'
                             value={tempValues.tag}
                             onChange={(e) => setTempValues({ ...tempValues, tag: e.target.value })}
                             onKeyDown={handleKeyDown}
-                            className="pl-10"
-                            placeholder="Enter tag name..."
+                            className='pl-10'
+                            placeholder='Enter tag name...'
                             autoFocus
                         />
                     </div>
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={onSave}
-                    >
-                        <Icons.save className="h-4 w-4" />
+                    <Button variant='secondary' size='sm' onClick={onSave}>
+                        <Icons.save className='h-4 w-4' />
                         Save
                     </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={onCancel}
-                    >
-                        <Icons.x className="h-4 w-4" />
+                    <Button variant='outline' size='sm' onClick={onCancel}>
+                        <Icons.x className='h-4 w-4' />
                         Cancel
                     </Button>
                 </div>
-                <div className="flex items-center gap-2">
-                    <div className="relative flex-1">
-                        <Icons.server className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                <div className='flex items-center gap-2'>
+                    <div className='relative flex-1'>
+                        <Icons.server className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
                         <Input
-                            type="text"
+                            type='text'
                             value={tempValues.url}
                             onChange={(e) => setTempValues({ ...tempValues, url: e.target.value })}
                             onKeyDown={handleKeyDown}
-                            className="pl-10"
-                            placeholder="Enter endpoint URL..."
+                            className='pl-10'
+                            placeholder='Enter endpoint URL...'
                         />
                     </div>
                 </div>
@@ -116,23 +108,23 @@ const EndpointItem = ({
     return (
         <div
             className={cn(
-                "p-4 rounded-lg border transition-all duration-200 cursor-pointer",
+                'cursor-pointer rounded-lg border p-4 transition-all duration-200',
                 endpoint.isSelected
-                    ? "border-primary bg-primary/5"
-                    : "border-input bg-card hover:bg-accent"
+                    ? 'border-primary bg-primary/5'
+                    : 'border-input bg-card hover:bg-accent'
             )}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onClick={!endpoint.isSelected ? onSelect : undefined}
         >
             {/* Header with tag and actions */}
-            <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                    <Badge variant={endpoint.isSelected ? "default" : "secondary"}>
+            <div className='mb-3 flex items-center justify-between'>
+                <div className='flex items-center gap-2'>
+                    <Badge variant={endpoint.isSelected ? 'default' : 'secondary'}>
                         {endpoint.tag}
                     </Badge>
                     {endpoint.isSelected && (
-                        <Badge variant="outline" className="text-primary border-primary">
+                        <Badge variant='outline' className='text-primary border-primary'>
                             Active
                         </Badge>
                     )}
@@ -142,49 +134,51 @@ const EndpointItem = ({
                 <AnimatePresence>
                     {(isHovering || endpoint.isSelected) && (
                         <motion.div
-                            className="flex items-center gap-1"
+                            className='flex items-center gap-1'
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.8 }}
                             transition={{ duration: 0.15 }}
                         >
                             <Button
-                                variant="outline"
-                                size="sm"
+                                variant='outline'
+                                size='sm'
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onEdit();
                                 }}
-                                className="h-8 w-8 p-0"
-                                title="Edit endpoint"
+                                className='h-8 w-8 p-0'
+                                title='Edit endpoint'
                             >
-                                <Icons.edit className="h-4 w-4" />
+                                <Icons.edit className='h-4 w-4' />
                             </Button>
                             <Button
-                                variant="outline"
-                                size="sm"
+                                variant='outline'
+                                size='sm'
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     handleTest();
                                 }}
-                                className="h-8 w-8 p-0"
-                                title="Test endpoint"
+                                className='h-8 w-8 p-0'
+                                title='Test endpoint'
                                 disabled={isTesting}
                             >
-                                <Icons.rotateCw className={cn("h-4 w-4", isTesting && "animate-spin")} />
+                                <Icons.rotateCw
+                                    className={cn('h-4 w-4', isTesting && 'animate-spin')}
+                                />
                             </Button>
                             {canRemove && (
                                 <Button
-                                    variant="destructive"
-                                    size="sm"
+                                    variant='destructive'
+                                    size='sm'
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onRemove();
                                     }}
-                                    className="h-8 w-8 p-0 hover:text-destructive"
-                                    title="Remove endpoint"
+                                    className='hover:text-destructive h-8 w-8 p-0'
+                                    title='Remove endpoint'
                                 >
-                                    <Icons.x className="h-4 w-4" />
+                                    <Icons.x className='h-4 w-4' />
                                 </Button>
                             )}
                         </motion.div>
@@ -193,22 +187,22 @@ const EndpointItem = ({
             </div>
 
             {/* URL and status */}
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <Icons.server className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground truncate font-mono">
+            <div className='flex items-center justify-between'>
+                <div className='flex min-w-0 flex-1 items-center gap-2'>
+                    <Icons.server className='text-muted-foreground h-4 w-4 flex-shrink-0' />
+                    <span className='text-muted-foreground truncate font-mono text-sm'>
                         {truncateText(endpoint.url, 40)}
                     </span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className='flex items-center gap-2'>
                     <div
                         className={cn(
-                            "h-2 w-2 rounded-full",
-                            endpoint.isActive ? "bg-green-500" : "bg-red-500"
+                            'h-2 w-2 rounded-full',
+                            endpoint.isActive ? 'bg-green-500' : 'bg-red-500'
                         )}
                     />
-                    <span className="text-xs text-muted-foreground">
-                        {endpoint.isActive ? "Active" : "Inactive"}
+                    <span className='text-muted-foreground text-xs'>
+                        {endpoint.isActive ? 'Active' : 'Inactive'}
                     </span>
                 </div>
             </div>
@@ -305,7 +299,7 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
         try {
             const response = await fetch(`${url}/liveness`, {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json' }
             });
 
             updateUserEndpoint(endpointId, { isActive: response.ok });
@@ -329,7 +323,7 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
     };
 
     const handleRemove = (endpointId: string) => {
-        const endpoint = userEndpoints.find(e => e.id === endpointId);
+        const endpoint = userEndpoints.find((e) => e.id === endpointId);
         removeUserEndpoint(endpointId);
         toast.success(`${endpoint?.tag} endpoint removed`);
     };
@@ -347,31 +341,32 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="min-w-xl max-h-[80vh] overflow-y-auto">
+            <DialogContent className='max-h-[80vh] min-w-xl overflow-y-auto'>
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Icons.server className="h-5 w-5" />
+                    <DialogTitle className='flex items-center gap-2'>
+                        <Icons.server className='h-5 w-5' />
                         Endpoint Management
                     </DialogTitle>
                     <DialogDescription>
-                        Configure and manage your API endpoints. You can have up to 3 endpoints with custom tags.
+                        Configure and manage your API endpoints. You can have up to 3 endpoints with
+                        custom tags.
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="space-y-4">
+                <div className='space-y-4'>
                     {/* Header with count and add button */}
-                    <div className="flex items-center justify-between">
-                        <div className="text-sm text-muted-foreground">
+                    <div className='flex items-center justify-between'>
+                        <div className='text-muted-foreground text-sm'>
                             {userEndpoints.length} of 3 endpoints configured
                         </div>
                         {canAddMore && (
                             <Button
-                                variant="outline"
-                                size="sm"
+                                variant='outline'
+                                size='sm'
                                 onClick={startAddingNew}
                                 disabled={isAddingNew}
                             >
-                                <Icons.plus className="h-4 w-4" />
+                                <Icons.plus className='h-4 w-4' />
                                 Add Endpoint
                             </Button>
                         )}
@@ -380,50 +375,52 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
                     {/* Add new endpoint form */}
                     {isAddingNew && (
                         <motion.div
-                            className="space-y-3 p-4 rounded-lg border border-dashed border-primary bg-primary/5"
+                            className='border-primary bg-primary/5 space-y-3 rounded-lg border border-dashed p-4'
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
                         >
-                            <div className="text-sm font-medium text-primary">Add New Endpoint</div>
-                            <div className="flex items-center gap-2">
-                                <div className="relative flex-1">
-                                    <Icons.edit className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                            <div className='text-primary text-sm font-medium'>Add New Endpoint</div>
+                            <div className='flex items-center gap-2'>
+                                <div className='relative flex-1'>
+                                    <Icons.edit className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
                                     <Input
-                                        type="text"
+                                        type='text'
                                         value={newEndpointValues.tag}
-                                        onChange={(e) => setNewEndpointValues({ ...newEndpointValues, tag: e.target.value })}
-                                        className="pl-10"
-                                        placeholder="Enter tag name (e.g., Staging)..."
+                                        onChange={(e) =>
+                                            setNewEndpointValues({
+                                                ...newEndpointValues,
+                                                tag: e.target.value
+                                            })
+                                        }
+                                        className='pl-10'
+                                        placeholder='Enter tag name (e.g., Staging)...'
                                         autoFocus
                                     />
                                 </div>
-                                <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    onClick={handleAddNew}
-                                >
-                                    <Icons.save className="h-4 w-4" />
+                                <Button variant='secondary' size='sm' onClick={handleAddNew}>
+                                    <Icons.save className='h-4 w-4' />
                                     Save
                                 </Button>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={cancelAddingNew}
-                                >
-                                    <Icons.x className="h-4 w-4" />
+                                <Button variant='outline' size='sm' onClick={cancelAddingNew}>
+                                    <Icons.x className='h-4 w-4' />
                                     Cancel
                                 </Button>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <div className="relative flex-1">
-                                    <Icons.server className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                            <div className='flex items-center gap-2'>
+                                <div className='relative flex-1'>
+                                    <Icons.server className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
                                     <Input
-                                        type="text"
+                                        type='text'
                                         value={newEndpointValues.url}
-                                        onChange={(e) => setNewEndpointValues({ ...newEndpointValues, url: e.target.value })}
-                                        className="pl-10"
-                                        placeholder="Enter endpoint URL..."
+                                        onChange={(e) =>
+                                            setNewEndpointValues({
+                                                ...newEndpointValues,
+                                                url: e.target.value
+                                            })
+                                        }
+                                        className='pl-10'
+                                        placeholder='Enter endpoint URL...'
                                     />
                                 </div>
                             </div>
@@ -433,8 +430,8 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
                     {userEndpoints.length > 0 && <Separator />}
 
                     {/* Endpoints list */}
-                    <div className="space-y-3">
-                        {userEndpoints.map(endpoint => (
+                    <div className='space-y-3'>
+                        {userEndpoints.map((endpoint) => (
                             <EndpointItem
                                 key={endpoint.id}
                                 endpoint={endpoint}
@@ -453,10 +450,10 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
                     </div>
 
                     {userEndpoints.length === 0 && (
-                        <div className="text-center py-8 text-muted-foreground">
-                            <Icons.server className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <div className='text-muted-foreground py-8 text-center'>
+                            <Icons.server className='mx-auto mb-4 h-12 w-12 opacity-50' />
                             <p>No endpoints configured</p>
-                            <p className="text-sm">Click "Add Endpoint" to get started</p>
+                            <p className='text-sm'>Click &quot;Add Endpoint&quot; to get started</p>
                         </div>
                     )}
                 </div>

@@ -25,8 +25,7 @@ export default function NewTaskDialog() {
         const formData = new FormData(form);
         const { title, description } = Object.fromEntries(formData);
 
-        if (typeof title !== 'string' || typeof description !== 'string')
-            return;
+        if (typeof title !== 'string' || typeof description !== 'string') return;
         addTask(title, description);
     };
 
@@ -40,15 +39,9 @@ export default function NewTaskDialog() {
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>Add New Todo</DialogTitle>
-                    <DialogDescription>
-                        What do you want to get done today?
-                    </DialogDescription>
+                    <DialogDescription>What do you want to get done today?</DialogDescription>
                 </DialogHeader>
-                <form
-                    id='todo-form'
-                    className='grid gap-4 py-4'
-                    onSubmit={handleSubmit}
-                >
+                <form id='todo-form' className='grid gap-4 py-4' onSubmit={handleSubmit}>
                     <div className='grid grid-cols-4 items-center gap-4'>
                         <Input
                             id='title'

@@ -24,11 +24,7 @@ export const viewport: Viewport = {
     themeColor: META_THEME_COLORS.light
 };
 
-export default async function RootLayout({
-    children
-}: {
-    children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
     const cookieStore = await cookies();
     const activeThemeValue = cookieStore.get('active_theme')?.value;
     const isScaled = activeThemeValue?.endsWith('-scaled');
@@ -65,9 +61,7 @@ export default async function RootLayout({
                         disableTransitionOnChange
                         enableColorScheme
                     >
-                        <Providers
-                            activeThemeValue={activeThemeValue as string}
-                        >
+                        <Providers activeThemeValue={activeThemeValue as string}>
                             <Toaster />
                             {children}
                         </Providers>

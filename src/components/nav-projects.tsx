@@ -1,11 +1,6 @@
 'use client';
 
-import {
-    IconFolder,
-    IconShare,
-    IconDots,
-    IconTrash
-} from '@tabler/icons-react';
+import { IconFolder, IconShare, IconDots, IconTrash } from '@tabler/icons-react';
 
 import {
     DropdownMenu,

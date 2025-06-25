@@ -26,21 +26,13 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png',
-    'image/webp'
-];
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
 const formSchema = z.object({
     image: z
         .any()
         .refine((files) => files?.length == 1, 'Image is required.')
-        .refine(
-            (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-            `Max file size is 5MB.`
-        )
+        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
         .refine(
             (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
             '.jpg, .jpeg, .png and .webp files are accepted.'
@@ -74,23 +66,18 @@ export default function ProductForm({
         values: defaultValues
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    function onSubmit() {
         // Form submission logic would be implemented here
     }
 
     return (
         <Card className='mx-auto w-full'>
             <CardHeader>
-                <CardTitle className='text-left text-2xl font-bold'>
-                    {pageTitle}
-                </CardTitle>
+                <CardTitle className='text-left text-2xl font-bold'>{pageTitle}</CardTitle>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className='space-y-8'
-                    >
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
                         <FormField
                             control={form.control}
                             name='image'
@@ -125,10 +112,7 @@ export default function ProductForm({
                                     <FormItem>
                                         <FormLabel>Product Name</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                placeholder='Enter product name'
-                                                {...field}
-                                            />
+                                            <Input placeholder='Enter product name' {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -141,14 +125,8 @@ export default function ProductForm({
                                     <FormItem>
                                         <FormLabel>Category</FormLabel>
                                         <Select
-                                            onValueChange={(value) =>
-                                                field.onChange(value)
-                                            }
-                                            value={
-                                                field.value[
-                                                    field.value.length - 1
-                                                ]
-                                            }
+                                            onValueChange={(value) => field.onChange(value)}
+                                            value={field.value[field.value.length - 1]}
                                         >
                                             <FormControl>
                                                 <SelectTrigger>
@@ -162,12 +140,8 @@ export default function ProductForm({
                                                 <SelectItem value='electronics'>
                                                     Electronics
                                                 </SelectItem>
-                                                <SelectItem value='clothing'>
-                                                    Clothing
-                                                </SelectItem>
-                                                <SelectItem value='home'>
-                                                    Home & Garden
-                                                </SelectItem>
+                                                <SelectItem value='clothing'>Clothing</SelectItem>
+                                                <SelectItem value='home'>Home & Garden</SelectItem>
                                                 <SelectItem value='sports'>
                                                     Sports & Outdoors
                                                 </SelectItem>

@@ -44,9 +44,7 @@ export function KanbanBoard() {
     // const [columns, setColumns] = useState<Column[]>(defaultCols);
     const columns = useTaskStore((state) => state.columns);
     const setColumns = useTaskStore((state) => state.setCols);
-    const pickedUpTaskColumn = useRef<
-        ColumnId | 'TODO' | 'IN_PROGRESS' | 'DONE'
-    >('TODO');
+    const pickedUpTaskColumn = useRef<ColumnId | 'TODO' | 'IN_PROGRESS' | 'DONE'>('TODO');
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
     // const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -76,9 +74,7 @@ export function KanbanBoard() {
 
     function getDraggingTaskData(taskId: UniqueIdentifier, columnId: ColumnId) {
         const tasksInColumn = tasks.filter((task) => task.status === columnId);
-        const taskPosition = tasksInColumn.findIndex(
-            (task) => task.id === taskId
-        );
+        const taskPosition = tasksInColumn.findIndex((task) => task.id === taskId);
         const column = columns.find((col) => col.id === columnId);
         return {
             tasksInColumn,
@@ -91,17 +87,17 @@ export function KanbanBoard() {
         onDragStart({ active }) {
             if (!hasDraggableData(active)) return;
             if (active.data.current?.type === 'Column') {
-                const startColumnIdx = columnsId.findIndex(
-                    (id) => id === active.id
-                );
+                const startColumnIdx = columnsId.findIndex((id) => id === active.id);
                 const startColumn = columns[startColumnIdx];
                 return `Picked up Column ${startColumn?.title} at position: ${
                     startColumnIdx + 1
                 } of ${columnsId.length}`;
             } else if (active.data.current?.type === 'Task') {
                 pickedUpTaskColumn.current = active.data.current.task.status;
-                const { tasksInColumn, taskPosition, column } =
-                    getDraggingTaskData(active.id, pickedUpTaskColumn.current);
+                const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
+                    active.id,
+                    pickedUpTaskColumn.current
+                );
                 return `Picked up Task ${active.data.current.task.title} at position: ${
                     taskPosition + 1
                 } of ${tasksInColumn.length} in column ${column?.title}`;
@@ -110,25 +106,17 @@ export function KanbanBoard() {
         onDragOver({ active, over }) {
             if (!hasDraggableData(active) || !hasDraggableData(over)) return;
 
-            if (
-                active.data.current?.type === 'Column' &&
-                over.data.current?.type === 'Column'
-            ) {
-                const overColumnIdx = columnsId.findIndex(
-                    (id) => id === over.id
-                );
+            if (active.data.current?.type === 'Column' && over.data.current?.type === 'Column') {
+                const overColumnIdx = columnsId.findIndex((id) => id === over.id);
                 return `Column ${active.data.current.column.title} was moved over ${
                     over.data.current.column.title
                 } at position ${overColumnIdx + 1} of ${columnsId.length}`;
-            } else if (
-                active.data.current?.type === 'Task' &&
-                over.data.current?.type === 'Task'
-            ) {
-                const { tasksInColumn, taskPosition, column } =
-                    getDraggingTaskData(over.id, over.data.current.task.status);
-                if (
-                    over.data.current.task.status !== pickedUpTaskColumn.current
-                ) {
+            } else if (active.data.current?.type === 'Task' && over.data.current?.type === 'Task') {
+                const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
+                    over.id,
+                    over.data.current.task.status
+                );
+                if (over.data.current.task.status !== pickedUpTaskColumn.current) {
                     return `Task ${
                         active.data.current.task.title
                     } was moved over column ${column?.title} in position ${
@@ -145,28 +133,18 @@ export function KanbanBoard() {
                 pickedUpTaskColumn.current = 'TODO';
                 return;
             }
-            if (
-                active.data.current?.type === 'Column' &&
-                over.data.current?.type === 'Column'
-            ) {
-                const overColumnPosition = columnsId.findIndex(
-                    (id) => id === over.id
-                );
+            if (active.data.current?.type === 'Column' && over.data.current?.type === 'Column') {
+                const overColumnPosition = columnsId.findIndex((id) => id === over.id);
 
                 return `Column ${
                     active.data.current.column.title
-                } was dropped into position ${overColumnPosition + 1} of ${
-                    columnsId.length
-                }`;
-            } else if (
-                active.data.current?.type === 'Task' &&
-                over.data.current?.type === 'Task'
-            ) {
-                const { tasksInColumn, taskPosition, column } =
-                    getDraggingTaskData(over.id, over.data.current.task.status);
-                if (
-                    over.data.current.task.status !== pickedUpTaskColumn.current
-                ) {
+                } was dropped into position ${overColumnPosition + 1} of ${columnsId.length}`;
+            } else if (active.data.current?.type === 'Task' && over.data.current?.type === 'Task') {
+                const { tasksInColumn, taskPosition, column } = getDraggingTaskData(
+                    over.id,
+                    over.data.current.task.status
+                );
+                if (over.data.current.task.status !== pickedUpTaskColumn.current) {
                     return `Task was dropped into column ${column?.title} in position ${
                         taskPosition + 1
                     } of ${tasksInColumn.length}`;
@@ -200,9 +178,7 @@ export function KanbanBoard() {
                         <Fragment key={col.id}>
                             <BoardColumn
                                 column={col}
-                                tasks={tasks.filter(
-                                    (task) => task.status === col.id
-                                )}
+                                tasks={tasks.filter((task) => task.status === col.id)}
                             />
                             {index === columns?.length - 1 && (
                                 <div className='w-[300px]'>
@@ -222,9 +198,7 @@ export function KanbanBoard() {
                             <BoardColumn
                                 isOverlay
                                 column={activeColumn}
-                                tasks={tasks.filter(
-                                    (task) => task.status === activeColumn.id
-                                )}
+                                tasks={tasks.filter((task) => task.status === activeColumn.id)}
                             />
                         )}
                         {activeTask && <TaskCard task={activeTask} isOverlay />}
@@ -267,9 +241,7 @@ export function KanbanBoard() {
         const isActiveAColumn = activeData?.type === 'Column';
         if (!isActiveAColumn) return;
 
-        const activeColumnIndex = columns.findIndex(
-            (col) => col.id === activeId
-        );
+        const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
 
         const overColumnIndex = columns.findIndex((col) => col.id === overId);
 
@@ -301,11 +273,7 @@ export function KanbanBoard() {
             const overIndex = tasks.findIndex((t) => t.id === overId);
             const activeTask = tasks[activeIndex];
             const overTask = tasks[overIndex];
-            if (
-                activeTask &&
-                overTask &&
-                activeTask.status !== overTask.status
-            ) {
+            if (activeTask && overTask && activeTask.status !== overTask.status) {
                 activeTask.status = overTask.status;
                 setTasks(arrayMove(tasks, activeIndex, overIndex - 1));
             }

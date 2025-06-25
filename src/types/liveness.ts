@@ -71,7 +71,7 @@ export interface LivenessResult {
     error?: string;
     imageInfo?: ImageInfo;
     rawResponse?: EvaluatePassiveLivenessResponse;
-    // SDK raw responses - dynamic object for multiple endpoints  
+    // SDK raw responses - dynamic object for multiple endpoints
     sdkRawResponses?: Record<string, SDKEvaluateResponse>; // key: endpoint tag, value: response
 }
 

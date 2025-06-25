@@ -36,18 +36,12 @@ export function DataTableSkeleton({
     );
 
     return (
-        <div
-            className={cn('flex flex-1 flex-col space-y-4', className)}
-            {...props}
-        >
+        <div className={cn('flex flex-1 flex-col space-y-4', className)} {...props}>
             <div className='flex w-full items-center justify-between gap-2 overflow-auto p-1'>
                 <div className='flex flex-1 items-center gap-2'>
                     {filterCount > 0
                         ? Array.from({ length: filterCount }).map((_, i) => (
-                              <Skeleton
-                                  key={i}
-                                  className='h-7 w-[4.5rem] border-dashed'
-                              />
+                              <Skeleton key={i} className='h-7 w-[4.5rem] border-dashed' />
                           ))
                         : null}
                 </div>
@@ -61,42 +55,34 @@ export function DataTableSkeleton({
                     <TableHeader>
                         {Array.from({ length: 1 }).map((_, i) => (
                             <TableRow key={i} className='hover:bg-transparent'>
-                                {Array.from({ length: columnCount }).map(
-                                    (_, j) => (
-                                        <TableHead
-                                            key={j}
-                                            style={{
-                                                width: cozyCellWidths[j],
-                                                minWidth: shrinkZero
-                                                    ? cozyCellWidths[j]
-                                                    : 'auto'
-                                            }}
-                                        >
-                                            <Skeleton className='h-6 w-full' />
-                                        </TableHead>
-                                    )
-                                )}
+                                {Array.from({ length: columnCount }).map((_, j) => (
+                                    <TableHead
+                                        key={j}
+                                        style={{
+                                            width: cozyCellWidths[j],
+                                            minWidth: shrinkZero ? cozyCellWidths[j] : 'auto'
+                                        }}
+                                    >
+                                        <Skeleton className='h-6 w-full' />
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         ))}
                     </TableHeader>
                     <TableBody>
                         {Array.from({ length: rowCount }).map((_, i) => (
                             <TableRow key={i} className='hover:bg-transparent'>
-                                {Array.from({ length: columnCount }).map(
-                                    (_, j) => (
-                                        <TableCell
-                                            key={j}
-                                            style={{
-                                                width: cozyCellWidths[j],
-                                                minWidth: shrinkZero
-                                                    ? cozyCellWidths[j]
-                                                    : 'auto'
-                                            }}
-                                        >
-                                            <Skeleton className='h-6 w-full' />
-                                        </TableCell>
-                                    )
-                                )}
+                                {Array.from({ length: columnCount }).map((_, j) => (
+                                    <TableCell
+                                        key={j}
+                                        style={{
+                                            width: cozyCellWidths[j],
+                                            minWidth: shrinkZero ? cozyCellWidths[j] : 'auto'
+                                        }}
+                                    >
+                                        <Skeleton className='h-6 w-full' />
+                                    </TableCell>
+                                ))}
                             </TableRow>
                         ))}
                     </TableBody>

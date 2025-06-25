@@ -6,8 +6,7 @@ import {
     LivenessConfig
 } from '../../types/liveness';
 
-const LIVENESS_API_URL =
-    'https://api.identity-platform.io/services/evaluatePassiveLivenessToken';
+const LIVENESS_API_URL = 'https://api.identity-platform.io/services/evaluatePassiveLivenessToken';
 
 export class LivenessService {
     private readonly apiKey: string;
@@ -50,8 +49,7 @@ export class LivenessService {
             return response.data;
         } catch (error) {
             if (error instanceof AxiosError) {
-                const errorMessage =
-                    error.response?.data?.message || error.message;
+                const errorMessage = error.response?.data?.message || error.message;
                 throw new LivenessApiError(
                     `API request failed: ${errorMessage}`,
                     error.response?.status,
@@ -72,9 +70,7 @@ export class LivenessService {
  * @param config - Configuration object with apiKey
  * @returns Configured LivenessService instance
  */
-export const createLivenessService = (
-    config: LivenessConfig
-): LivenessService => {
+export const createLivenessService = (config: LivenessConfig): LivenessService => {
     return new LivenessService(config);
 };
 
@@ -84,9 +80,7 @@ export const createLivenessService = (
  * @param apiKey - The API key for Identity Platform
  * @returns Configured LivenessService instance
  */
-export const createLivenessServiceWithApiKey = (
-    apiKey: string
-): LivenessService => {
+export const createLivenessServiceWithApiKey = (apiKey: string): LivenessService => {
     return new LivenessService({ apiKey });
 };
 

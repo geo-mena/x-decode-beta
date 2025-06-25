@@ -28,7 +28,6 @@ import {
     Plus,
     X,
     Copy,
-    Settings,
     Server,
     CheckCircle,
     XCircle,
@@ -67,7 +66,7 @@ export function ImageUpload({
     const [inputMethod, setInputMethod] = useState<'files' | 'base64'>('files');
     const [base64Inputs, setBase64Inputs] = useState<string[]>(['']);
     const [checkingEndpoints, setCheckingEndpoints] = useState(false);
-    
+
     const { userEndpoints, updateUserEndpoint } = usePlaygroundStore();
 
     const MAX_BASE64_INPUTS = 5;
@@ -75,9 +74,9 @@ export function ImageUpload({
     // Check endpoint statuses - simplified to avoid dependency loops
     const checkAllEndpointStatuses = async () => {
         if (!useSDK || userEndpoints.length === 0) return;
-        
+
         setCheckingEndpoints(true);
-        
+
         try {
             for (const endpoint of userEndpoints) {
                 try {
@@ -114,8 +113,7 @@ export function ImageUpload({
 
             if (validFiles.length === 0) {
                 toast.error('Error', {
-                    description:
-                        'No se seleccionaron archivos de imagen válidos'
+                    description: 'No se seleccionaron archivos de imagen válidos'
                 });
                 return;
             }
@@ -237,17 +235,20 @@ export function ImageUpload({
         }
     };
 
-    const handleEndpointSelection = useCallback((endpointId: string, checked: boolean) => {
-        if (checked) {
-            setSelectedSDKEndpoints([...selectedSDKEndpoints, endpointId]);
-        } else {
-            setSelectedSDKEndpoints(selectedSDKEndpoints.filter(id => id !== endpointId));
-        }
-    }, [selectedSDKEndpoints, setSelectedSDKEndpoints]);
+    const handleEndpointSelection = useCallback(
+        (endpointId: string, checked: boolean) => {
+            if (checked) {
+                setSelectedSDKEndpoints([...selectedSDKEndpoints, endpointId]);
+            } else {
+                setSelectedSDKEndpoints(selectedSDKEndpoints.filter((id) => id !== endpointId));
+            }
+        },
+        [selectedSDKEndpoints, setSelectedSDKEndpoints]
+    );
 
     const getSelectedActiveEndpoints = useCallback(() => {
-        return userEndpoints.filter(endpoint => 
-            selectedSDKEndpoints.includes(endpoint.id) && endpoint.isActive
+        return userEndpoints.filter(
+            (endpoint) => selectedSDKEndpoints.includes(endpoint.id) && endpoint.isActive
         );
     }, [userEndpoints, selectedSDKEndpoints]);
 
@@ -265,7 +266,8 @@ export function ImageUpload({
                 const activeSelected = getSelectedActiveEndpoints();
                 if (activeSelected.length === 0) {
                     toast.error('Error', {
-                        description: 'Debe seleccionar al menos un endpoint SDK activo o deshabilitar la evaluación SDK'
+                        description:
+                            'Debe seleccionar al menos un endpoint SDK activo o deshabilitar la evaluación SDK'
                     });
                     return;
                 }
@@ -282,8 +284,7 @@ export function ImageUpload({
 
             if (validBase64s.length === 0) {
                 toast.error('Error', {
-                    description:
-                        'Ingrese al menos un base64 válido para evaluar'
+                    description: 'Ingrese al menos un base64 válido para evaluar'
                 });
                 return;
             }
@@ -293,7 +294,8 @@ export function ImageUpload({
                 const activeSelected = getSelectedActiveEndpoints();
                 if (activeSelected.length === 0) {
                     toast.error('Error', {
-                        description: 'Debe seleccionar al menos un endpoint SDK activo o deshabilitar la evaluación SDK'
+                        description:
+                            'Debe seleccionar al menos un endpoint SDK activo o deshabilitar la evaluación SDK'
                     });
                     return;
                 }
@@ -319,12 +321,8 @@ export function ImageUpload({
         onClear();
 
         // Reset file inputs
-        const fileInput = document.getElementById(
-            'file-input'
-        ) as HTMLInputElement;
-        const dirInput = document.getElementById(
-            'directory-input'
-        ) as HTMLInputElement;
+        const fileInput = document.getElementById('file-input') as HTMLInputElement;
+        const dirInput = document.getElementById('directory-input') as HTMLInputElement;
         if (fileInput) fileInput.value = '';
         if (dirInput) dirInput.value = '';
     }, [onClear]);
@@ -334,12 +332,8 @@ export function ImageUpload({
         setBase64Inputs(['']);
 
         // Reset inputs without triggering onClear callback
-        const fileInput = document.getElementById(
-            'file-input'
-        ) as HTMLInputElement;
-        const dirInput = document.getElementById(
-            'directory-input'
-        ) as HTMLInputElement;
+        const fileInput = document.getElementById('file-input') as HTMLInputElement;
+        const dirInput = document.getElementById('directory-input') as HTMLInputElement;
         if (fileInput) fileInput.value = '';
         if (dirInput) dirInput.value = '';
     }, []);
@@ -360,9 +354,7 @@ export function ImageUpload({
 
     const getSubmitText = () => {
         if (inputMethod === 'files') {
-            return selectedFiles.length > 1
-                ? 'Evaluar Imágenes'
-                : 'Evaluar Imagen';
+            return selectedFiles.length > 1 ? 'Evaluar Imágenes' : 'Evaluar Imagen';
         } else {
             const validCount = base64Inputs.filter(
                 (b) => b.trim() && validateBase64(b.trim())
@@ -375,9 +367,7 @@ export function ImageUpload({
         if (inputMethod === 'files') {
             return selectedFiles.length > 0;
         } else {
-            return base64Inputs.some(
-                (base64) => base64.trim() && validateBase64(base64.trim())
-            );
+            return base64Inputs.some((base64) => base64.trim() && validateBase64(base64.trim()));
         }
     };
 
@@ -414,7 +404,7 @@ export function ImageUpload({
                     {useSDK && (
                         <div className='space-y-3'>
                             <div className='flex items-center justify-between'>
-                                <Label className='text-sm text-muted-foreground'>
+                                <Label className='text-muted-foreground text-sm'>
                                     Seleccionar endpoints SDK:
                                 </Label>
                                 <Button
@@ -432,23 +422,31 @@ export function ImageUpload({
                                 </Button>
                             </div>
 
-                            <div className='space-y-2 max-h-40 overflow-y-auto'>
+                            <div className='max-h-40 space-y-2 overflow-y-auto'>
                                 {userEndpoints.map((endpoint) => (
-                                    <div key={endpoint.id} className='flex items-center space-x-3 p-2 rounded border'>
+                                    <div
+                                        key={endpoint.id}
+                                        className='flex items-center space-x-3 rounded border p-2'
+                                    >
                                         <Checkbox
                                             id={endpoint.id}
                                             checked={selectedSDKEndpoints.includes(endpoint.id)}
-                                            onCheckedChange={(checked) => 
-                                                handleEndpointSelection(endpoint.id, checked as boolean)
+                                            onCheckedChange={(checked) =>
+                                                handleEndpointSelection(
+                                                    endpoint.id,
+                                                    checked as boolean
+                                                )
                                             }
                                             disabled={!endpoint.isActive || isLoading}
                                         />
-                                        <div className='flex-1 min-w-0'>
+                                        <div className='min-w-0 flex-1'>
                                             <div className='flex items-center space-x-2'>
-                                                <Label 
-                                                    htmlFor={endpoint.id} 
-                                                    className={`text-sm cursor-pointer ${
-                                                        !endpoint.isActive ? 'text-muted-foreground' : ''
+                                                <Label
+                                                    htmlFor={endpoint.id}
+                                                    className={`cursor-pointer text-sm ${
+                                                        !endpoint.isActive
+                                                            ? 'text-muted-foreground'
+                                                            : ''
                                                     }`}
                                                 >
                                                     {endpoint.tag}
@@ -459,13 +457,17 @@ export function ImageUpload({
                                                     <XCircle className='h-3 w-3 text-red-500' />
                                                 )}
                                             </div>
-                                            <p className={`text-xs truncate ${
-                                                !endpoint.isActive ? 'text-muted-foreground' : 'text-muted-foreground'
-                                            }`}>
+                                            <p
+                                                className={`truncate text-xs ${
+                                                    !endpoint.isActive
+                                                        ? 'text-muted-foreground'
+                                                        : 'text-muted-foreground'
+                                                }`}
+                                            >
                                                 {endpoint.url}
                                             </p>
                                         </div>
-                                        <Badge 
+                                        <Badge
                                             variant={endpoint.isActive ? 'default' : 'secondary'}
                                             className='text-xs'
                                         >
@@ -476,14 +478,17 @@ export function ImageUpload({
                             </div>
 
                             {userEndpoints.length === 0 && (
-                                <p className='text-sm text-muted-foreground'>
-                                    No hay endpoints configurados. Configure endpoints en la configuración.
+                                <p className='text-muted-foreground text-sm'>
+                                    No hay endpoints configurados. Configure endpoints en la
+                                    configuración.
                                 </p>
                             )}
 
                             {selectedSDKEndpoints.length > 0 && (
-                                <div className='text-sm text-muted-foreground'>
-                                    {selectedSDKEndpoints.length} endpoint{selectedSDKEndpoints.length > 1 ? 's' : ''} seleccionado{selectedSDKEndpoints.length > 1 ? 's' : ''}
+                                <div className='text-muted-foreground text-sm'>
+                                    {selectedSDKEndpoints.length} endpoint
+                                    {selectedSDKEndpoints.length > 1 ? 's' : ''} seleccionado
+                                    {selectedSDKEndpoints.length > 1 ? 's' : ''}
                                 </div>
                             )}
                         </div>
@@ -493,10 +498,7 @@ export function ImageUpload({
                 <Separator />
 
                 {/* Method selector tabs */}
-                <Tabs
-                    value={inputMethod}
-                    onValueChange={handleInputMethodChange}
-                >
+                <Tabs value={inputMethod} onValueChange={handleInputMethodChange}>
                     <TabsList className='grid w-full grid-cols-2'>
                         <TabsTrigger value='files'>
                             <Files className='mr-2 h-4 w-4' />
@@ -512,9 +514,7 @@ export function ImageUpload({
                         {/* Mode selector for files */}
                         <div className='flex gap-2'>
                             <Button
-                                variant={
-                                    !isDirectoryMode ? 'default' : 'outline'
-                                }
+                                variant={!isDirectoryMode ? 'default' : 'outline'}
                                 size='sm'
                                 onClick={() => !isDirectoryMode || toggleMode()}
                                 disabled={isLoading}
@@ -524,9 +524,7 @@ export function ImageUpload({
                                 Archivos individuales
                             </Button>
                             <Button
-                                variant={
-                                    isDirectoryMode ? 'default' : 'outline'
-                                }
+                                variant={isDirectoryMode ? 'default' : 'outline'}
                                 size='sm'
                                 onClick={() => isDirectoryMode || toggleMode()}
                                 disabled={isLoading}
@@ -554,9 +552,7 @@ export function ImageUpload({
                                 id='file-input'
                                 type='file'
                                 multiple={!isDirectoryMode}
-                                accept={supportedExtensions
-                                    .map((ext) => `image/*${ext}`)
-                                    .join(',')}
+                                accept={supportedExtensions.map((ext) => `image/*${ext}`).join(',')}
                                 onChange={handleFileInput}
                                 className={`absolute inset-0 cursor-pointer opacity-0 ${isDirectoryMode ? 'hidden' : ''}`}
                                 disabled={isLoading || isDirectoryMode}
@@ -594,13 +590,8 @@ export function ImageUpload({
                                     {selectedFiles.length > 0 && (
                                         <p className='mt-1 text-xs text-emerald-500'>
                                             {selectedFiles.length} archivo
-                                            {selectedFiles.length > 1
-                                                ? 's'
-                                                : ''}{' '}
-                                            seleccionado
-                                            {selectedFiles.length > 1
-                                                ? 's'
-                                                : ''}
+                                            {selectedFiles.length > 1 ? 's' : ''} seleccionado
+                                            {selectedFiles.length > 1 ? 's' : ''}
                                         </p>
                                     )}
                                 </div>
@@ -616,19 +607,14 @@ export function ImageUpload({
                                     <Label>Base64 de Imágenes</Label>
                                     <Badge
                                         variant={
-                                            base64Inputs.length >=
-                                            MAX_BASE64_INPUTS
+                                            base64Inputs.length >= MAX_BASE64_INPUTS
                                                 ? 'destructive'
                                                 : 'outline'
                                         }
                                         className='ml-2'
                                     >
-                                        {
-                                            base64Inputs.filter(
-                                                (b) => b.trim() !== ''
-                                            ).length
-                                        }
-                                        /{MAX_BASE64_INPUTS} base64(s)
+                                        {base64Inputs.filter((b) => b.trim() !== '').length}/
+                                        {MAX_BASE64_INPUTS} base64(s)
                                     </Badge>
                                 </div>
 
@@ -638,10 +624,7 @@ export function ImageUpload({
                                             placeholder={`Base64 de imagen ${index + 1}`}
                                             value={base64}
                                             onChange={(e) =>
-                                                updateBase64Input(
-                                                    e.target.value,
-                                                    index
-                                                )
+                                                updateBase64Input(e.target.value, index)
                                             }
                                             className='h-[100px] flex-grow resize-none overflow-auto font-mono text-xs'
                                         />
@@ -650,9 +633,7 @@ export function ImageUpload({
                                                 <Button
                                                     variant='outline'
                                                     size='icon'
-                                                    onClick={() =>
-                                                        copyToClipboard(base64)
-                                                    }
+                                                    onClick={() => copyToClipboard(base64)}
                                                     title='Copiar base64'
                                                 >
                                                     <Copy className='h-4 w-4' />
@@ -661,9 +642,7 @@ export function ImageUpload({
                                             <Button
                                                 variant='outline'
                                                 size='icon'
-                                                onClick={() =>
-                                                    removeBase64Field(index)
-                                                }
+                                                onClick={() => removeBase64Field(index)}
                                                 title='Eliminar campo'
                                             >
                                                 <X className='h-4 w-4' />
@@ -676,9 +655,7 @@ export function ImageUpload({
                                     variant='outline'
                                     className='w-full'
                                     onClick={addBase64Field}
-                                    disabled={
-                                        base64Inputs.length >= MAX_BASE64_INPUTS
-                                    }
+                                    disabled={base64Inputs.length >= MAX_BASE64_INPUTS}
                                 >
                                     <Plus className='mr-2 h-4 w-4' />
                                     {base64Inputs.length >= MAX_BASE64_INPUTS

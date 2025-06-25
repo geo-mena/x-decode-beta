@@ -15,11 +15,7 @@ import {
     CommandList,
     CommandSeparator
 } from '@/components/ui/command';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import * as React from 'react';
@@ -42,8 +38,7 @@ export function DataTableFacetedFilter<TData, TValue>({
 
     const columnFilterValue = column?.getFilterValue();
     const selectedValues = React.useMemo(
-        () =>
-            new Set(Array.isArray(columnFilterValue) ? columnFilterValue : []),
+        () => new Set(Array.isArray(columnFilterValue) ? columnFilterValue : []),
         [columnFilterValue]
     );
 
@@ -59,9 +54,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     newSelectedValues.add(option.value);
                 }
                 const filterValues = Array.from(newSelectedValues);
-                column.setFilterValue(
-                    filterValues.length ? filterValues : undefined
-                );
+                column.setFilterValue(filterValues.length ? filterValues : undefined);
             } else {
                 column.setFilterValue(isSelected ? undefined : [option.value]);
                 setOpen(false);
@@ -118,9 +111,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                                     </Badge>
                                 ) : (
                                     options
-                                        .filter((option) =>
-                                            selectedValues.has(option.value)
-                                        )
+                                        .filter((option) => selectedValues.has(option.value))
                                         .map((option) => (
                                             <Badge
                                                 variant='secondary'
@@ -143,16 +134,12 @@ export function DataTableFacetedFilter<TData, TValue>({
                         <CommandEmpty>No results found.</CommandEmpty>
                         <CommandGroup className='max-h-[18.75rem] overflow-x-hidden overflow-y-auto'>
                             {options.map((option) => {
-                                const isSelected = selectedValues.has(
-                                    option.value
-                                );
+                                const isSelected = selectedValues.has(option.value);
 
                                 return (
                                     <CommandItem
                                         key={option.value}
-                                        onSelect={() =>
-                                            onItemSelect(option, isSelected)
-                                        }
+                                        onSelect={() => onItemSelect(option, isSelected)}
                                     >
                                         <div
                                             className={cn(
@@ -165,9 +152,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                                             <CheckIcon />
                                         </div>
                                         {option.icon && <option.icon />}
-                                        <span className='truncate'>
-                                            {option.label}
-                                        </span>
+                                        <span className='truncate'>{option.label}</span>
                                         {option.count && (
                                             <span className='ml-auto font-mono text-xs'>
                                                 {option.count}

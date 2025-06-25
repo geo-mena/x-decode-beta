@@ -1,8 +1,4 @@
-import type {
-    ExtendedColumnFilter,
-    FilterOperator,
-    FilterVariant
-} from '@/types/data-table';
+import type { ExtendedColumnFilter, FilterOperator, FilterVariant } from '@/types/data-table';
 import type { Column } from '@tanstack/react-table';
 
 import { dataTableConfig } from '@/config/data-table';
@@ -15,10 +11,8 @@ export function getCommonPinningStyles<TData>({
     withBorder?: boolean;
 }): React.CSSProperties {
     const isPinned = column.getIsPinned();
-    const isLastLeftPinnedColumn =
-        isPinned === 'left' && column.getIsLastColumn('left');
-    const isFirstRightPinnedColumn =
-        isPinned === 'right' && column.getIsFirstColumn('right');
+    const isLastLeftPinnedColumn = isPinned === 'left' && column.getIsLastColumn('left');
+    const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
 
     return {
         boxShadow: withBorder
@@ -29,23 +23,17 @@ export function getCommonPinningStyles<TData>({
                   : undefined
             : undefined,
         left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
-        right:
-            isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
+        right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
         opacity: isPinned ? 0.97 : 1,
         position: isPinned ? 'sticky' : 'relative',
-        background: isPinned
-            ? 'hsl(var(--background))'
-            : 'hsl(var(--background))',
+        background: isPinned ? 'hsl(var(--background))' : 'hsl(var(--background))',
         width: column.getSize(),
         zIndex: isPinned ? 1 : 0
     };
 }
 
 export function getFilterOperators(filterVariant: FilterVariant) {
-    const operatorMap: Record<
-        FilterVariant,
-        { label: string; value: FilterOperator }[]
-    > = {
+    const operatorMap: Record<FilterVariant, { label: string; value: FilterOperator }[]> = {
         text: dataTableConfig.textOperators,
         number: dataTableConfig.numericOperators,
         range: dataTableConfig.numericOperators,
@@ -74,8 +62,6 @@ export function getValidFilters<TData>(
             filter.operator === 'isNotEmpty' ||
             (Array.isArray(filter.value)
                 ? filter.value.length > 0
-                : filter.value !== '' &&
-                  filter.value !== null &&
-                  filter.value !== undefined)
+                : filter.value !== '' && filter.value !== null && filter.value !== undefined)
     );
 }

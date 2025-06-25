@@ -1,10 +1,6 @@
 'use client';
 
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger
-} from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -70,17 +66,14 @@ interface AppSidebarProps {
     collapsible?: SidebarCollapsible;
 }
 
-export default function AppSidebar({ 
-    variant = 'inset', 
-    collapsible = 'icon' 
-}: AppSidebarProps) {
+export default function AppSidebar({ variant = 'inset', collapsible = 'icon' }: AppSidebarProps) {
     const pathname = usePathname();
     const { isOpen } = useMediaQuery();
     const { user } = useUser();
     const router = useRouter();
     const { state } = useSidebar();
 
-    const handleSwitchTenant = (_tenantId: string) => {
+    const handleSwitchTenant = () => {
         // Tenant switching functionality would be implemented here
     };
 
@@ -117,9 +110,7 @@ export default function AppSidebar({
                     <SidebarGroupLabel>Overview</SidebarGroupLabel>
                     <SidebarMenu>
                         {navItems.map((item) => {
-                            const Icon = item.icon
-                                ? Icons[item.icon]
-                                : Icons.logo;
+                            const Icon = item.icon ? Icons[item.icon] : Icons.logo;
                             return item?.items && item?.items?.length > 0 ? (
                                 <Collapsible
                                     key={item.title}
@@ -141,26 +132,13 @@ export default function AppSidebar({
                                         <CollapsibleContent>
                                             <SidebarMenuSub>
                                                 {item.items?.map((subItem) => (
-                                                    <SidebarMenuSubItem
-                                                        key={subItem.title}
-                                                    >
+                                                    <SidebarMenuSubItem key={subItem.title}>
                                                         <SidebarMenuSubButton
                                                             asChild
-                                                            isActive={
-                                                                pathname ===
-                                                                subItem.url
-                                                            }
+                                                            isActive={pathname === subItem.url}
                                                         >
-                                                            <Link
-                                                                href={
-                                                                    subItem.url
-                                                                }
-                                                            >
-                                                                <span>
-                                                                    {
-                                                                        subItem.title
-                                                                    }
-                                                                </span>
+                                                            <Link href={subItem.url}>
+                                                                <span>{subItem.title}</span>
                                                             </Link>
                                                         </SidebarMenuSubButton>
                                                     </SidebarMenuSubItem>
@@ -227,9 +205,7 @@ export default function AppSidebar({
 
                                 <DropdownMenuGroup>
                                     <DropdownMenuItem
-                                        onClick={() =>
-                                            router.push('/dashboard/profile')
-                                        }
+                                        onClick={() => router.push('/dashboard/profile')}
                                     >
                                         <IconUserCircle className='mr-2 h-4 w-4' />
                                         Profile

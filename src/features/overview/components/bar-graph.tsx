@@ -3,13 +3,7 @@
 import * as React from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     ChartConfig,
     ChartContainer,
@@ -132,8 +126,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function BarGraph() {
-    const [activeChart, setActiveChart] =
-        React.useState<keyof typeof chartConfig>('desktop');
+    const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>('desktop');
 
     const total = React.useMemo(
         () => ({
@@ -168,16 +161,13 @@ export function BarGraph() {
                         <span className='hidden @[540px]/card:block'>
                             Total for the last 3 months
                         </span>
-                        <span className='@[540px]/card:hidden'>
-                            Last 3 months
-                        </span>
+                        <span className='@[540px]/card:hidden'>Last 3 months</span>
                     </CardDescription>
                 </div>
                 <div className='flex'>
                     {['desktop', 'mobile', 'error'].map((key) => {
                         const chart = key as keyof typeof chartConfig;
-                        if (!chart || total[key as keyof typeof total] === 0)
-                            return null;
+                        if (!chart || total[key as keyof typeof total] === 0) return null;
                         return (
                             <button
                                 key={chart}
@@ -189,9 +179,7 @@ export function BarGraph() {
                                     {chartConfig[chart].label}
                                 </span>
                                 <span className='text-lg leading-none font-bold sm:text-3xl'>
-                                    {total[
-                                        key as keyof typeof total
-                                    ]?.toLocaleString()}
+                                    {total[key as keyof typeof total]?.toLocaleString()}
                                 </span>
                             </button>
                         );
@@ -199,10 +187,7 @@ export function BarGraph() {
                 </div>
             </CardHeader>
             <CardContent className='px-2 pt-4 sm:px-6 sm:pt-6'>
-                <ChartContainer
-                    config={chartConfig}
-                    className='aspect-auto h-[250px] w-full'
-                >
+                <ChartContainer config={chartConfig} className='aspect-auto h-[250px] w-full'>
                     <BarChart
                         data={chartData}
                         margin={{
@@ -211,23 +196,9 @@ export function BarGraph() {
                         }}
                     >
                         <defs>
-                            <linearGradient
-                                id='fillBar'
-                                x1='0'
-                                y1='0'
-                                x2='0'
-                                y2='1'
-                            >
-                                <stop
-                                    offset='0%'
-                                    stopColor='var(--primary)'
-                                    stopOpacity={0.8}
-                                />
-                                <stop
-                                    offset='100%'
-                                    stopColor='var(--primary)'
-                                    stopOpacity={0.2}
-                                />
+                            <linearGradient id='fillBar' x1='0' y1='0' x2='0' y2='1'>
+                                <stop offset='0%' stopColor='var(--primary)' stopOpacity={0.8} />
+                                <stop offset='100%' stopColor='var(--primary)' stopOpacity={0.2} />
                             </linearGradient>
                         </defs>
                         <CartesianGrid vertical={false} />
@@ -252,9 +223,7 @@ export function BarGraph() {
                                     className='w-[150px]'
                                     nameKey='views'
                                     labelFormatter={(value) => {
-                                        return new Date(
-                                            value
-                                        ).toLocaleDateString('en-US', {
+                                        return new Date(value).toLocaleDateString('en-US', {
                                             month: 'short',
                                             day: 'numeric',
                                             year: 'numeric'
@@ -263,11 +232,7 @@ export function BarGraph() {
                                 />
                             }
                         />
-                        <Bar
-                            dataKey={activeChart}
-                            fill='url(#fillBar)'
-                            radius={[4, 4, 0, 0]}
-                        />
+                        <Bar dataKey={activeChart} fill='url(#fillBar)' radius={[4, 4, 0, 0]} />
                     </BarChart>
                 </ChartContainer>
             </CardContent>

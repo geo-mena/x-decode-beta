@@ -61,9 +61,7 @@ interface PlaygroundStore {
     setMessages: (
         messages:
             | PlaygroundChatMessage[]
-            | ((
-                  prevMessages: PlaygroundChatMessage[]
-              ) => PlaygroundChatMessage[])
+            | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[])
     ) => void;
     hasStorage: boolean;
     setHasStorage: (hasStorage: boolean) => void;
@@ -113,7 +111,7 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
             addUserEndpoint: (tag: string, url: string) => {
                 const currentEndpoints = get().userEndpoints;
                 if (currentEndpoints.length >= 3) return; // Max 3 endpoints
-                
+
                 const newEndpoint: UserEndpoint = {
                     id: uuidv4(),
                     tag,
@@ -121,12 +119,12 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
                     isActive: false,
                     isSelected: false
                 };
-                
+
                 set({ userEndpoints: [...currentEndpoints, newEndpoint] });
             },
             updateUserEndpoint: (id: string, updates: Partial<UserEndpoint>) => {
                 const currentEndpoints = get().userEndpoints;
-                const updatedEndpoints = currentEndpoints.map(endpoint =>
+                const updatedEndpoints = currentEndpoints.map((endpoint) =>
                     endpoint.id === id ? { ...endpoint, ...updates } : endpoint
                 );
                 set({ userEndpoints: updatedEndpoints });
@@ -134,30 +132,30 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
             removeUserEndpoint: (id: string) => {
                 const currentEndpoints = get().userEndpoints;
                 if (currentEndpoints.length <= 1) return; // Keep at least 1
-                
-                const filteredEndpoints = currentEndpoints.filter(endpoint => endpoint.id !== id);
-                const removedEndpoint = currentEndpoints.find(endpoint => endpoint.id === id);
-                
+
+                const filteredEndpoints = currentEndpoints.filter((endpoint) => endpoint.id !== id);
+                const removedEndpoint = currentEndpoints.find((endpoint) => endpoint.id === id);
+
                 // If we're removing the selected endpoint, select the first one
                 if (removedEndpoint?.isSelected && filteredEndpoints.length > 0) {
                     filteredEndpoints[0].isSelected = true;
                 }
-                
+
                 set({ userEndpoints: filteredEndpoints });
             },
             selectUserEndpoint: (id: string) => {
                 const currentEndpoints = get().userEndpoints;
-                const updatedEndpoints = currentEndpoints.map(endpoint => ({
+                const updatedEndpoints = currentEndpoints.map((endpoint) => ({
                     ...endpoint,
                     isSelected: endpoint.id === id
                 }));
-                
+
                 // Update legacy selectedEndpoint for compatibility
-                const selectedEndpoint = updatedEndpoints.find(e => e.isSelected);
+                const selectedEndpoint = updatedEndpoints.find((e) => e.isSelected);
                 if (selectedEndpoint) {
-                    set({ 
-                        userEndpoints: updatedEndpoints, 
-                        selectedEndpoint: selectedEndpoint.url 
+                    set({
+                        userEndpoints: updatedEndpoints,
+                        selectedEndpoint: selectedEndpoint.url
                     });
                 } else {
                     set({ userEndpoints: updatedEndpoints });
@@ -165,30 +163,24 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
             },
             getSelectedEndpoint: () => {
                 const endpoints = get().userEndpoints;
-                return endpoints.find(endpoint => endpoint.isSelected) || null;
+                return endpoints.find((endpoint) => endpoint.isSelected) || null;
             },
             isStreaming: false,
             setIsStreaming: (isStreaming) => set(() => ({ isStreaming })),
             isEndpointActive: false,
-            setIsEndpointActive: (isActive) =>
-                set(() => ({ isEndpointActive: isActive })),
+            setIsEndpointActive: (isActive) => set(() => ({ isEndpointActive: isActive })),
             isEndpointLoading: true,
-            setIsEndpointLoading: (isLoading) =>
-                set(() => ({ isEndpointLoading: isLoading })),
+            setIsEndpointLoading: (isLoading) => set(() => ({ isEndpointLoading: isLoading })),
             messages: [],
             setMessages: (messages) =>
                 set((state) => ({
-                    messages:
-                        typeof messages === 'function'
-                            ? messages(state.messages)
-                            : messages
+                    messages: typeof messages === 'function' ? messages(state.messages) : messages
                 })),
             hasStorage: false,
             setHasStorage: (hasStorage) => set(() => ({ hasStorage })),
             chatInputRef: { current: null },
             selectedEndpoint: 'http://localhost:7777',
-            setSelectedEndpoint: (selectedEndpoint) =>
-                set(() => ({ selectedEndpoint })),
+            setSelectedEndpoint: (selectedEndpoint) => set(() => ({ selectedEndpoint })),
             apiKey: '',
             setApiKey: (apiKey) => set(() => ({ apiKey })),
             agents: [],
@@ -219,8 +211,7 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
                             : sessionsData
                 })),
             isSessionsLoading: false,
-            setIsSessionsLoading: (isSessionsLoading) =>
-                set(() => ({ isSessionsLoading }))
+            setIsSessionsLoading: (isSessionsLoading) => set(() => ({ isSessionsLoading }))
         }),
         {
             name: 'endpoint-storage',

@@ -2,11 +2,7 @@
 
 import { IconChevronRight } from '@tabler/icons-react';
 
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger
-} from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
     SidebarGroup,
     SidebarGroupContent,
@@ -60,14 +56,10 @@ export function NavMain({
                                 <CollapsibleContent>
                                     <SidebarMenuSub>
                                         {item.items?.map((subItem) => (
-                                            <SidebarMenuSubItem
-                                                key={subItem.title}
-                                            >
+                                            <SidebarMenuSubItem key={subItem.title}>
                                                 <SidebarMenuSubButton asChild>
                                                     <a href={subItem.url}>
-                                                        <span>
-                                                            {subItem.title}
-                                                        </span>
+                                                        <span>{subItem.title}</span>
                                                     </a>
                                                 </SidebarMenuSubButton>
                                             </SidebarMenuSubItem>

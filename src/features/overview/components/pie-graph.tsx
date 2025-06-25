@@ -66,50 +66,38 @@ export function PieGraph() {
                     <span className='hidden @[540px]/card:block'>
                         Total visitors by browser for the last 6 months
                     </span>
-                    <span className='@[540px]/card:hidden'>
-                        Browser distribution
-                    </span>
+                    <span className='@[540px]/card:hidden'>Browser distribution</span>
                 </CardDescription>
             </CardHeader>
             <CardContent className='px-2 pt-4 sm:px-6 sm:pt-6'>
-                <ChartContainer
-                    config={chartConfig}
-                    className='mx-auto aspect-square h-[250px]'
-                >
+                <ChartContainer config={chartConfig} className='mx-auto aspect-square h-[250px]'>
                     <PieChart>
                         <defs>
-                            {[
-                                'chrome',
-                                'safari',
-                                'firefox',
-                                'edge',
-                                'other'
-                            ].map((browser, index) => (
-                                <linearGradient
-                                    key={browser}
-                                    id={`fill${browser}`}
-                                    x1='0'
-                                    y1='0'
-                                    x2='0'
-                                    y2='1'
-                                >
-                                    <stop
-                                        offset='0%'
-                                        stopColor='var(--primary)'
-                                        stopOpacity={1 - index * 0.15}
-                                    />
-                                    <stop
-                                        offset='100%'
-                                        stopColor='var(--primary)'
-                                        stopOpacity={0.8 - index * 0.15}
-                                    />
-                                </linearGradient>
-                            ))}
+                            {['chrome', 'safari', 'firefox', 'edge', 'other'].map(
+                                (browser, index) => (
+                                    <linearGradient
+                                        key={browser}
+                                        id={`fill${browser}`}
+                                        x1='0'
+                                        y1='0'
+                                        x2='0'
+                                        y2='1'
+                                    >
+                                        <stop
+                                            offset='0%'
+                                            stopColor='var(--primary)'
+                                            stopOpacity={1 - index * 0.15}
+                                        />
+                                        <stop
+                                            offset='100%'
+                                            stopColor='var(--primary)'
+                                            stopOpacity={0.8 - index * 0.15}
+                                        />
+                                    </linearGradient>
+                                )
+                            )}
                         </defs>
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
+                        <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
                         <Pie
                             data={chartData.map((item) => ({
                                 ...item,
@@ -123,11 +111,7 @@ export function PieGraph() {
                         >
                             <Label
                                 content={({ viewBox }) => {
-                                    if (
-                                        viewBox &&
-                                        'cx' in viewBox &&
-                                        'cy' in viewBox
-                                    ) {
+                                    if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                                         return (
                                             <text
                                                 x={viewBox.cx}
@@ -160,8 +144,7 @@ export function PieGraph() {
             </CardContent>
             <CardFooter className='flex-col gap-2 text-sm'>
                 <div className='flex items-center gap-2 leading-none font-medium'>
-                    Chrome leads with{' '}
-                    {((chartData[0].visitors / totalVisitors) * 100).toFixed(1)}
+                    Chrome leads with {((chartData[0].visitors / totalVisitors) * 100).toFixed(1)}
                     % <IconTrendingUp className='h-4 w-4' />
                 </div>
                 <div className='text-muted-foreground leading-none'>

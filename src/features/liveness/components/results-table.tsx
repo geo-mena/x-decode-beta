@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -76,17 +77,11 @@ const CellAction = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
                 <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                <DropdownMenuItem
-                    onClick={handleViewImage}
-                    disabled={!result.imageUrl}
-                >
+                <DropdownMenuItem onClick={handleViewImage} disabled={!result.imageUrl}>
                     <Eye className='mr-2 h-4 w-4' />
                     Ver imagen
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={handleDownloadImage}
-                    disabled={!result.imageUrl}
-                >
+                <DropdownMenuItem onClick={handleDownloadImage} disabled={!result.imageUrl}>
                     <Download className='mr-2 h-4 w-4' />
                     Descargar
                 </DropdownMenuItem>
@@ -95,16 +90,11 @@ const CellAction = ({
     );
 };
 
-export function ResultsTable({
-    results,
-    isLoading,
-    onClear,
-    useSDK
-}: ResultsTableProps) {
+export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTableProps) {
     // Estados para filtros
     const [searchValue, setSearchValue] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('all');
-    
+
     // Estados para el modal de imagen
     const [imageModalOpen, setImageModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<LivenessResult | null>(null);
@@ -112,11 +102,11 @@ export function ResultsTable({
     // Obtener tags únicos de SDK para columnas dinámicas
     const sdkTags = useMemo(() => {
         if (!useSDK) return [];
-        
+
         const tags = new Set<string>();
-        results.forEach(result => {
+        results.forEach((result) => {
             if (result.sdkDiagnostics) {
-                Object.keys(result.sdkDiagnostics).forEach(tag => tags.add(tag));
+                Object.keys(result.sdkDiagnostics).forEach((tag) => tags.add(tag));
             }
         });
         return Array.from(tags).sort();
@@ -134,7 +124,7 @@ export function ResultsTable({
         };
 
         // Agregar columnas SDK dinámicamente
-        sdkTags.forEach(tag => {
+        sdkTags.forEach((tag) => {
             baseColumns[`sdk_${tag}`] = true;
         });
 
@@ -144,9 +134,9 @@ export function ResultsTable({
     // Actualizar columnas visibles cuando cambien los tags SDK
     React.useEffect(() => {
         if (useSDK && sdkTags.length > 0) {
-            setVisibleColumns(prev => {
+            setVisibleColumns((prev) => {
                 const newColumns = { ...prev };
-                sdkTags.forEach(tag => {
+                sdkTags.forEach((tag) => {
                     const key = `sdk_${tag}`;
                     if (!newColumns.hasOwnProperty(key)) {
                         newColumns[key] = true;
@@ -166,7 +156,7 @@ export function ResultsTable({
             if (result.diagnosticSaaS && result.diagnosticSaaS.trim()) {
                 values.add(`SaaS: ${result.diagnosticSaaS.trim()}`);
             }
-            
+
             // SDK diagnostics
             if (result.sdkDiagnostics) {
                 Object.entries(result.sdkDiagnostics).forEach(([tag, diagnostic]) => {
@@ -190,25 +180,22 @@ export function ResultsTable({
             // Filtro de búsqueda por título y path
             const matchesSearch =
                 searchValue === '' ||
-                result.title
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase()) ||
-                result.imagePath
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase());
+                result.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+                result.imagePath.toLowerCase().includes(searchValue.toLowerCase());
 
             // Filtro por estado
             let matchesStatus = true;
             if (statusFilter !== 'all') {
                 // Verificar si coincide con SaaS
-                const saasMatch = result.diagnosticSaaS && 
+                const saasMatch =
+                    result.diagnosticSaaS &&
                     statusFilter === `SaaS: ${result.diagnosticSaaS.trim()}`;
-                
+
                 // Verificar si coincide con algún SDK
                 let sdkMatch = false;
                 if (result.sdkDiagnostics) {
-                    sdkMatch = Object.entries(result.sdkDiagnostics).some(([tag, diagnostic]) => 
-                        statusFilter === `${tag}: ${diagnostic.trim()}`
+                    sdkMatch = Object.entries(result.sdkDiagnostics).some(
+                        ([tag, diagnostic]) => statusFilter === `${tag}: ${diagnostic.trim()}`
                     );
                 }
 
@@ -224,13 +211,13 @@ export function ResultsTable({
         if (filterValue === 'all') return results.length;
 
         return results.filter((result) => {
-            const saasMatch = result.diagnosticSaaS && 
-                filterValue === `SaaS: ${result.diagnosticSaaS.trim()}`;
-            
+            const saasMatch =
+                result.diagnosticSaaS && filterValue === `SaaS: ${result.diagnosticSaaS.trim()}`;
+
             let sdkMatch = false;
             if (result.sdkDiagnostics) {
-                sdkMatch = Object.entries(result.sdkDiagnostics).some(([tag, diagnostic]) => 
-                    filterValue === `${tag}: ${diagnostic.trim()}`
+                sdkMatch = Object.entries(result.sdkDiagnostics).some(
+                    ([tag, diagnostic]) => filterValue === `${tag}: ${diagnostic.trim()}`
                 );
             }
 
@@ -251,7 +238,7 @@ export function ResultsTable({
 
     // Función para actualizar visibilidad de columna
     const updateColumnVisibility = (columnKey: string, checked: boolean) => {
-        setVisibleColumns(prev => ({
+        setVisibleColumns((prev) => ({
             ...prev,
             [columnKey]: checked
         }));
@@ -283,18 +270,11 @@ export function ResultsTable({
                     {/* Filtro por estado dinámico */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button
-                                variant='outline'
-                                size='sm'
-                                className='h-8 border-dashed'
-                            >
+                            <Button variant='outline' size='sm' className='h-8 border-dashed'>
                                 <Filter className='mr-2 h-4 w-4' />
                                 Estado
                                 {statusFilter !== 'all' && (
-                                    <Badge
-                                        variant='secondary'
-                                        className='ml-2 h-5 px-1 text-xs'
-                                    >
+                                    <Badge variant='secondary' className='ml-2 h-5 px-1 text-xs'>
                                         1
                                     </Badge>
                                 )}
@@ -302,11 +282,9 @@ export function ResultsTable({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                             align='start'
-                            className='w-[300px] max-h-[400px] overflow-y-auto'
+                            className='max-h-[400px] w-[300px] overflow-y-auto'
                         >
-                            <DropdownMenuLabel>
-                                Filtrar por diagnóstico
-                            </DropdownMenuLabel>
+                            <DropdownMenuLabel>Filtrar por diagnóstico</DropdownMenuLabel>
                             <DropdownMenuSeparator />
 
                             {/* Opción "Todos" */}
@@ -316,10 +294,7 @@ export function ResultsTable({
                             >
                                 <div className='flex w-full items-center justify-between'>
                                     <span>Todos los resultados</span>
-                                    <Badge
-                                        variant='outline'
-                                        className='ml-2 h-5 px-1 text-xs'
-                                    >
+                                    <Badge variant='outline' className='ml-2 h-5 px-1 text-xs'>
                                         {getFilterCount('all')}
                                     </Badge>
                                 </div>
@@ -332,18 +307,11 @@ export function ResultsTable({
                                 <DropdownMenuCheckboxItem
                                     key={diagnosticValue}
                                     checked={statusFilter === diagnosticValue}
-                                    onCheckedChange={() =>
-                                        setStatusFilter(diagnosticValue)
-                                    }
+                                    onCheckedChange={() => setStatusFilter(diagnosticValue)}
                                 >
                                     <div className='flex w-full items-center justify-between'>
-                                        <span className='truncate text-xs'>
-                                            {diagnosticValue}
-                                        </span>
-                                        <Badge
-                                            variant='outline'
-                                            className='ml-2 h-5 px-1 text-xs'
-                                        >
+                                        <span className='truncate text-xs'>{diagnosticValue}</span>
+                                        <Badge variant='outline' className='ml-2 h-5 px-1 text-xs'>
                                             {getFilterCount(diagnosticValue)}
                                         </Badge>
                                     </div>
@@ -376,19 +344,13 @@ export function ResultsTable({
                     {/* Vista de columnas */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button
-                                variant='outline'
-                                size='sm'
-                                className='ml-auto h-8'
-                            >
+                            <Button variant='outline' size='sm' className='ml-auto h-8'>
                                 <Settings2 className='mr-2 h-4 w-4' />
                                 Ver
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align='end' className='w-[200px]'>
-                            <DropdownMenuLabel>
-                                Alternar columnas
-                            </DropdownMenuLabel>
+                            <DropdownMenuLabel>Alternar columnas</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.imagen}
@@ -430,7 +392,7 @@ export function ResultsTable({
                             >
                                 Diagnóstico SaaS
                             </DropdownMenuCheckboxItem>
-                            
+
                             {/* Columnas SDK dinámicas */}
                             {useSDK && sdkTags.length > 0 && (
                                 <>
@@ -438,14 +400,17 @@ export function ResultsTable({
                                     <DropdownMenuLabel className='text-xs'>
                                         SDK Diagnósticos
                                     </DropdownMenuLabel>
-                                    {sdkTags.map(tag => {
+                                    {sdkTags.map((tag) => {
                                         const columnKey = `sdk_${tag}`;
                                         return (
                                             <DropdownMenuCheckboxItem
                                                 key={tag}
                                                 checked={visibleColumns[columnKey]}
                                                 onCheckedChange={(checked) =>
-                                                    updateColumnVisibility(columnKey, checked as boolean)
+                                                    updateColumnVisibility(
+                                                        columnKey,
+                                                        checked as boolean
+                                                    )
                                                 }
                                             >
                                                 SDK {tag}
@@ -458,12 +423,7 @@ export function ResultsTable({
                     </DropdownMenu>
 
                     {/* Botón Limpiar */}
-                    <Button
-                        variant='outline'
-                        size='sm'
-                        className='h-8'
-                        onClick={onClear}
-                    >
+                    <Button variant='outline' size='sm' className='h-8' onClick={onClear}>
                         <Trash2 className='mr-2 h-4 w-4' />
                         Limpiar
                     </Button>
@@ -505,9 +465,7 @@ export function ResultsTable({
 
     // Mostrar skeleton cuando esté cargando
     if (isLoading) {
-        return (
-            <ResultsTableSkeleton visibleColumns={visibleColumns} rows={5} />
-        );
+        return <ResultsTableSkeleton visibleColumns={visibleColumns} rows={5} />;
     }
 
     if (results.length === 0) {
@@ -516,9 +474,7 @@ export function ResultsTable({
                 <CardContent className='text-muted-foreground flex h-64 items-center justify-center'>
                     <div className='text-center'>
                         <Sheet className='mx-auto mb-2 h-12 w-12 opacity-50' />
-                        <p className='text-sm'>
-                            Esperando resultados de evaluación...
-                        </p>
+                        <p className='text-sm'>Esperando resultados de evaluación...</p>
                     </div>
                 </CardContent>
             </Card>
@@ -537,9 +493,7 @@ export function ResultsTable({
                         <TableHeader>
                             <TableRow>
                                 {visibleColumns.imagen && (
-                                    <TableHead className='w-20 text-center'>
-                                        Imagen
-                                    </TableHead>
+                                    <TableHead className='w-20 text-center'>Imagen</TableHead>
                                 )}
                                 {visibleColumns.titulo && (
                                     <TableHead className='text-center'>Título</TableHead>
@@ -554,18 +508,19 @@ export function ResultsTable({
                                     <TableHead className='text-center'>Diagnóstico SaaS</TableHead>
                                 )}
                                 {/* Columnas SDK dinámicas */}
-                                {useSDK && sdkTags.map(tag => {
-                                    const columnKey = `sdk_${tag}`;
-                                    return visibleColumns[columnKey] && (
-                                        <TableHead key={tag} className='text-center'>
-                                            Diagnóstico SDK {tag}
-                                        </TableHead>
-                                    );
-                                })}
+                                {useSDK &&
+                                    sdkTags.map((tag) => {
+                                        const columnKey = `sdk_${tag}`;
+                                        return (
+                                            visibleColumns[columnKey] && (
+                                                <TableHead key={tag} className='text-center'>
+                                                    Diagnóstico SDK {tag}
+                                                </TableHead>
+                                            )
+                                        );
+                                    })}
                                 {visibleColumns.acciones && (
-                                    <TableHead className='w-20 text-center'>
-                                        Acciones
-                                    </TableHead>
+                                    <TableHead className='w-20 text-center'>Acciones</TableHead>
                                 )}
                             </TableRow>
                         </TableHeader>
@@ -585,23 +540,23 @@ export function ResultsTable({
                                 </TableRow>
                             ) : (
                                 filteredResults.map((result, index) => (
-                                    <TableRow
-                                        key={index}
-                                        className='hover:bg-muted/50'
-                                    >
+                                    <TableRow key={index} className='hover:bg-muted/50'>
                                         {/* Imagen */}
                                         {visibleColumns.imagen && (
                                             <TableCell className='text-center'>
                                                 {result.imageUrl ? (
-                                                    <div className='relative aspect-square h-20 w-20 overflow-hidden rounded border mx-auto'>
-                                                        <img
+                                                    <div className='relative mx-auto aspect-square h-20 w-20 overflow-hidden rounded border'>
+                                                        <Image
                                                             src={result.imageUrl}
                                                             alt={result.title}
                                                             className='h-full w-full object-cover'
+                                                            width={80}
+                                                            height={80}
+                                                            style={{ objectFit: 'cover' }}
                                                         />
                                                     </div>
                                                 ) : (
-                                                    <div className='bg-muted flex h-12 w-12 items-center justify-center rounded border mx-auto'>
+                                                    <div className='bg-muted mx-auto flex h-12 w-12 items-center justify-center rounded border'>
                                                         <X className='text-muted-foreground h-4 w-4' />
                                                     </div>
                                                 )}
@@ -610,7 +565,7 @@ export function ResultsTable({
 
                                         {/* Título */}
                                         {visibleColumns.titulo && (
-                                            <TableCell className='font-medium text-center'>
+                                            <TableCell className='text-center font-medium'>
                                                 <div className='space-y-1'>
                                                     <p className='text-sm leading-none font-medium'>
                                                         {result.title}
@@ -655,24 +610,30 @@ export function ResultsTable({
                                         )}
 
                                         {/* Columnas SDK dinámicas */}
-                                        {useSDK && sdkTags.map(tag => {
-                                            const columnKey = `sdk_${tag}`;
-                                            return visibleColumns[columnKey] && (
-                                                <TableCell key={tag} className='text-center'>
-                                                    <div className='space-y-1'>
-                                                        <Badge
-                                                            variant={getDiagnosticBadgeVariant(
-                                                                result.sdkDiagnostics?.[tag]
-                                                            )}
+                                        {useSDK &&
+                                            sdkTags.map((tag) => {
+                                                const columnKey = `sdk_${tag}`;
+                                                return (
+                                                    visibleColumns[columnKey] && (
+                                                        <TableCell
+                                                            key={tag}
+                                                            className='text-center'
                                                         >
-                                                            {getDiagnosticDisplay(
-                                                                result.sdkDiagnostics?.[tag]
-                                                            )}
-                                                        </Badge>
-                                                    </div>
-                                                </TableCell>
-                                            );
-                                        })}
+                                                            <div className='space-y-1'>
+                                                                <Badge
+                                                                    variant={getDiagnosticBadgeVariant(
+                                                                        result.sdkDiagnostics?.[tag]
+                                                                    )}
+                                                                >
+                                                                    {getDiagnosticDisplay(
+                                                                        result.sdkDiagnostics?.[tag]
+                                                                    )}
+                                                                </Badge>
+                                                            </div>
+                                                        </TableCell>
+                                                    )
+                                                );
+                                            })}
 
                                         {/* Acciones */}
                                         {visibleColumns.acciones && (
@@ -693,14 +654,11 @@ export function ResultsTable({
                 {/* Información de resultados */}
                 <div className='text-muted-foreground flex items-center justify-between text-sm'>
                     <div>
-                        Mostrando {filteredResults.length} de {results.length}{' '}
-                        resultado{results.length !== 1 ? 's' : ''}
+                        Mostrando {filteredResults.length} de {results.length} resultado
+                        {results.length !== 1 ? 's' : ''}
                         {statusFilter !== 'all' && (
                             <span className='ml-2'>
-                                • Filtrado por:{' '}
-                                <span className='font-medium'>
-                                    {statusFilter}
-                                </span>
+                                • Filtrado por: <span className='font-medium'>{statusFilter}</span>
                             </span>
                         )}
                     </div>

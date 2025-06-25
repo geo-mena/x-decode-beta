@@ -36,7 +36,7 @@ import {
     IconDeviceFloppy,
     IconRotateClockwise
 } from '@tabler/icons-react';
-import { Route, RouteIcon, Server } from 'lucide-react';
+import { RouteIcon, Server } from 'lucide-react';
 
 export type Icon = React.ComponentType<IconProps>;
 

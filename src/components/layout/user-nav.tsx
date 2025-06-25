@@ -19,24 +19,14 @@ export function UserNav() {
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button
-                        variant='ghost'
-                        className='relative h-8 w-8 rounded-full'
-                    >
+                    <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
                         <UserAvatarProfile user={user} />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent
-                    className='w-56'
-                    align='end'
-                    sideOffset={10}
-                    forceMount
-                >
+                <DropdownMenuContent className='w-56' align='end' sideOffset={10} forceMount>
                     <DropdownMenuLabel className='font-normal'>
                         <div className='flex flex-col space-y-1'>
-                            <p className='text-sm leading-none font-medium'>
-                                {user.fullName}
-                            </p>
+                            <p className='text-sm leading-none font-medium'>{user.fullName}</p>
                             <p className='text-muted-foreground text-xs leading-none'>
                                 {user.emailAddresses[0].emailAddress}
                             </p>
@@ -44,9 +34,7 @@ export function UserNav() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                        <DropdownMenuItem
-                            onClick={() => router.push('/dashboard/profile')}
-                        >
+                        <DropdownMenuItem onClick={() => router.push('/dashboard/profile')}>
                             Profile
                         </DropdownMenuItem>
                         <DropdownMenuItem>Billing</DropdownMenuItem>

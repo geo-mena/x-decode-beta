@@ -26,14 +26,7 @@ export interface TaskDragData {
 }
 
 export function TaskCard({ task, isOverlay }: TaskCardProps) {
-    const {
-        setNodeRef,
-        attributes,
-        listeners,
-        transform,
-        transition,
-        isDragging
-    } = useSortable({
+    const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
         id: task.id,
         data: {
             type: 'Task',
@@ -63,11 +56,7 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
             ref={setNodeRef}
             style={style}
             className={variants({
-                dragging: isOverlay
-                    ? 'overlay'
-                    : isDragging
-                      ? 'over'
-                      : undefined
+                dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
             })}
         >
             <CardHeader className='space-between border-secondary relative flex flex-row border-b-2 px-3 py-3'>

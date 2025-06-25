@@ -13,8 +13,7 @@ export default function FormCardSkeleton() {
                     {/* Image upload area skeleton */}
                     <div className='space-y-6'>
                         <Skeleton className='h-4 w-16' /> {/* Label */}
-                        <Skeleton className='h-32 w-full rounded-lg' />{' '}
-                        {/* Upload area */}
+                        <Skeleton className='h-32 w-full rounded-lg' /> {/* Upload area */}
                     </div>
 
                     {/* Grid layout for form fields */}
