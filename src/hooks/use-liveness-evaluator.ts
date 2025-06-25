@@ -8,8 +8,7 @@ import {
     EvaluatePassiveLivenessResponse,
     LivenessApiError,
     SDKEvaluateRequest,
-    SDKEvaluateResponse,
-    SDKEndpointInfo
+    SDKEvaluateResponse
 } from '@/types/liveness';
 
 const VALID_IMAGE_EXTENSIONS = [
@@ -34,7 +33,9 @@ export const useLivenessEvaluator = () => {
     const [results, setResults] = useState<LivenessResult[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [useSDK, setUseSDK] = useState(false);
-    const [selectedSDKEndpoints, setSelectedSDKEndpoints] = useState<string[]>([]);
+    const [selectedSDKEndpoints, setSelectedSDKEndpoints] = useState<string[]>(
+        []
+    );
     const { apiKey, userEndpoints } = usePlaygroundStore();
 
     // Función para convertir imagen a base64
@@ -127,42 +128,50 @@ export const useLivenessEvaluator = () => {
     }, []);
 
     // Función para verificar si un endpoint SDK está activo
-    const checkSDKEndpointStatus = useCallback(async (url: string): Promise<boolean> => {
-        try {
-            // Verificación básica de formato de URL
-            const urlObj = new URL(url);
-            
-            // Si la URL tiene un formato válido y un protocolo HTTP/HTTPS, marcarla como activa
-            if (urlObj.protocol === 'http:' || urlObj.protocol === 'https:') {
-                const fullUrl = `${url}${SDK_ENDPOINT}`;
-                
-                try {
-                    if (needsProxy(fullUrl)) {
-                        const response = await fetch('/api/sdk-proxy', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                endpoint: fullUrl,
-                                payload: { image: 'test' }
-                            }),
-                        });
-                        
-                        return response.ok || response.status === 500;
-                    } else {
-                        const response = await fetch(fullUrl, { method: 'OPTIONS' });
-                        return response.ok || response.status === 405;
+    const checkSDKEndpointStatus = useCallback(
+        async (url: string): Promise<boolean> => {
+            try {
+                // Verificación básica de formato de URL
+                const urlObj = new URL(url);
+
+                // Si la URL tiene un formato válido y un protocolo HTTP/HTTPS, marcarla como activa
+                if (
+                    urlObj.protocol === 'http:' ||
+                    urlObj.protocol === 'https:'
+                ) {
+                    const fullUrl = `${url}${SDK_ENDPOINT}`;
+
+                    try {
+                        if (needsProxy(fullUrl)) {
+                            const response = await fetch('/api/sdk-proxy', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    endpoint: fullUrl,
+                                    payload: { image: 'test' }
+                                })
+                            });
+
+                            return response.ok || response.status === 500;
+                        } else {
+                            const response = await fetch(fullUrl, {
+                                method: 'OPTIONS'
+                            });
+                            return response.ok || response.status === 405;
+                        }
+                    } catch (error) {
+                        return false;
                     }
-                } catch (error) {
-                    return false;
                 }
+
+                return false;
+            } catch (error) {
+                // Si no es una URL válida, marcarla como inactiva
+                return false;
             }
-            
-            return false;
-        } catch (error) {
-            // Si no es una URL válida, marcarla como inactiva
-            return false;
-        }
-    }, []);
+        },
+        []
+    );
 
     // Función para evaluar con SDK
     const evaluateWithSDK = useCallback(
@@ -183,7 +192,10 @@ export const useLivenessEvaluator = () => {
                 };
 
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), SDK_TIMEOUT);
+                const timeoutId = setTimeout(
+                    () => controller.abort(),
+                    SDK_TIMEOUT
+                );
 
                 let response;
 
@@ -192,7 +204,7 @@ export const useLivenessEvaluator = () => {
                     response = await fetch('/api/sdk-proxy', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             endpoint: fullUrl,
@@ -318,8 +330,9 @@ export const useLivenessEvaluator = () => {
 
     // Función para obtener endpoints SDK activos
     const getActiveSDKEndpoints = useCallback(() => {
-        return userEndpoints.filter(endpoint => 
-            selectedSDKEndpoints.includes(endpoint.id) && endpoint.isActive
+        return userEndpoints.filter(
+            (endpoint) =>
+                selectedSDKEndpoints.includes(endpoint.id) && endpoint.isActive
         );
     }, [userEndpoints, selectedSDKEndpoints]);
 
@@ -364,12 +377,15 @@ export const useLivenessEvaluator = () => {
                                 endpoint.url,
                                 endpoint.tag
                             );
-                            result.sdkDiagnostics[endpoint.tag] = sdkResult.diagnostic;
+                            result.sdkDiagnostics[endpoint.tag] =
+                                sdkResult.diagnostic;
                             if (sdkResult.rawResponse) {
-                                result.sdkRawResponses[endpoint.tag] = sdkResult.rawResponse;
+                                result.sdkRawResponses[endpoint.tag] =
+                                    sdkResult.rawResponse;
                             }
                         } catch (error) {
-                            result.sdkDiagnostics[endpoint.tag] = `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
+                            result.sdkDiagnostics[endpoint.tag] =
+                                `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
                         }
                     }
                 }
@@ -389,7 +405,15 @@ export const useLivenessEvaluator = () => {
                 };
             }
         },
-        [getImageInfo, formatFileSize, evaluateFileWithSaaS, convertImageToBase64, useSDK, getActiveSDKEndpoints, evaluateWithSDK]
+        [
+            getImageInfo,
+            formatFileSize,
+            evaluateFileWithSaaS,
+            convertImageToBase64,
+            useSDK,
+            getActiveSDKEndpoints,
+            evaluateWithSDK
+        ]
     );
 
     // Función para procesar base64 directamente
@@ -439,12 +463,15 @@ export const useLivenessEvaluator = () => {
                                 endpoint.url,
                                 endpoint.tag
                             );
-                            result.sdkDiagnostics[endpoint.tag] = sdkResult.diagnostic;
+                            result.sdkDiagnostics[endpoint.tag] =
+                                sdkResult.diagnostic;
                             if (sdkResult.rawResponse) {
-                                result.sdkRawResponses[endpoint.tag] = sdkResult.rawResponse;
+                                result.sdkRawResponses[endpoint.tag] =
+                                    sdkResult.rawResponse;
                             }
                         } catch (error) {
-                            result.sdkDiagnostics[endpoint.tag] = `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
+                            result.sdkDiagnostics[endpoint.tag] =
+                                `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
                         }
                     }
                 }
@@ -464,7 +491,15 @@ export const useLivenessEvaluator = () => {
                 };
             }
         },
-        [getImageInfoFromBase64, cleanBase64, formatFileSize, evaluateWithSaaS, useSDK, getActiveSDKEndpoints, evaluateWithSDK]
+        [
+            getImageInfoFromBase64,
+            cleanBase64,
+            formatFileSize,
+            evaluateWithSaaS,
+            useSDK,
+            getActiveSDKEndpoints,
+            evaluateWithSDK
+        ]
     );
 
     // Función principal para evaluar imágenes desde archivos
