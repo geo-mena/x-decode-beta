@@ -16,7 +16,6 @@ export default function LivenessContent() {
         evaluateBase64Images,
         clearResults,
         supportedExtensions,
-        // SDK related
         useSDK,
         setUseSDK,
         selectedSDKEndpoints,
@@ -28,15 +27,13 @@ export default function LivenessContent() {
         setCurrentFiles(files);
         setCurrentBase64s([]);
 
-        // Llamar al evaluador de archivos
-        await evaluateImages(files, isDir);
+        await evaluateImages(files);
     };
 
     const handleBase64Selected = async (base64Images: string[]) => {
         setCurrentBase64s(base64Images);
         setCurrentFiles([]);
 
-        // Llamar al evaluador de base64
         await evaluateBase64Images(base64Images);
     };
 
@@ -48,7 +45,6 @@ export default function LivenessContent() {
 
     const resultsLayout = (
         <div className='space-y-6'>
-            {/* Tabla de resultados */}
             <ResultsTable
                 results={results}
                 isLoading={loading}
