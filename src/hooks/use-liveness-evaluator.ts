@@ -25,7 +25,10 @@ const SDK_ENDPOINT = '/api/v1/selphid/passive-liveness/evaluate';
 const SDK_TIMEOUT = 10000; // 10 seconds
 
 const needsProxy = (endpoint: string): boolean => {
-    return !endpoint.includes('localhost') && !endpoint.includes('127.0.0.1');
+    return (
+        !endpoint.includes('http://localhost:8080') &&
+        !endpoint.includes('127.0.0.1')
+    );
 };
 
 export const useLivenessEvaluator = () => {
