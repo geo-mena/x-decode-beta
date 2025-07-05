@@ -66,6 +66,12 @@ export const navItems: NavItem[] = [
 
         items: [
             {
+                title: 'Detokenize',
+                url: '/service/detokenize',
+                icon: 'route',
+                shortcut: ['m', 'm']
+            },
+            {
                 title: 'Prueba de vida',
                 url: '/service/liveness',
                 icon: 'route',

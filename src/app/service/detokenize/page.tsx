@@ -1,5 +1,3 @@
-'use client';
-
 import PageContainer from '@/components/layout/page-container';
 import Detokenize from '@/features/detokenize';
 
