@@ -8,9 +8,9 @@ export default async function Page() {
     // if (!userId) {
     //   return redirect('/auth/sign-in');
     // } else {
-    //   redirect('/dashboard/overview');
+    //   redirect('/service/overview');
     // }
 
     // Direct redirect to dashboard
-    redirect('/dashboard/overview');
+    redirect('/service/overview');
 }
