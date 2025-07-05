@@ -1,5 +1,5 @@
 import PageContainer from '@/components/layout/page-container';
-import LivenessContent from '@/features/liveness';
+import DecodeImage from '@/features/decode-image';
 
 export const metadata = {
     title: 'Liveness : Image Evaluation'
@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function page() {
     return (
-        <PageContainer scrollable={false}>
+        <PageContainer scrollable={true}>
             <div className='flex flex-1 flex-col space-y-4'>
-                <LivenessContent />
+                <DecodeImage />
             </div>
         </PageContainer>
     );
