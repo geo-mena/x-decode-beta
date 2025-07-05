@@ -3,10 +3,11 @@ import { clerkMiddleware } from '@clerk/nextjs/server';
 
 // const isProtectedRoute = createRouteMatcher(['/service(.*)']);
 
-export default clerkMiddleware(async () => {
+export default clerkMiddleware();
+// export default clerkMiddleware(async () => {
     // Temporarily commented out for development
     // if (isProtectedRoute(req)) await auth.protect();
-});
+// });
 export const config = {
     matcher: [
         // Skip Next.js internals and all static files, unless found in search params
