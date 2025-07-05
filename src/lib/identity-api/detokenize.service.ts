@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { DetokenizeRequest, DetokenizeResponse, ErrorResponse } from '@/types/detokenize'
+import axios from 'axios';
+import { DetokenizeRequest, DetokenizeResponse, ErrorResponse } from '@/types/detokenize';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9002';
 
@@ -13,12 +13,12 @@ export const detokenizeService = {
     detokenizeImage: async (data: DetokenizeRequest): Promise<DetokenizeResponse> => {
         try {
             const payload: DetokenizeRequest = {
-                ...data,
-            }
+                ...data
+            };
 
             if (data.bestImageToken && !data.bestImageTokens) {
-                payload.bestImageTokens = [data.bestImageToken]
-                delete payload.bestImageToken
+                payload.bestImageTokens = [data.bestImageToken];
+                delete payload.bestImageToken;
             }
 
             const response = await axios.post<DetokenizeResponse>(
@@ -26,19 +26,19 @@ export const detokenizeService = {
                 payload,
                 {
                     headers: {
-                        'Content-Type': 'application/json',
-                    },
+                        'Content-Type': 'application/json'
+                    }
                 }
-            )
-            return response.data
+            );
+            return response.data;
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                return error.response.data as ErrorResponse
+                return error.response.data as ErrorResponse;
             }
             return {
                 success: false,
-                message: 'Error al conectar con el servidor',
-            }
+                message: 'Error al conectar con el servidor'
+            };
         }
     },
 
@@ -49,7 +49,7 @@ export const detokenizeService = {
      * @returns URL de descarga
      */
     getDownloadUrl: (fileName: string): string => {
-        return `${API_URL}/v1/detokenize/download/${fileName}`
+        return `${API_URL}/v1/detokenize/download/${fileName}`;
     },
 
     /**
@@ -59,7 +59,7 @@ export const detokenizeService = {
      * @returns void
      */
     downloadImage: (fileName: string): void => {
-        window.open(detokenizeService.getDownloadUrl(fileName), '_blank')
+        window.open(detokenizeService.getDownloadUrl(fileName), '_blank');
     },
 
     /**
@@ -70,8 +70,8 @@ export const detokenizeService = {
      * @returns URL del proxy de imagen
      */
     getProxyUrl: (fileName: string): string => {
-        return `${API_URL}/v1/image-proxy/${fileName}`
-    },
-}
+        return `${API_URL}/v1/image-proxy/${fileName}`;
+    }
+};
 
-export default detokenizeService
+export default detokenizeService;
