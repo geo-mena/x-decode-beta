@@ -172,7 +172,6 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
         }
     };
 
-    /* 🆕 Función para actualizar el zoom para una imagen específica */
     const handleZoom = (imageIndex: string, newZoomLevel: number) => {
         setImageControls((prev) => ({
             ...prev,
@@ -183,7 +182,6 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
         }));
     };
 
-    /* 🆕 Función para rotar una imagen específica */
     const handleRotate = (imageIndex: string) => {
         setImageControls((prev) => {
             const currentRotation = prev[imageIndex]?.rotation || 0;
@@ -199,12 +197,10 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
         });
     };
 
-    /* 🆕 Función para abrir la imagen en pantalla completa */
     const handleOpenFullscreen = () => {
         setFullscreenOpen(true);
     };
 
-    /* 🆕 Función para cerrar la pantalla completa */
     const handleCloseFullscreen = () => {
         setFullscreenOpen(false);
     };
@@ -286,7 +282,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                     {activeImage && (
                         <div className='flex gap-2'>
                             {/* Componente de análisis de imagen */}
-                            <ImageAnalyzer data={activeImage} />
+                            {/* <ImageAnalyzer data={activeImage} /> */}
                         </div>
                     )}
                 </CardHeader>

@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-// import { ImageControls } from '@/features/detokenize/components/image-controls'
+import { ImageControls } from '@/features/detokenize/components/image-controls';
 
 interface FullscreenImageProps {
     isOpen: boolean;
@@ -428,13 +428,13 @@ export function FullscreenImage({
                         </Button>
                     </div>
 
-                    {/* <ImageControls
+                    <ImageControls
                         zoomLevel={zoomLevel}
                         onZoom={onZoom}
                         onRotate={onRotate}
                         onFullscreen={() => {}}
                         className='bg-transparent backdrop-blur-none'
-                    /> */}
+                    />
                 </DialogFooter>
             </DialogContent>
         </Dialog>
