@@ -95,20 +95,22 @@ The container sets the following environment variables:
 ### Common Issues
 
 1. **Docker not running**
-   ```bash
-   # Start Docker Desktop or Docker daemon
-   ```
+
+    ```bash
+    # Start Docker Desktop or Docker daemon
+    ```
 
 2. **Authentication failed**
-   ```bash
-   docker login
-   ```
+
+    ```bash
+    docker login
+    ```
 
 3. **Build fails**
-   ```bash
-   # Check Docker logs
-   docker logs <container-id>
-   ```
+    ```bash
+    # Check Docker logs
+    docker logs <container-id>
+    ```
 
 ### Build Script Permissions
 
@@ -158,4 +160,4 @@ docker logs <container-name>
 
 ---
 
-*This documentation is for the x-decode project Docker deployment process.*
+_This documentation is for the x-decode project Docker deployment process._
