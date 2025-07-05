@@ -2,7 +2,7 @@ import PageContainer from '@/components/layout/page-container';
 import LivenessContent from '@/features/liveness';
 
 export const metadata = {
-    title: 'Liveness : Image Evaluation'
+    title: 'IDAPI - Prueba de Vida'
 };
 
 export default function page() {
