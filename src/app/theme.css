@@ -50,12 +50,12 @@ body {
 
 .theme-green,
 .theme-green-scaled {
-    --primary: var(--color-lime-600);
-    --primary-foreground: var(--color-lime-50);
+    --primary: var(--color-emerald-600);
+    --primary-foreground: var(--color-emerald-50);
 
     @variant dark {
-        --primary: var(--color-lime-600);
-        --primary-foreground: var(--color-lime-50);
+        --primary: var(--color-emerald-600);
+        --primary-foreground: var(--color-emerald-50);
     }
 }
 
