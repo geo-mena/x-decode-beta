@@ -2,7 +2,7 @@ import PageContainer from '@/components/layout/page-container';
 import DecodeImage from '@/features/decode-image';
 
 export const metadata = {
-    title: 'Liveness : Image Evaluation'
+    title: 'TOOLS - Base64 a Imagen'
 };
 
 export default function page() {
