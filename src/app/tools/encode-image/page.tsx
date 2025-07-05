@@ -1,15 +1,15 @@
 import PageContainer from '@/components/layout/page-container';
-import LivenessContent from '@/features/liveness';
+import EncodeImage from '@/features/encode-image';
 
 export const metadata = {
-    title: 'Liveness : Image Evaluation'
+    title: 'TOOLS - Imagen a Base64'
 };
 
 export default function page() {
     return (
         <PageContainer scrollable={false}>
             <div className='flex flex-1 flex-col space-y-4'>
-                <LivenessContent />
+                <EncodeImage />
             </div>
         </PageContainer>
     );

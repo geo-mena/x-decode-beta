@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Base64ImageRequest, Base64ImageResponse, ErrorResponse } from '@/types/base64-image';
 
-const API_URL = 'http://localhost:9002';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9002';
 
 export const base64ImageService = {
     /**

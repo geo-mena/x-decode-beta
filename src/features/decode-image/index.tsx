@@ -2,10 +2,8 @@
 
 import { useRef, useState } from 'react';
 import { Base64ImageResponseData } from '@/types/base64-image';
-import { Info } from 'lucide-react';
 import { toast } from 'sonner';
 import base64ImageService from '@/lib/tools/base64-image.service';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Base64Input } from './components/base64-input';
 import { ImagePreview } from './components/image-preview';
 
