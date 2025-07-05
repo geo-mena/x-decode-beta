@@ -263,7 +263,7 @@ export function FullscreenImage({
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()} modal>
-            <DialogContent className='h-screen max-h-screen w-screen max-w-none overflow-hidden p-0 sm:rounded-none'>
+            <DialogContent className='!h-screen !max-h-screen !w-screen !max-w-none !overflow-hidden p-0 !sm:rounded-none'>
                 {/* Header */}
                 <DialogHeader className='bg-background/80 absolute top-0 right-0 left-0 z-10 flex flex-row items-center justify-between gap-4 px-4 py-2 backdrop-blur-md'>
                     <DialogTitle className='truncate text-base font-normal'></DialogTitle>
