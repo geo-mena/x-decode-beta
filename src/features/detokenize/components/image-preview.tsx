@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { DetokenizeResponseData } from '@/types/detokenize';
 import {
@@ -11,7 +13,7 @@ import {
     Loader
 } from 'lucide-react';
 import { toast } from 'sonner';
-import detokenizeService from '@/lib/services/detokenize.service';
+import detokenizeService from '@/lib/identity-api/detokenize.service';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

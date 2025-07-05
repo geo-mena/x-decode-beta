@@ -1,7 +1,9 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import { Copy, Download, Info, Loader2, X } from 'lucide-react';
 import { toast } from 'sonner';
-import detokenizeService from '@/lib/services/detokenize.service';
+import detokenizeService from '@/lib/identity-api/detokenize.service';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {

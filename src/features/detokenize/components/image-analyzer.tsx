@@ -1,8 +1,10 @@
+'use client';
+
 import { useEffect, useState, useRef } from 'react';
 import { AlertCircle, Leaf, Zap } from 'lucide-react';
 import { toast } from 'sonner';
-import detokenizeService from '@/lib/services/detokenize.service';
-import { aiDetectionService } from '@/lib/services/image-detection.service';
+import detokenizeService from '@/lib/identity-api/detokenize.service';
+import { aiDetectionService } from '@/lib/tools/image-detection.service';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {

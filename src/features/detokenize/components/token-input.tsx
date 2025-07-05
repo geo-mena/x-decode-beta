@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import {
     Brackets,

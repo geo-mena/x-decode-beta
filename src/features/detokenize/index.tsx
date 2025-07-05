@@ -1,15 +1,11 @@
+'use client';
+
 import { useRef, useState } from 'react';
 import { DetokenizeResponseData } from '@/types/detokenize';
-import { File, Info } from 'lucide-react';
-import { toast, Toaster } from 'sonner';
-import detokenizeService from '@/lib/services/detokenize.service';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { File } from 'lucide-react';
+import { toast } from 'sonner';
+import detokenizeService from '@/lib/identity-api/detokenize.service';
 import { Badge } from '@/components/ui/badge';
-import { Header } from '@/components/layout/header';
-import { Main } from '@/components/layout/main';
-import { TopNav } from '@/components/layout/top-nav';
-import { Search } from '@/components/search';
-import { ThemeSwitch } from '@/components/theme-switch';
 import { ImagePreview } from './components/image-preview';
 import { TokenInput } from './components/token-input';
 
@@ -89,7 +85,6 @@ export default function Detokenize() {
         }
     };
 
-    /* 🆕 Función para restablecer el formulario */
     const handleReset = () => {
         setImageData(null);
         setError(null);
@@ -115,21 +110,8 @@ export default function Detokenize() {
 
     return (
         <>
-            {/* Sonner Toaster */}
-            <Toaster position='bottom-right' />
-
-            {/* ===== Top Heading ===== */}
-            <Header>
-                <TopNav links={topNav} />
-                <div className='ml-auto flex items-center space-x-4'>
-                    <Search />
-                    <ThemeSwitch />
-                    {/* <ProfileDropdown /> */}
-                </div>
-            </Header>
-
             {/* ===== Main ===== */}
-            <Main>
+            <>
                 <div className='mb-6 flex items-center justify-between'>
                     <div>
                         <h1 className='text-2xl font-bold tracking-tight'>Detokenizar Imagen</h1>
@@ -139,16 +121,6 @@ export default function Detokenize() {
                         </p>
                     </div>
                 </div>
-
-                <Alert variant='info' className='mb-4 border-l-4 border-l-emerald-500'>
-                    <Info className='h-4 w-4 animate-pulse stroke-emerald-500' />
-                    <AlertTitle>Instrucciones</AlertTitle>
-                    <AlertDescription>
-                        Ingrese hasta 2 tokens de imagen para recuperar la imagen original. Puede
-                        agregar múltiples tokens como alternativas. Opcionalmente, incluya el ID de
-                        transacción si está disponible.
-                    </AlertDescription>
-                </Alert>
 
                 <a
                     href='https://docs.identity-platform.io/docs/identity-api/resources/Services/detokenize'
@@ -178,7 +150,7 @@ export default function Detokenize() {
                         onDownload={handleDownload}
                     />
                 </div>
-            </Main>
+            </>
         </>
     );
 }
