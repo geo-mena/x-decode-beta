@@ -66,8 +66,30 @@ export const navItems: NavItem[] = [
 
         items: [
             {
-                title: 'Passive Liveness',
+                title: 'Prueba de vida',
                 url: '/service/liveness',
+                icon: 'route',
+                shortcut: ['m', 'm']
+            }
+        ]
+    },
+
+    {
+        title: 'Tools',
+        url: '#', // Placeholder as there is no direct link for the parent
+        icon: 'tools',
+        isActive: true,
+
+        items: [
+            {
+                title: 'Base64 a Imagen',
+                url: '/tools/decode-image',
+                icon: 'route',
+                shortcut: ['m', 'm']
+            },
+            {
+                title: 'Imagen a Base64',
+                url: '/tools/encode-image',
                 icon: 'route',
                 shortcut: ['m', 'm']
             }

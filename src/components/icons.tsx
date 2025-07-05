@@ -34,9 +34,11 @@ import {
     IconEdit,
     IconRefresh,
     IconDeviceFloppy,
-    IconRotateClockwise
+    IconRotateClockwise,
+    IconRoute,
+    IconServer
 } from '@tabler/icons-react';
-import { RouteIcon, Server } from 'lucide-react';
+import { Settings } from 'lucide-react';
 
 export type Icon = React.ComponentType<IconProps>;
 
@@ -72,12 +74,13 @@ export const Icons = {
     github: IconBrandGithub,
     twitter: IconBrandTwitter,
     check: IconCheck,
-    server: Server,
-    route: RouteIcon,
+    server: IconServer,
+    route: IconRoute,
     edit: IconEdit,
     refresh: IconRefresh,
     save: IconDeviceFloppy,
     rotateCw: IconRotateClockwise,
     x: IconX,
-    plus: IconPlus
+    plus: IconPlus,
+    tools: Settings
 };

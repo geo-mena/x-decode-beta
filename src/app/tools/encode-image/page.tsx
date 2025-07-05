@@ -1,0 +1,16 @@
+import PageContainer from '@/components/layout/page-container';
+import LivenessContent from '@/features/liveness';
+
+export const metadata = {
+    title: 'Liveness : Image Evaluation'
+};
+
+export default function page() {
+    return (
+        <PageContainer scrollable={false}>
+            <div className='flex flex-1 flex-col space-y-4'>
+                <LivenessContent />
+            </div>
+        </PageContainer>
+    );
+}
