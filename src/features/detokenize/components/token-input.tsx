@@ -293,7 +293,7 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                 <CardFooter className='flex gap-2'>
                     <Button
                         onClick={handleSubmit}
-                        disabled={isLoading || tokens.every((token) => !token)}
+                        disabled={isLoading || tokens.every((token) => !token.trim())}
                         className='flex-1'
                     >
                         {isLoading ? (
@@ -312,7 +312,7 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                         onClick={handleResetClick}
                         variant='secondary'
                         type='button'
-                        disabled={isLoading}
+                        disabled={isLoading || tokens.every((token) => !token.trim())}
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
                         Limpiar

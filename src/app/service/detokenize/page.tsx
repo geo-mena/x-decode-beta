@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function page() {
     return (
-        <PageContainer scrollable={false}>
+        <PageContainer scrollable={true}>
             <div className='flex flex-1 flex-col space-y-4'>
                 <Detokenize />
             </div>
