@@ -13,7 +13,6 @@ import {
     CardHeader,
     CardTitle
 } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import DownloadReport from './download-report';
 
 interface ImageAnalysisResultsProps {
@@ -36,17 +35,15 @@ export const ImageAnalysisResults = ({
 
     if (isLoading) {
         return (
-            <Card className='w-full'>
+            <Card className='flex h-full flex-col'>
                 <CardHeader>
-                    <CardTitle>
-                        <Skeleton className='h-7 w-48' />
-                    </CardTitle>
+                    <CardTitle>Reporte de análisis</CardTitle>
                     <CardDescription>
-                        <Skeleton className='h-4 w-96' />
+                        Ingrese una imagen para analizar si fue creada por IA o por humanos
                     </CardDescription>
                 </CardHeader>
-                <CardContent className='space-y-4'>
-                    <div className='bg-muted/20 text-muted-foreground flex aspect-video flex-col items-center justify-center rounded-md border'>
+                <CardContent className='flex-grow'>
+                    <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='h-20 w-20 animate-pulse' />
                         <p className='mt-4 text-sm'>Analizando imagen...</p>
                     </div>
@@ -57,16 +54,15 @@ export const ImageAnalysisResults = ({
 
     if (error) {
         return (
-            <Card className='w-full'>
+           <Card className='flex h-full flex-col'>
                 <CardHeader>
                     <CardTitle>Error de análisis</CardTitle>
                     <CardDescription>No se pudo procesar la solicitud</CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <div className='flex flex-col items-center justify-center rounded-md border border-red-900/20 bg-red-900/10 p-8 text-center'>
-                        <AlertCircle className='h-20 w-20 text-red-500' />
-                        {/* <p className="mt-4 text-lg font-medium text-red-500">{error}</p> */}
-                        <p className='mt-2 text-sm'>
+                <CardContent className='flex-grow'>
+                    <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
+                        <AlertCircle className='mb-4 h-20 w-20 text-red-500' />
+                        <p className='text-sm'>
                             Intente nuevamente con otra imagen o verifique su conexión.
                         </p>
                     </div>
@@ -77,15 +73,15 @@ export const ImageAnalysisResults = ({
 
     if (!data || !data.success || !data.data) {
         return (
-            <Card className='bg-neutro-900 border-neutro-800 w-full'>
+            <Card className='flex h-full flex-col'>
                 <CardHeader>
                     <CardTitle>Reporte de análisis</CardTitle>
                     <CardDescription>
                         Ingrese una imagen para analizar si fue creada por IA o por humanos
                     </CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <div className='border-neutro-700 text-muted-foreground flex aspect-video flex-col items-center justify-center rounded-md border border-dashed p-8 text-center'>
+                <CardContent className='flex-grow'>
+                    <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudAlert className='h-20 w-20' />
                         <p className='mt-4 text-sm'>
                             Sin datos para mostrar, por favor sube una imagen
