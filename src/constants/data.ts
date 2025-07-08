@@ -81,9 +81,9 @@ export const navItems: NavItem[] = [
     },
 
     {
-        title: 'Tools',
+        title: 'Decoders',
         url: '#', // Placeholder as there is no direct link for the parent
-        icon: 'tools',
+        icon: 'cloudDownload',
         isActive: true,
 
         items: [
@@ -93,12 +93,32 @@ export const navItems: NavItem[] = [
                 icon: 'route',
                 shortcut: ['m', 'm']
             },
+        ]
+    },
+
+    {
+        title: 'Encoders',
+        url: '#', // Placeholder as there is no direct link for the parent
+        icon: 'cloudUpload',
+        isActive: true,
+
+        items: [
             {
                 title: 'Imagen a Base64',
                 url: '/tools/encode-image',
                 icon: 'route',
                 shortcut: ['m', 'm']
             },
+        ]
+    },
+
+    {
+        title: 'Tools',
+        url: '#', // Placeholder as there is no direct link for the parent
+        icon: 'tools',
+        isActive: true,
+
+        items: [
             {
                 title: 'Análisis de Imágenes',
                 url: '/tools/image-analysis',
