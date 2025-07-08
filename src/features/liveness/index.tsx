@@ -84,7 +84,7 @@ export default function LivenessContent() {
                     target='_blank'
                     rel='noopener noreferrer'
                 >
-                    <Badge variant='secondary' className='mb-4 cursor-pointer p-2 text-emerald-500'>
+                    <Badge variant='secondary' className='cursor-pointer p-2 text-emerald-500'>
                         <File className='h-4 w-4' />
                         <span className='ml-2'>Documentación</span>
                     </Badge>
