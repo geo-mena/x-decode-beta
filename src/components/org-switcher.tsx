@@ -1,15 +1,13 @@
 'use client';
 
-import { Check, ChevronsUpDown, GalleryVerticalEnd } from 'lucide-react';
 import * as React from 'react';
 
 import {
     DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import Logo from './icons/logo';
 
 interface Tenant {
     id: string;
@@ -19,22 +17,22 @@ interface Tenant {
 export function OrgSwitcher({
     tenants,
     defaultTenant,
-    onTenantSwitch
+    // onTenantSwitch
 }: {
     tenants: Tenant[];
     defaultTenant: Tenant;
     onTenantSwitch?: (tenantId: string) => void;
 }) {
-    const [selectedTenant, setSelectedTenant] = React.useState<Tenant | undefined>(
+    const [selectedTenant, _setSelectedTenant] = React.useState<Tenant | undefined>(
         defaultTenant || (tenants.length > 0 ? tenants[0] : undefined)
     );
 
-    const handleTenantSwitch = (tenant: Tenant) => {
-        setSelectedTenant(tenant);
-        if (onTenantSwitch) {
-            onTenantSwitch(tenant.id);
-        }
-    };
+    // const handleTenantSwitch = (tenant: Tenant) => {
+    //     setSelectedTenant(tenant);
+    //     if (onTenantSwitch) {
+    //         onTenantSwitch(tenant.id);
+    //     }
+    // };
 
     if (!selectedTenant) {
         return null;
@@ -49,16 +47,17 @@ export function OrgSwitcher({
                             className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
                         >
                             <div className='bg-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
-                                <GalleryVerticalEnd className='size-4' />
+                                <Logo className='size-20' />
                             </div>
                             <div className='flex flex-col gap-0.5 leading-none'>
-                                <span className='font-semibold'>Next Starter</span>
-                                <span className=''>{selectedTenant.name}</span>
+                                <span className='font-bold font-mono'>X DECODE</span>
+                                {/* <span className=''>{selectedTenant.name}</span> */}
+                                <span className='text-xs text-muted-foreground'>v2.0</span>
                             </div>
-                            <ChevronsUpDown className='ml-auto' />
+                            {/* <ChevronsUpDown className='ml-auto' /> */}
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent
+                    {/* <DropdownMenuContent
                         className='w-[--radix-dropdown-menu-trigger-width]'
                         align='start'
                     >
@@ -71,7 +70,7 @@ export function OrgSwitcher({
                                 {tenant.id === selectedTenant.id && <Check className='ml-auto' />}
                             </DropdownMenuItem>
                         ))}
-                    </DropdownMenuContent>
+                    </DropdownMenuContent> */}
                 </DropdownMenu>
             </SidebarMenuItem>
         </SidebarMenu>
