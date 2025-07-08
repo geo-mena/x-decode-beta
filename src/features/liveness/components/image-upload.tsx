@@ -20,7 +20,6 @@ import {
     CloudUpload,
     Play,
     Route,
-    Trash,
     Folder,
     Files,
     Loader,
@@ -373,7 +372,6 @@ export function ImageUpload({
         <Card className='w-full'>
             <CardHeader>
                 <CardTitle className='flex items-center gap-2'>
-                    <Route className='h-5 w-5' />
                     Evaluación de Liveness
                 </CardTitle>
                 <CardDescription>
@@ -691,7 +689,7 @@ export function ImageUpload({
                     onClick={handleClear}
                     disabled={isLoading || !canSubmit()}
                 >
-                    <Trash className='mr-2 h-4 w-4' />
+                    <RefreshCw className='mr-2 h-4 w-4' />
                     Limpiar
                 </Button>
             </CardFooter>
