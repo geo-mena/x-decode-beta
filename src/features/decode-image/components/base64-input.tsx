@@ -344,7 +344,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                 <CardFooter className='flex gap-2'>
                     <Button
                         onClick={handleSubmit}
-                        disabled={isLoading || codes.every((code) => !code)}
+                        disabled={isLoading || codes.every((code) => !code.trim())}
                         className='flex-1'
                     >
                         {isLoading ? (
@@ -363,7 +363,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                         onClick={handleResetClick}
                         variant='secondary'
                         type='button'
-                        disabled={isLoading}
+                        disabled={isLoading || codes.every((code) => !code.trim())}
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
                         Limpiar

@@ -301,7 +301,10 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
                         onClick={handleResetClick}
                         variant='secondary'
                         type='button'
-                        disabled={isLoading}
+                        disabled={
+                            isLoading ||
+                            (inputMethod === 'upload' ? files.length === 0 : !imageUrl.trim())
+                        }
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
                         Limpiar
