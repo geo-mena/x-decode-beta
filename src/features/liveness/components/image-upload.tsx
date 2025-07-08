@@ -14,7 +14,6 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import {
     CloudUpload,
@@ -27,8 +26,6 @@ import {
     X,
     Copy,
     Server,
-    CheckCircle,
-    XCircle,
     RefreshCw
 } from 'lucide-react';
 import { usePlaygroundStore } from '@/store';
@@ -446,11 +443,6 @@ export function ImageUpload({
                                                 >
                                                     {endpoint.tag}
                                                 </Label>
-                                                {endpoint.isActive ? (
-                                                    <CheckCircle className='h-3 w-3 text-green-500' />
-                                                ) : (
-                                                    <XCircle className='h-3 w-3 text-red-500' />
-                                                )}
                                             </div>
                                             <p
                                                 className={`truncate text-xs ${
