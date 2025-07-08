@@ -98,6 +98,12 @@ export const navItems: NavItem[] = [
                 url: '/tools/encode-image',
                 icon: 'route',
                 shortcut: ['m', 'm']
+            },
+            {
+                title: 'Análisis de Imágenes',
+                url: '/tools/image-analysis',
+                icon: 'route',
+                shortcut: ['m', 'm']
             }
         ]
     }

@@ -72,9 +72,12 @@ export default function LivenessContent() {
             <>
                 <div className='mb-6 flex items-center justify-between'>
                     <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>Evaluación de Liveness</h1>
+                        <h1 className='text-2xl font-bold tracking-tight'>
+                            Evaluación de Liveness
+                        </h1>
                         <p className='text-muted-foreground text-sm'>
-                            Evalúa la autenticidad de imágenes faciales para detectar ataques de spoofing.
+                            Evalúa la autenticidad de imágenes faciales para detectar ataques de
+                            spoofing.
                         </p>
                     </div>
                 </div>
@@ -106,10 +109,7 @@ export default function LivenessContent() {
                     />
 
                     {/* Vista previa de resultados */}
-                    <LivenessPreview
-                        isLoading={loading}
-                        hasResults={results.length > 0}
-                    />
+                    <LivenessPreview isLoading={loading} hasResults={results.length > 0} />
                 </div>
             </>
         </>

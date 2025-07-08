@@ -367,9 +367,7 @@ export function ImageUpload({
     return (
         <Card className='w-full'>
             <CardHeader>
-                <CardTitle className='flex items-center gap-2'>
-                    Evaluación de Liveness
-                </CardTitle>
+                <CardTitle className='flex items-center gap-2'>Evaluación de Liveness</CardTitle>
                 <CardDescription>
                     Suba imágenes desde archivos o ingrese base64 manualmente
                 </CardDescription>
