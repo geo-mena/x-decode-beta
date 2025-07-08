@@ -97,7 +97,7 @@ export default function AppSidebar({ variant = 'inset', collapsible = 'icon' }: 
                     {state !== 'collapsed' && (
                         <>
                             <SidebarGroupLabel>Settings</SidebarGroupLabel>
-                            <SidebarMenu>
+                            <SidebarMenu className='gap-2'>
                                 <SidebarMenuItem>
                                     <ApiKey />
                                 </SidebarMenuItem>
