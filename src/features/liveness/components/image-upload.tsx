@@ -490,8 +490,6 @@ export function ImageUpload({
                     )}
                 </div>
 
-                <Separator />
-
                 {/* Method selector tabs */}
                 <Tabs value={inputMethod} onValueChange={handleInputMethodChange}>
                     <TabsList className='grid w-full grid-cols-2'>
