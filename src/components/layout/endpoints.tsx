@@ -5,8 +5,8 @@ import { usePlaygroundStore } from '@/store';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { truncateText } from '@/lib/utils-key';
-import { Icons } from '@/components/icons';
 import { EndpointsModal } from './endpoints-modal';
+import { Link } from 'lucide-react';
 
 const Endpoints = () => {
     const { userEndpoints, getSelectedEndpoint } = usePlaygroundStore();
@@ -50,7 +50,7 @@ const Endpoints = () => {
                         : 'Click to configure endpoints'
                 }
             >
-                <Icons.server className='h-4 w-4 flex-shrink-0' />
+                <Link className='h-4 w-4 flex-shrink-0' />
 
                 <div className='min-w-0 flex-1'>
                     <AnimatePresence mode='wait'>

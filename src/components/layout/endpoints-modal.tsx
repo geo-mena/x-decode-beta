@@ -344,7 +344,7 @@ export const EndpointsModal = ({ isOpen, onClose }: EndpointsModalProps) => {
             <DialogContent className='max-h-[80vh] min-w-xl overflow-y-auto'>
                 <DialogHeader>
                     <DialogTitle className='flex items-center gap-2'>
-                        <Icons.server className='h-5 w-5' />
+                        <Icons.link className='h-5 w-5' />
                         Endpoint Management
                     </DialogTitle>
                     <DialogDescription>
