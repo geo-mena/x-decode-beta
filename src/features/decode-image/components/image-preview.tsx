@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Base64ImageResponseData } from '@/types/base64-image';
 import {
-    AlertCircle,
     CloudAlert,
     CloudCog,
     Copy,
@@ -14,7 +13,6 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import base64ImageService from '@/lib/tools/base64-image.service';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -36,7 +34,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ImageControls } from '@/features/detokenize/components/image-controls';
 import { FullscreenImage } from './full-screen-image';
-import { ImageAnalyzer } from './image-analyzer';
+// import { ImageAnalyzer } from './image-analyzer';
 
 interface ImageControlState {
     zoomLevel: number;
@@ -295,16 +293,15 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                     )}
 
                     {error && !isLoading && (
-                        <Alert variant='destructive' className='mb-4'>
-                            <AlertCircle className='h-4 w-4' />
-                            <AlertTitle>Error</AlertTitle>
-                            <AlertDescription>{error}</AlertDescription>
-                        </Alert>
+                         <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
+                            <CloudAlert className='mb-4 h-20 w-20' />
+                            <p className='text-sm'>{error}</p>
+                        </div>
                     )}
 
                     {!data && !error && !isLoading && (
                         <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
-                            <CloudAlert className='mb-4 h-20 w-20' />
+                            <CloudCog className='mb-4 h-20 w-20' />
                             <p className='text-sm'>Ingrese un código base64 para ver la imagen</p>
                         </div>
                     )}
