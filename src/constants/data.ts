@@ -92,7 +92,7 @@ export const navItems: NavItem[] = [
                 url: '/tools/decode-image',
                 icon: 'route',
                 shortcut: ['m', 'm']
-            },
+            }
         ]
     },
 
@@ -108,7 +108,7 @@ export const navItems: NavItem[] = [
                 url: '/tools/encode-image',
                 icon: 'route',
                 shortcut: ['m', 'm']
-            },
+            }
         ]
     },
 

@@ -54,7 +54,7 @@ export const ImageAnalysisResults = ({
 
     if (error) {
         return (
-           <Card className='flex h-full flex-col'>
+            <Card className='flex h-full flex-col'>
                 <CardHeader>
                     <CardTitle>Error de análisis</CardTitle>
                     <CardDescription>No se pudo procesar la solicitud</CardDescription>

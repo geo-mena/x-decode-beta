@@ -2,10 +2,7 @@
 
 import * as React from 'react';
 
-import {
-    DropdownMenu,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import Logo from './icons/logo';
 
@@ -16,7 +13,7 @@ interface Tenant {
 
 export function OrgSwitcher({
     tenants,
-    defaultTenant,
+    defaultTenant
     // onTenantSwitch
 }: {
     tenants: Tenant[];
@@ -50,9 +47,9 @@ export function OrgSwitcher({
                                 <Logo className='size-20' />
                             </div>
                             <div className='flex flex-col gap-0.5 leading-none'>
-                                <span className='font-bold font-mono'>X DECODE</span>
+                                <span className='font-mono font-bold'>X DECODE</span>
                                 {/* <span className=''>{selectedTenant.name}</span> */}
-                                <span className='text-xs text-muted-foreground'>v2.0</span>
+                                <span className='text-muted-foreground text-xs'>v2.0</span>
                             </div>
                             {/* <ChevronsUpDown className='ml-auto' /> */}
                         </SidebarMenuButton>

@@ -255,12 +255,11 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                 </CardContent>
 
                 <CardFooter className='flex gap-2'>
-                    <Button 
-                        onClick={handleSubmit} 
+                    <Button
+                        onClick={handleSubmit}
                         disabled={
-                            isLoading || 
-                            (activeTab === 'url' ? !imageUrl.trim() : !selectedFile)
-                        } 
+                            isLoading || (activeTab === 'url' ? !imageUrl.trim() : !selectedFile)
+                        }
                         className='flex-1'
                     >
                         {isLoading ? (
@@ -275,12 +274,11 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                             </>
                         )}
                     </Button>
-                    <Button 
-                        variant='secondary' 
-                        onClick={onReset} 
+                    <Button
+                        variant='secondary'
+                        onClick={onReset}
                         disabled={
-                            isLoading || 
-                            (activeTab === 'url' ? !imageUrl.trim() : !selectedFile)
+                            isLoading || (activeTab === 'url' ? !imageUrl.trim() : !selectedFile)
                         }
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
