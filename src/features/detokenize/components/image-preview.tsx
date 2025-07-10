@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { DetokenizeResponseData } from '@/types/detokenize';
 import {
-    AlertCircle,
     CloudAlert,
     CloudCog,
     Copy,
@@ -14,7 +13,6 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import detokenizeService from '@/lib/identity-api/detokenize.service';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -172,7 +170,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
         }
     };
 
-    /* 🆕 Función para actualizar el zoom para una imagen específica */
+    /* Función para actualizar el zoom para una imagen específica */
     const handleZoom = (imageIndex: string, newZoomLevel: number) => {
         setImageControls((prev) => ({
             ...prev,
@@ -183,7 +181,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
         }));
     };
 
-    /* 🆕 Función para rotar una imagen específica */
+    /* Función para rotar una imagen específica */
     const handleRotate = (imageIndex: string) => {
         setImageControls((prev) => {
             const currentRotation = prev[imageIndex]?.rotation || 0;
@@ -199,12 +197,12 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
         });
     };
 
-    /* 🆕 Función para abrir la imagen en pantalla completa */
+    /* Función para abrir la imagen en pantalla completa */
     const handleOpenFullscreen = () => {
         setFullscreenOpen(true);
     };
 
-    /* 🆕 Función para cerrar la pantalla completa */
+    /* Función para cerrar la pantalla completa */
     const handleCloseFullscreen = () => {
         setFullscreenOpen(false);
     };
@@ -302,16 +300,15 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                     )}
 
                     {error && !isLoading && (
-                        <Alert variant='destructive' className='mb-4'>
-                            <AlertCircle className='h-4 w-4' />
-                            <AlertTitle>Error</AlertTitle>
-                            <AlertDescription>{error}</AlertDescription>
-                        </Alert>
+                        <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
+                           <CloudAlert className='mb-4 h-20 w-20' />
+                            <p className='text-sm'>{error}</p>
+                        </div>
                     )}
 
                     {!data && !error && !isLoading && (
                         <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
-                            <CloudAlert className='mb-4 h-20 w-20' />
+                            <CloudCog className='mb-4 h-20 w-20' />
                             <p className='text-sm'>Ingrese un token para ver la imagen</p>
                         </div>
                     )}
