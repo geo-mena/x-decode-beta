@@ -27,7 +27,7 @@ export function LivenessPreview({ isLoading, hasResults }: LivenessPreviewProps)
 
                 {!hasResults && !isLoading && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
-                        <CloudAlert className='mb-4 h-20 w-20' />
+                        <CloudCog className='mb-4 h-20 w-20' />
                         <p className='text-sm'>Suba una imagen para ver los resultados</p>
                     </div>
                 )}
