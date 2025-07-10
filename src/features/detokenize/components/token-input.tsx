@@ -198,7 +198,7 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                                             placeholder={`Token de imagen ${index + 1}`}
                                             value={token}
                                             onChange={(e) => updateToken(e.target.value, index)}
-                                            className='min-h-[80px] flex-grow font-mono text-xs'
+                                            className='max-h-[100px] min-h-[100px] flex-grow resize-none overflow-y-auto font-mono text-xs'
                                         />
                                         <div className='flex flex-col space-y-2'>
                                             {token && (

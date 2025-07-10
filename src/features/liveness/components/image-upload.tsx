@@ -609,7 +609,7 @@ export function ImageUpload({
                                             onChange={(e) =>
                                                 updateBase64Input(e.target.value, index)
                                             }
-                                            className='h-[100px] flex-grow resize-none overflow-auto font-mono text-xs'
+                                            className='max-h-[100px] min-h-[100px] flex-grow resize-none overflow-y-auto font-mono text-xs'
                                         />
                                         <div className='flex flex-col space-y-2'>
                                             {base64 && (

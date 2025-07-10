@@ -238,7 +238,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                             placeholder={`Código ${index + 1}`}
                                             value={code}
                                             onChange={(e) => updateCode(e.target.value, index)}
-                                            className='max-h-[130px] min-h-[80px] flex-grow resize-none overflow-y-auto font-mono text-xs'
+                                            className='max-h-[125px] min-h-[100px] flex-grow resize-none overflow-y-auto font-mono text-xs'
                                         />
                                         <div className='flex flex-col space-y-2'>
                                             {code && (
