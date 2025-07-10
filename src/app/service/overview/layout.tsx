@@ -9,6 +9,7 @@ import {
     CardFooter
 } from '@/components/ui/card';
 import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
+import ServiceBlankState from '@/features/overview/components/service-blank-state';
 import React from 'react';
 
 export default function OverViewLayout({
@@ -22,6 +23,18 @@ export default function OverViewLayout({
     bar_stats: React.ReactNode;
     area_stats: React.ReactNode;
 }) {
+    const hasData = false;
+    
+    if (!hasData) {
+        return (
+            <PageContainer scrollable={false}>
+                <div className="flex-1 flex items-center justify-center min-h-[calc(100vh-52px)]">
+                    <ServiceBlankState />
+                </div>
+            </PageContainer>
+        );
+    }
+
     return (
         <PageContainer>
             <div className='flex flex-1 flex-col space-y-2'>
