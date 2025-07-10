@@ -13,12 +13,11 @@ import {
 
 const VALID_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'];
 
-// SDK Configuration
 const SDK_ENDPOINT = '/api/v1/selphid/passive-liveness/evaluate';
-const SDK_TIMEOUT = 10000; // 10 seconds
+const SDK_TIMEOUT = 10000;
 
-const needsProxy = (endpoint: string): boolean => {
-    return true; // Usar proxy para todos los endpoints
+const needsProxy = (_endpoint: string): boolean => {
+    return true;
 };
 
 export const useLivenessEvaluator = () => {
@@ -70,14 +69,14 @@ export const useLivenessEvaluator = () => {
                 img.onload = () => {
                     // Calcular tamaño aproximado del base64
                     const base64Length = cleanedBase64.length;
-                    const sizeInBytes = Math.floor(base64Length * 0.75); // Aproximación del tamaño real
+                    const sizeInBytes = Math.floor(base64Length * 0.75);
 
                     resolve({
                         width: img.width,
                         height: img.height,
                         size: sizeInBytes,
                         name: `base64_image_${index + 1}.jpg`,
-                        type: 'image/jpeg' // Asumimos JPEG por defecto
+                        type: 'image/jpeg'
                     });
                 };
 
@@ -152,7 +151,6 @@ export const useLivenessEvaluator = () => {
 
             return false;
         } catch (error) {
-            // Si no es una URL válida, marcarla como inactiva
             return false;
         }
     }, []);
@@ -626,7 +624,6 @@ export const useLivenessEvaluator = () => {
         isValidImageFile,
         validateBase64,
         supportedExtensions: VALID_IMAGE_EXTENSIONS,
-        // SDK related functions and state
         useSDK,
         setUseSDK,
         selectedSDKEndpoints,
