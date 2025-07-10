@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import type { ImageAnalysisResponse } from '@/types/image-analysis';
-import { AlertCircle, CloudAlert, CloudCog, ImageIcon, Loader } from 'lucide-react';
+import { CloudAlert, CloudCog, ImageIcon, Loader } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import useReportDownload from '@/hooks/use-report-download';
 import {
@@ -61,7 +61,8 @@ export const ImageAnalysisResults = ({
                 </CardHeader>
                 <CardContent className='flex-grow'>
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
-                        <AlertCircle className='mb-4 h-20 w-20 text-red-500' />
+                        {/* <AlertCircle className='mb-4 h-20 w-20 text-red-500' /> */}
+                        <CloudAlert className='h-20 w-20' />
                         <p className='text-sm'>
                             Intente nuevamente con otra imagen o verifique su conexión.
                         </p>
@@ -82,7 +83,7 @@ export const ImageAnalysisResults = ({
                 </CardHeader>
                 <CardContent className='flex-grow'>
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
-                        <CloudAlert className='h-20 w-20' />
+                        <CloudCog className='h-20 w-20' />
                         <p className='mt-4 text-sm'>
                             Sin datos para mostrar, por favor sube una imagen
                         </p>
