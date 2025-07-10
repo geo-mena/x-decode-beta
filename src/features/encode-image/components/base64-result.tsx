@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Base64EncodeResponseData } from '@/types/image-base64';
 import {
-    AlertCircle,
     Check,
     CloudAlert,
     CloudCog,
@@ -12,7 +11,6 @@ import {
     ExternalLink,
     Images
 } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -206,16 +204,17 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                 )}
 
                 {error && !isLoading && (
-                    <Alert variant='destructive' className='mb-4'>
-                        <AlertCircle className='h-4 w-4' />
-                        <AlertTitle>Error</AlertTitle>
-                        <AlertDescription>{error}</AlertDescription>
-                    </Alert>
+                    <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
+                        <CloudAlert className='mb-4 h-20 w-20' />
+                        <p className='text-sm'>
+                            {error}
+                        </p>
+                    </div>
                 )}
 
                 {!data && !error && !isLoading && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
-                        <CloudAlert className='mb-4 h-20 w-20' />
+                        <CloudCog className='mb-4 h-20 w-20' />
                         <p className='text-sm'>
                             Suba una imagen o proporcione una URL para obtener su código Base64
                         </p>
