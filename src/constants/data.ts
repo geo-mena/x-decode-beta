@@ -76,7 +76,13 @@ export const navItems: NavItem[] = [
                 url: '/service/liveness',
                 icon: 'route',
                 shortcut: ['m', 'm']
-            }
+            },
+            {
+                title: 'Morfología',
+                url: '/service/morphology',
+                icon: 'route',
+                shortcut: ['m', 'm']
+            },
         ]
     },
 
