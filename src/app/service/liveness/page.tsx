@@ -8,7 +8,7 @@ export const metadata = {
 export default function page() {
     return (
         <PageContainer scrollable={true}>
-            <div className='flex flex-1 flex-col space-y-4 mb-4'>
+            <div className='mb-4 flex flex-1 flex-col space-y-4'>
                 <LivenessContent />
             </div>
         </PageContainer>

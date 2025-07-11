@@ -9,7 +9,6 @@ import {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9002';
 const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN || '';
 
-
 export const imageAnalysisService = {
     /**
      * Analiza una imagen desde una URL

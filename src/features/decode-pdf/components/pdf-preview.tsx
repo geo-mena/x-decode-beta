@@ -471,9 +471,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                 {error && !isLoading && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudAlert className='mb-4 h-20 w-20' />
-                        <p className='text-sm font-medium'>
-                            {error}
-                        </p>
+                        <p className='text-sm font-medium'>{error}</p>
                     </div>
                 )}
 

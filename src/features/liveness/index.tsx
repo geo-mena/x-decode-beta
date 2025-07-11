@@ -82,10 +82,16 @@ export default function LivenessContent() {
                     </div>
                 </div>
 
-                <Badge 
-                    variant='secondary' 
-                    className='cursor-pointer p-2 text-primary'
-                    onClick={() => window.open('https://docs.identity-platform.io/docs/identity-api/resources/Services/liveness', '_blank', 'noopener,noreferrer')}
+                <Badge
+                    variant='secondary'
+                    className='text-primary cursor-pointer p-2'
+                    onClick={() =>
+                        window.open(
+                            'https://docs.identity-platform.io/docs/identity-api/resources/Services/liveness',
+                            '_blank',
+                            'noopener,noreferrer'
+                        )
+                    }
                 >
                     <File className='h-4 w-4' />
                     <span className='ml-2'>Documentación</span>
