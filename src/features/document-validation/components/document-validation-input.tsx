@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as countries from 'i18n-iso-countries';
 import spanish from 'i18n-iso-countries/langs/es.json';
