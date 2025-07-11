@@ -2,15 +2,7 @@
 
 import { useState } from 'react';
 import { Base64EncodeResponseData } from '@/types/image-base64';
-import {
-    Check,
-    CloudAlert,
-    CloudCog,
-    Copy,
-    Download,
-    ExternalLink,
-    Images
-} from 'lucide-react';
+import { Check, CloudAlert, CloudCog, Copy, Download, ExternalLink, Images } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -206,9 +198,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                 {error && !isLoading && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudAlert className='mb-4 h-20 w-20' />
-                        <p className='text-sm'>
-                            {error}
-                        </p>
+                        <p className='text-sm'>{error}</p>
                     </div>
                 )}
 

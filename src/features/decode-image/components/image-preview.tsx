@@ -2,15 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Base64ImageResponseData } from '@/types/base64-image';
-import {
-    CloudAlert,
-    CloudCog,
-    Copy,
-    Download,
-    ExternalLink,
-    Images,
-    Loader2
-} from 'lucide-react';
+import { CloudAlert, CloudCog, Copy, Download, ExternalLink, Images, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import base64ImageService from '@/lib/tools/base64-image.service';
 import { Badge } from '@/components/ui/badge';
@@ -293,7 +285,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                     )}
 
                     {error && !isLoading && (
-                         <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
+                        <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                             <CloudAlert className='mb-4 h-20 w-20' />
                             <p className='text-sm'>{error}</p>
                         </div>

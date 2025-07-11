@@ -24,11 +24,11 @@ export default function OverViewLayout({
     area_stats: React.ReactNode;
 }) {
     const hasData = false;
-    
+
     if (!hasData) {
         return (
             <PageContainer scrollable={false}>
-                <div className="flex-1 flex items-center justify-center min-h-[calc(100vh-52px)]">
+                <div className='flex min-h-[calc(100vh-52px)] flex-1 items-center justify-center'>
                     <ServiceBlankState />
                 </div>
             </PageContainer>

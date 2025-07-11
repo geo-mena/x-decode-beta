@@ -2,15 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { DetokenizeResponseData } from '@/types/detokenize';
-import {
-    CloudAlert,
-    CloudCog,
-    Copy,
-    Download,
-    ExternalLink,
-    Images,
-    Loader
-} from 'lucide-react';
+import { CloudAlert, CloudCog, Copy, Download, ExternalLink, Images, Loader } from 'lucide-react';
 import { toast } from 'sonner';
 import detokenizeService from '@/lib/identity-api/detokenize.service';
 import { Badge } from '@/components/ui/badge';
@@ -301,7 +293,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
 
                     {error && !isLoading && (
                         <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
-                           <CloudAlert className='mb-4 h-20 w-20' />
+                            <CloudAlert className='mb-4 h-20 w-20' />
                             <p className='text-sm'>{error}</p>
                         </div>
                     )}
