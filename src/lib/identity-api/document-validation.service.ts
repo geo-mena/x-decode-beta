@@ -1,13 +1,13 @@
-import axios from 'axios'
+import axios from 'axios';
 import {
     StartDocumentValidationRequest,
     CheckValidationStatusRequest,
     GetValidationDataRequest,
     DocumentValidationResponse,
-    ErrorResponse,
-} from '@/types/document-validation'
+    ErrorResponse
+} from '@/types/document-validation';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9002'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9002';
 
 export const documentValidationService = {
     /**
@@ -36,29 +36,29 @@ export const documentValidationService = {
                 frontsideImage,
                 backsideImage,
                 merchantIdScanReference,
-                storeResponses,
-            }
+                storeResponses
+            };
 
             const response = await axios.post(`${API_URL}/v1/document-validation/start`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
-                    'X-API-Token': API_TOKEN,
-                },
-            })
+                    'X-API-Token': API_TOKEN
+                }
+            });
 
             return {
                 success: true,
-                data: response.data,
-            }
+                data: response.data
+            };
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                return error.response.data as ErrorResponse
+                return error.response.data as ErrorResponse;
             }
             return {
                 success: false,
-                message: 'Error al conectar con el servidor',
-            }
+                message: 'Error al conectar con el servidor'
+            };
         }
     },
 
@@ -76,29 +76,29 @@ export const documentValidationService = {
         try {
             const payload: CheckValidationStatusRequest = {
                 scanReference,
-                storeResponses,
-            }
+                storeResponses
+            };
 
             const response = await axios.post(`${API_URL}/v1/document-validation/status`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
-                    'X-API-Token': API_TOKEN,
-                },
-            })
+                    'X-API-Token': API_TOKEN
+                }
+            });
 
             return {
                 success: true,
-                data: response.data,
-            }
+                data: response.data
+            };
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                return error.response.data as ErrorResponse
+                return error.response.data as ErrorResponse;
             }
             return {
                 success: false,
-                message: 'Error al conectar con el servidor',
-            }
+                message: 'Error al conectar con el servidor'
+            };
         }
     },
 
@@ -116,31 +116,31 @@ export const documentValidationService = {
         try {
             const payload: GetValidationDataRequest = {
                 scanReference,
-                storeResponses,
-            }
+                storeResponses
+            };
 
             const response = await axios.post(`${API_URL}/v1/document-validation/data`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
-                    'X-API-Token': API_TOKEN,
-                },
-            })
+                    'X-API-Token': API_TOKEN
+                }
+            });
 
             return {
                 success: true,
-                data: response.data,
-            }
+                data: response.data
+            };
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                return error.response.data as ErrorResponse
+                return error.response.data as ErrorResponse;
             }
             return {
                 success: false,
-                message: 'Error al conectar con el servidor',
-            }
+                message: 'Error al conectar con el servidor'
+            };
         }
-    },
-}
+    }
+};
 
-export default documentValidationService
+export default documentValidationService;

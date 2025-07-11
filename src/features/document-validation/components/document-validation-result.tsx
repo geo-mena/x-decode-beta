@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
     AlertCircle,
     Check,
@@ -9,21 +9,21 @@ import {
     Copy,
     FileCheck,
     FileWarning,
-    Loader,
-} from 'lucide-react'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
+    Loader
+} from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 
 interface DocumentValidationResultProps {
-    data: Record<string, any> | null
-    error: string | null
-    isLoading: boolean
-    isPolling: boolean
-    pollingStatus: string | null
+    data: Record<string, any> | null;
+    error: string | null;
+    isLoading: boolean;
+    isPolling: boolean;
+    pollingStatus: string | null;
 }
 
 export function DocumentValidationResult({
@@ -31,48 +31,48 @@ export function DocumentValidationResult({
     error,
     isLoading,
     isPolling,
-    pollingStatus,
+    pollingStatus
 }: DocumentValidationResultProps) {
-    const [showPrettyJson, setShowPrettyJson] = useState(true)
-    const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle')
+    const [showPrettyJson, setShowPrettyJson] = useState(true);
+    const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle');
 
     // Formatear el JSON para mostrarlo
     const formatJson = (data: Record<string, any> | null): string => {
-        if (!data) return ''
+        if (!data) return '';
 
         try {
-            return showPrettyJson ? JSON.stringify(data, null, 2) : JSON.stringify(data)
+            return showPrettyJson ? JSON.stringify(data, null, 2) : JSON.stringify(data);
         } catch (e) {
-            return 'Error al formatear JSON'
+            return 'Error al formatear JSON';
         }
-    }
+    };
 
     // Copiar el JSON al portapapeles
     const handleCopyJson = async () => {
-        if (!data) return
+        if (!data) return;
 
         try {
-            await navigator.clipboard.writeText(JSON.stringify(data, null, 2))
-            setCopyState('copied')
+            await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+            setCopyState('copied');
 
             setTimeout(() => {
-                setCopyState('idle')
-            }, 2000)
+                setCopyState('idle');
+            }, 2000);
         } catch (error) {
-            console.error('Error al copiar al portapapeles:', error)
+            console.error('Error al copiar al portapapeles:', error);
         }
-    }
+    };
 
     // Renderizar estado del polling
     const renderPollingStatus = () => {
-        if (!isPolling && !pollingStatus) return null
+        if (!isPolling && !pollingStatus) return null;
 
-        let estado = pollingStatus
+        let estado = pollingStatus;
         if (!estado && data?.status) {
-            estado = data.status
+            estado = data.status;
         }
         if (!estado && data?.transaction?.status) {
-            estado = data.transaction.status
+            estado = data.transaction.status;
         }
 
         return (
@@ -100,7 +100,7 @@ export function DocumentValidationResult({
                                 {estado === 'FAILED' && 'Fallido'}
                             </Badge>
                         </p>
-                        <p className='mt-1 text-sm text-muted-foreground'>
+                        <p className='text-muted-foreground mt-1 text-sm'>
                             {(estado === 'PENDING' || !estado) &&
                                 'La validación está en proceso, espere un momento...'}
                             {estado === 'DONE' && 'La validación se ha completado correctamente.'}
@@ -109,8 +109,8 @@ export function DocumentValidationResult({
                     </div>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     return (
         <Card className='flex h-full w-full max-w-full flex-col overflow-hidden'>
@@ -139,7 +139,7 @@ export function DocumentValidationResult({
                 )}
 
                 {!data && !error && !isLoading && !isPolling && (
-                    <div className='flex h-full flex-col items-center justify-center text-muted-foreground'>
+                    <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudAlert className='mb-4 h-20 w-20' />
                         <p className='text-sm'>
                             Complete el formulario para iniciar o consultar una validación
@@ -148,7 +148,7 @@ export function DocumentValidationResult({
                 )}
 
                 {isPolling && !data && !error && !isLoading && (
-                    <div className='flex h-full flex-col items-center justify-center text-muted-foreground'>
+                    <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <Loader className='mb-4 h-20 w-20 animate-spin' />
                         <p>Validando documento, esto puede tomar unos segundos...</p>
                         <p className='mt-2 text-sm'>Estado: {pollingStatus || 'Pendiente'}</p>
@@ -171,7 +171,7 @@ export function DocumentValidationResult({
                                 />
                                 <Label
                                     htmlFor='pretty-json'
-                                    className='text-xs text-muted-foreground'
+                                    className='text-muted-foreground text-xs'
                                 >
                                     Formato legible
                                 </Label>
@@ -181,7 +181,7 @@ export function DocumentValidationResult({
                         {/* Visualización del JSON */}
                         <div className='relative'>
                             <pre
-                                className={`mt-2 max-h-[400px] overflow-auto rounded-md bg-muted p-4 font-mono text-xs ${
+                                className={`bg-muted mt-2 max-h-[400px] overflow-auto rounded-md p-4 font-mono text-xs ${
                                     showPrettyJson ? 'whitespace-pre' : 'whitespace-pre-wrap'
                                 }`}
                             >
@@ -192,7 +192,7 @@ export function DocumentValidationResult({
                             <Button
                                 variant='secondary'
                                 size='sm'
-                                className='absolute right-2 top-2'
+                                className='absolute top-2 right-2'
                                 onClick={handleCopyJson}
                             >
                                 {copyState === 'copied' ? (
@@ -256,5 +256,5 @@ export function DocumentValidationResult({
                 )}
             </CardContent>
         </Card>
-    )
+    );
 }
