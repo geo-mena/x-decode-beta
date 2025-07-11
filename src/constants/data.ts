@@ -92,6 +92,12 @@ export const navItems: NavItem[] = [
                 url: '/tools/decode-image',
                 icon: 'route',
                 shortcut: ['m', 'm']
+            },
+            {
+                title: 'Base64 a PDF',
+                url: '/tools/decode-pdf',
+                icon: 'route',
+                shortcut: ['m', 'm']
             }
         ]
     },
