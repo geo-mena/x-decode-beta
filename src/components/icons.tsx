@@ -39,7 +39,8 @@ import {
     IconServer,
     IconLink,
     IconCloudDownload,
-    IconCloudUpload
+    IconCloudUpload,
+    IconTools
 } from '@tabler/icons-react';
 import { link } from 'fs';
 import { Settings } from 'lucide-react';
@@ -86,7 +87,7 @@ export const Icons = {
     rotateCw: IconRotateClockwise,
     x: IconX,
     plus: IconPlus,
-    tools: Settings,
+    tools: IconTools,
     link: IconLink,
     cloudDownload: IconCloudDownload,
     cloudUpload: IconCloudUpload
