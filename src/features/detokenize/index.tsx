@@ -122,16 +122,14 @@ export default function Detokenize() {
                     </div>
                 </div>
 
-                <a
-                    href='https://docs.identity-platform.io/docs/identity-api/resources/Services/detokenize'
-                    target='_blank'
-                    rel='noopener noreferrer'
+                <Badge 
+                    variant='secondary' 
+                    className='cursor-pointer p-2 text-primary'
+                    onClick={() => window.open('https://docs.identity-platform.io/docs/identity-api/resources/Services/detokenize', '_blank', 'noopener,noreferrer')}
                 >
-                    <Badge variant='secondary' className='cursor-pointer p-2 text-emerald-500'>
-                        <File className='h-4 w-4' />
-                        <span className='ml-2'>Documentación</span>
-                    </Badge>
-                </a>
+                    <File className='h-4 w-4' />
+                    <span className='ml-2'>Documentación</span>
+                </Badge>
 
                 <div className='grid gap-6 lg:grid-cols-2'>
                     {/* Formulario de entrada de token */}
