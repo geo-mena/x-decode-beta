@@ -316,7 +316,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                             placeholder={`Código ${index + 1} (Base64 de PDF)`}
                                             value={code}
                                             onChange={(e) => updateCode(e.target.value, index)}
-                                            className='min-h-[80px] flex-grow'
+                                            className='max-h-[125px] min-h-[100px] flex-grow resize-none overflow-y-auto font-mono text-xs'
                                             disabled={isLoading}
                                         />
                                         <div className='flex flex-col space-y-2'>
@@ -458,7 +458,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                         onClick={handleResetClick}
                         variant='secondary'
                         type='button'
-                        disabled={isLoading || repairingIndex !== null}
+                        disabled={isLoading || repairingIndex !== null || validCodesCount === 0}
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
                         Limpiar

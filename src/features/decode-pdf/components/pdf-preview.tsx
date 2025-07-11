@@ -26,7 +26,6 @@ import {
     AccordionItem,
     AccordionTrigger
 } from '@/components/ui/accordion';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -470,16 +469,17 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                 )}
 
                 {error && !isLoading && (
-                    <Alert variant='destructive' className='mb-4'>
-                        <AlertCircle className='h-4 w-4' />
-                        <AlertTitle>Error de procesamiento</AlertTitle>
-                        <AlertDescription>{error}</AlertDescription>
-                    </Alert>
+                    <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
+                        <CloudAlert className='mb-4 h-20 w-20' />
+                        <p className='text-sm font-medium'>
+                            {error}
+                        </p>
+                    </div>
                 )}
 
                 {!pdfs.length && !error && !isLoading && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
-                        <CloudAlert className='mb-4 h-20 w-20' />
+                        <CloudCog className='mb-4 h-20 w-20' />
                         <p className='text-sm font-medium'>
                             Ingrese un código base64 para ver el PDF
                         </p>
