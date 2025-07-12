@@ -374,7 +374,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                             {/* Campo de código de país */}
                             <div className='space-y-2'>
                                 <Label htmlFor='country'>
-                                    País del documento (código ISO 3166-1 alpha-3)
+                                    País del documento *
                                 </Label>
                                 <Input
                                     id='country'
@@ -384,11 +384,14 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     maxLength={3}
                                     disabled={isLoading || isPolling}
                                 />
+                                <span className='text-muted-foreground text-xs'>
+                                    Código ISO 3166-1 alpha-3
+                                </span>
                             </div>
 
                             {/* Campo de tipo de documento */}
                             <div className='space-y-2'>
-                                <Label htmlFor='idType'>Tipo de Documento</Label>
+                                <Label htmlFor='idType'>Tipo de Documento *</Label>
                                 <Select
                                     value={idType}
                                     onValueChange={setIdType}
@@ -409,11 +412,8 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
 
                             {/* Imagen frontal con tabs */}
                             <div className='space-y-2'>
-                                <div className='flex items-center justify-between'>
-                                    <Label>Imagen Frontal del Documento</Label>
-                                    <Badge variant='secondary' className='text-emerald-500'>
-                                        Requerido
-                                    </Badge>
+                                <div className='flex items-center'>
+                                    <Label>Imagen Frontal del Documento *</Label>
                                 </div>
 
                                 <Tabs
