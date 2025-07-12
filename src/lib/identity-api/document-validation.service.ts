@@ -19,7 +19,7 @@ export class DocumentValidationService {
     private get headers() {
         return {
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'x-api-key': this.apiKey
         };
     }

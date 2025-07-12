@@ -82,7 +82,7 @@ export const navItems: NavItem[] = [
                 url: '/service/morphology',
                 icon: 'route',
                 shortcut: ['m', 'm']
-            },
+            }
         ]
     },
 

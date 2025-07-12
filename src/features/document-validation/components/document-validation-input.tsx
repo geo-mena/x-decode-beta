@@ -3,7 +3,17 @@
 import { ChangeEvent, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as countries from 'i18n-iso-countries';
 import spanish from 'i18n-iso-countries/langs/es.json';
-import { Braces, CloudUpload, Eye, ImageUp, Loader, Play, RefreshCw, Search, X } from 'lucide-react';
+import {
+    Braces,
+    CloudUpload,
+    Eye,
+    ImageUp,
+    Loader,
+    Play,
+    RefreshCw,
+    Search,
+    X
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { base64EncodeService } from '@/lib/tools/image-base64.service';
 import { isValidCountryCode } from '@/utils/country';
@@ -17,12 +27,7 @@ import {
     CardHeader,
     CardTitle
 } from '@/components/ui/card';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -79,7 +84,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
         const [backsideFileName, setBacksideFileName] = useState<string | null>(null);
         const [frontsidePreviewUrl, setFrontsidePreviewUrl] = useState('');
         const [backsidePreviewUrl, setBacksidePreviewUrl] = useState('');
-        
+
         const [frontsideLoading, setFrontsideLoading] = useState(false);
         const [backsideLoading, setBacksideLoading] = useState(false);
         const [formError, setFormError] = useState<string | null>(null);
@@ -349,11 +354,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
 
         // Validar si hay datos suficientes para habilitar el botón de ejecución
         const hasRequiredDataForStart = () => {
-            return (
-                country.trim() !== '' &&
-                idType !== '' &&
-                frontsideImageBase64.trim() !== ''
-            );
+            return country.trim() !== '' && idType !== '' && frontsideImageBase64.trim() !== '';
         };
 
         const hasRequiredDataForGet = () => {
@@ -408,12 +409,10 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
 
                         <TabsContent value='start' className='space-y-4'>
                             {/* Campos de país y tipo de documento en la misma línea */}
-                            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 pt-2'>
+                            <div className='grid grid-cols-1 gap-4 pt-2 md:grid-cols-2'>
                                 {/* Campo de código de país */}
                                 <div className='space-y-2'>
-                                    <Label htmlFor='country'>
-                                        País del documento *
-                                    </Label>
+                                    <Label htmlFor='country'>País del documento *</Label>
                                     <Input
                                         id='country'
                                         value={country}
@@ -562,7 +561,8 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                             openImageModal(
                                                                 frontsidePreviewUrl,
                                                                 'Imagen Frontal del Documento',
-                                                                frontsideFileName || 'Imagen frontal'
+                                                                frontsideFileName ||
+                                                                    'Imagen frontal'
                                                             )
                                                         }
                                                         disabled={isLoading || isPolling}
@@ -809,7 +809,13 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                 ? handleStartValidation
                                 : handleGetValidationData
                         }
-                        disabled={isLoading || isPolling || frontsideLoading || backsideLoading || !hasRequiredData()}
+                        disabled={
+                            isLoading ||
+                            isPolling ||
+                            frontsideLoading ||
+                            backsideLoading ||
+                            !hasRequiredData()
+                        }
                         className='flex-1'
                     >
                         {isLoading ? (
@@ -843,7 +849,13 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                         onClick={onReset}
                         variant='secondary'
                         type='button'
-                        disabled={isLoading || isPolling || frontsideLoading || backsideLoading || !hasRequiredData()}
+                        disabled={
+                            isLoading ||
+                            isPolling ||
+                            frontsideLoading ||
+                            backsideLoading ||
+                            !hasRequiredData()
+                        }
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
                         Limpiar
@@ -851,8 +863,8 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                 </CardFooter>
 
                 {/* Modal para ver imagen en grande */}
-                <Dialog 
-                    open={imageModalOpen} 
+                <Dialog
+                    open={imageModalOpen}
                     onOpenChange={(open) => {
                         setImageModalOpen(open);
                         if (!open) {
@@ -860,22 +872,20 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                         }
                     }}
                 >
-                    <DialogContent className='max-w-4xl max-h-[90vh] overflow-auto'>
+                    <DialogContent className='max-h-[90vh] max-w-4xl overflow-auto'>
                         <DialogHeader>
-                            <DialogTitle>
-                                {modalImageData?.title || 'Vista de Imagen'}
-                            </DialogTitle>
+                            <DialogTitle>{modalImageData?.title || 'Vista de Imagen'}</DialogTitle>
                         </DialogHeader>
                         {modalImageData && (
                             <div className='flex flex-col items-center space-y-4'>
-                                <div className='relative w-full flex justify-center'>
+                                <div className='relative flex w-full justify-center'>
                                     <img
                                         src={modalImageData.url}
                                         alt={modalImageData.title}
-                                        className='max-w-full max-h-[70vh] object-contain rounded-lg border'
+                                        className='max-h-[70vh] max-w-full rounded-lg border object-contain'
                                     />
                                 </div>
-                                <div className='text-center text-sm text-muted-foreground'>
+                                <div className='text-muted-foreground text-center text-sm'>
                                     <p className='font-medium'>{modalImageData.fileName}</p>
                                 </div>
                             </div>
