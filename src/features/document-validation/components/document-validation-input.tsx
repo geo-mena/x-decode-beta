@@ -3,7 +3,7 @@
 import { ChangeEvent, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as countries from 'i18n-iso-countries';
 import spanish from 'i18n-iso-countries/langs/es.json';
-import { Braces, CloudUpload, ImageUp, Loader, Play, RefreshCw, Search } from 'lucide-react';
+import { Braces, CloudUpload, Eye, ImageUp, Loader, Play, RefreshCw, Search, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { base64EncodeService } from '@/lib/tools/image-base64.service';
 import { isValidCountryCode } from '@/utils/country';
@@ -17,6 +17,12 @@ import {
     CardHeader,
     CardTitle
 } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -73,9 +79,16 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
         const [backsideFileName, setBacksideFileName] = useState<string | null>(null);
         const [frontsidePreviewUrl, setFrontsidePreviewUrl] = useState('');
         const [backsidePreviewUrl, setBacksidePreviewUrl] = useState('');
+        
         const [frontsideLoading, setFrontsideLoading] = useState(false);
         const [backsideLoading, setBacksideLoading] = useState(false);
         const [formError, setFormError] = useState<string | null>(null);
+        const [imageModalOpen, setImageModalOpen] = useState(false);
+        const [modalImageData, setModalImageData] = useState<{
+            url: string;
+            title: string;
+            fileName: string;
+        } | null>(null);
 
         // Referencias a los elementos de formulario
         const frontInputRef = useRef<HTMLTextAreaElement>(null);
@@ -351,6 +364,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             return inputMethod === 'start' ? hasRequiredDataForStart() : hasRequiredDataForGet();
         };
 
+        // Funciones para manejar el modal de imagen
+        const openImageModal = (url: string, title: string, fileName: string) => {
+            setModalImageData({ url, title, fileName });
+            setImageModalOpen(true);
+        };
+
         // Limpiar resources cuando el componente se desmonte
         useEffect(() => {
             return () => {
@@ -535,14 +554,32 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <Button
-                                                    variant='ghost'
-                                                    size='sm'
-                                                    onClick={removeFrontsideImage}
-                                                    disabled={isLoading || isPolling}
-                                                >
-                                                    Eliminar
-                                                </Button>
+                                                <div className='flex gap-2'>
+                                                    <Button
+                                                        variant='outline'
+                                                        size='icon'
+                                                        onClick={() =>
+                                                            openImageModal(
+                                                                frontsidePreviewUrl,
+                                                                'Imagen Frontal del Documento',
+                                                                frontsideFileName || 'Imagen frontal'
+                                                            )
+                                                        }
+                                                        disabled={isLoading || isPolling}
+                                                        title='Ver imagen en grande'
+                                                    >
+                                                        <Eye className='h-4 w-4' />
+                                                    </Button>
+                                                    <Button
+                                                        variant='outline'
+                                                        size='icon'
+                                                        onClick={removeFrontsideImage}
+                                                        disabled={isLoading || isPolling}
+                                                        title='Eliminar imagen'
+                                                    >
+                                                        <X className='h-4 w-4' />
+                                                    </Button>
+                                                </div>
                                             </div>
                                         )}
                                     </TabsContent>
@@ -667,14 +704,32 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <Button
-                                                    variant='ghost'
-                                                    size='sm'
-                                                    onClick={removeBacksideImage}
-                                                    disabled={isLoading || isPolling}
-                                                >
-                                                    Eliminar
-                                                </Button>
+                                                <div className='flex gap-2'>
+                                                    <Button
+                                                        variant='outline'
+                                                        size='icon'
+                                                        onClick={() =>
+                                                            openImageModal(
+                                                                backsidePreviewUrl,
+                                                                'Imagen Trasera del Documento',
+                                                                backsideFileName || 'Imagen trasera'
+                                                            )
+                                                        }
+                                                        disabled={isLoading || isPolling}
+                                                        title='Ver imagen en grande'
+                                                    >
+                                                        <Eye className='h-4 w-4' />
+                                                    </Button>
+                                                    <Button
+                                                        variant='outline'
+                                                        size='icon'
+                                                        onClick={removeBacksideImage}
+                                                        disabled={isLoading || isPolling}
+                                                        title='Eliminar imagen'
+                                                    >
+                                                        <X className='h-4 w-4' />
+                                                    </Button>
+                                                </div>
                                             </div>
                                         )}
                                     </TabsContent>
@@ -794,6 +849,39 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                         Limpiar
                     </Button>
                 </CardFooter>
+
+                {/* Modal para ver imagen en grande */}
+                <Dialog 
+                    open={imageModalOpen} 
+                    onOpenChange={(open) => {
+                        setImageModalOpen(open);
+                        if (!open) {
+                            setModalImageData(null);
+                        }
+                    }}
+                >
+                    <DialogContent className='max-w-4xl max-h-[90vh] overflow-auto'>
+                        <DialogHeader>
+                            <DialogTitle>
+                                {modalImageData?.title || 'Vista de Imagen'}
+                            </DialogTitle>
+                        </DialogHeader>
+                        {modalImageData && (
+                            <div className='flex flex-col items-center space-y-4'>
+                                <div className='relative w-full flex justify-center'>
+                                    <img
+                                        src={modalImageData.url}
+                                        alt={modalImageData.title}
+                                        className='max-w-full max-h-[70vh] object-contain rounded-lg border'
+                                    />
+                                </div>
+                                <div className='text-center text-sm text-muted-foreground'>
+                                    <p className='font-medium'>{modalImageData.fileName}</p>
+                                </div>
+                            </div>
+                        )}
+                    </DialogContent>
+                </Dialog>
             </Card>
         );
     }
