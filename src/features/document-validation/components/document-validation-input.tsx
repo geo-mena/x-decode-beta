@@ -539,7 +539,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                 setFrontsideImageBase64(e.target.value)
                                             }
                                             disabled={isLoading || isPolling}
-                                            className='min-h-[80px] text-xs'
+                                            className='max-h-[100px] min-h-[100px] flex-grow resize-none overflow-y-auto font-mono text-xs'
                                         />
                                     </TabsContent>
                                 </Tabs>
@@ -669,7 +669,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                             value={backsideImageBase64}
                                             onChange={(e) => setBacksideImageBase64(e.target.value)}
                                             disabled={isLoading || isPolling}
-                                            className='min-h-[80px] text-xs'
+                                            className='max-h-[100px] min-h-[100px] flex-grow resize-none overflow-y-auto font-mono text-xs'
                                         />
                                     </TabsContent>
                                 </Tabs>
