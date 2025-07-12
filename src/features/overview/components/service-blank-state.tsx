@@ -55,8 +55,8 @@ const ServiceBlankState = () => {
                     <Image
                         src='/assets/terminal-cron-header.webp'
                         alt='Terminal Cron Header'
-                        width={533}
-                        height={517}
+                        width={350}
+                        height={340}
                         className='rounded-lg'
                         priority
                     />
