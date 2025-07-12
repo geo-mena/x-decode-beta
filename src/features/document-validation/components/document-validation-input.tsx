@@ -371,49 +371,55 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                         </TabsList>
 
                         <TabsContent value='start' className='space-y-4'>
-                            {/* Campo de código de país */}
-                            <div className='space-y-2'>
-                                <Label htmlFor='country'>
-                                    País del documento *
-                                </Label>
-                                <Input
-                                    id='country'
-                                    value={country}
-                                    onChange={handleCountryCodeChange}
-                                    placeholder='Ej: CHL, ARG, MEX'
-                                    maxLength={3}
-                                    disabled={isLoading || isPolling}
-                                />
-                                <span className='text-muted-foreground text-xs'>
-                                    Código ISO 3166-1 alpha-3
-                                </span>
-                            </div>
+                            {/* Campos de país y tipo de documento en la misma línea */}
+                            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 pt-2'>
+                                {/* Campo de código de país */}
+                                <div className='space-y-2'>
+                                    <Label htmlFor='country'>
+                                        País del documento *
+                                    </Label>
+                                    <Input
+                                        id='country'
+                                        value={country}
+                                        onChange={handleCountryCodeChange}
+                                        placeholder='Ej: CHL, ARG, MEX'
+                                        maxLength={3}
+                                        disabled={isLoading || isPolling}
+                                    />
+                                    <span className='text-muted-foreground text-xs'>
+                                        Código ISO 3166-1 alpha-3
+                                    </span>
+                                </div>
 
-                            {/* Campo de tipo de documento */}
-                            <div className='space-y-2'>
-                                <Label htmlFor='idType'>Tipo de Documento *</Label>
-                                <Select
-                                    value={idType}
-                                    onValueChange={setIdType}
-                                    disabled={isLoading || isPolling}
-                                >
-                                    <SelectTrigger id='idType'>
-                                        <SelectValue placeholder='Selecciona un tipo de documento' />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {ID_TYPES.map((type) => (
-                                            <SelectItem key={type.value} value={type.value}>
-                                                {type.label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+                                {/* Campo de tipo de documento */}
+                                <div className='space-y-2'>
+                                    <Label htmlFor='idType'>Tipo de Documento *</Label>
+                                    <Select
+                                        value={idType}
+                                        onValueChange={setIdType}
+                                        disabled={isLoading || isPolling}
+                                    >
+                                        <SelectTrigger id='idType' className='w-full'>
+                                            <SelectValue placeholder='Selecciona un tipo de documento' />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {ID_TYPES.map((type) => (
+                                                <SelectItem key={type.value} value={type.value}>
+                                                    {type.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
 
                             {/* Imagen frontal con tabs */}
                             <div className='space-y-2'>
-                                <div className='flex items-center'>
-                                    <Label>Imagen Frontal del Documento *</Label>
+                                <div className='flex items-center justify-between'>
+                                    <Label>Imagen Frontal del Documento</Label>
+                                    <Badge variant='secondary' className='text-primary'>
+                                        Requerido
+                                    </Badge>
                                 </div>
 
                                 <Tabs
@@ -543,7 +549,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                             <div className='space-y-2'>
                                 <div className='flex items-center justify-between'>
                                     <Label>Imagen Trasera del Documento</Label>
-                                    <Badge variant='secondary' className='text-emerald-500'>
+                                    <Badge variant='secondary' className='text-primary'>
                                         {idType === 'PASSPORT' ? 'Opcional' : 'Requerido'}
                                     </Badge>
                                 </div>
