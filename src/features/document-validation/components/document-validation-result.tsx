@@ -2,14 +2,13 @@
 
 import { useState } from 'react';
 import {
-    AlertCircle,
     Check,
     CircleCheck,
     Cloud,
     CloudAlert,
+    CloudCog,
     CloudLightning,
     Copy,
-    FileCheck,
     FileWarning,
     Loader
 } from 'lucide-react';
@@ -127,22 +126,23 @@ export function DocumentValidationResult({
             <CardContent className='flex-grow overflow-x-auto'>
                 {isLoading && (
                     <div className='flex h-full flex-col items-center justify-center'>
-                        <FileCheck className='mb-4 h-20 w-20 animate-pulse' />
+                        <CloudCog className='mb-4 h-20 w-20 animate-pulse' />
                         <p className='text-muted-foreground'>Procesando solicitud...</p>
                     </div>
                 )}
 
                 {error && !isLoading && (
-                    <Alert variant='destructive' className='mb-4'>
-                        <AlertCircle className='h-4 w-4' />
-                        <AlertTitle>Error</AlertTitle>
-                        <AlertDescription>{error}</AlertDescription>
-                    </Alert>
+                    <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
+                        <CloudAlert className='mb-4 h-20 w-20' />
+                        <p className='text-sm'>
+                            {error}
+                        </p>
+                    </div>
                 )}
 
                 {!data && !error && !isLoading && !isPolling && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
-                        <CloudAlert className='mb-4 h-20 w-20' />
+                        <CloudCog className='mb-4 h-20 w-20' />
                         <p className='text-sm'>
                             Complete el formulario para iniciar o consultar una validación
                         </p>
@@ -230,7 +230,7 @@ export function DocumentValidationResult({
                         {(pollingStatus === 'DONE' ||
                             data.status === 'DONE' ||
                             data.transaction?.status === 'DONE') && (
-                            <Alert variant='info' className='mt-4 border-l-4 border-l-green-500'>
+                            <Alert className='mt-4 border-l-4 border-l-green-500'>
                                 <CircleCheck className='h-5 w-5 stroke-green-500' />
                                 <AlertTitle>Validación completada</AlertTitle>
                                 <AlertDescription>
