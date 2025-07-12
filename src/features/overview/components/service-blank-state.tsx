@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -45,6 +46,21 @@ const ServiceBlankState = () => {
             aria-label='Service overview welcome'
         >
             <div className='flex max-w-3xl flex-col gap-y-8'>
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className='flex justify-center'
+                >
+                    <Image
+                        src='/assets/terminal-cron-header.webp'
+                        alt='Terminal Cron Header'
+                        width={533}
+                        height={517}
+                        className='rounded-lg'
+                        priority
+                    />
+                </motion.div>
                 <motion.h1
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
