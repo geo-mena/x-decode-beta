@@ -3,7 +3,8 @@
 import { useRef, useState, useEffect } from 'react';
 import { File } from 'lucide-react';
 import { toast } from 'sonner';
-import { documentValidationService } from '@/lib/identity-api/document-validation.service';
+import { createDocumentValidationService } from '@/lib/identity-api/document-validation.service';
+import { usePlaygroundStore } from '@/store';
 import { Badge } from '@/components/ui/badge';
 import { DocumentValidationInput } from './components/document-validation-input';
 import { DocumentValidationResult } from './components/document-validation-result';
@@ -11,6 +12,7 @@ import { DocumentValidationResult } from './components/document-validation-resul
 const POLLING_INTERVAL = 5000;
 
 export default function DocumentValidation() {
+    const { apiKey } = usePlaygroundStore();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationResult, setValidationResult] = useState<Record<string, any> | null>(null);
@@ -44,6 +46,15 @@ export default function DocumentValidation() {
         stopPolling();
 
         try {
+            if (!apiKey.trim()) {
+                setError('API Key no configurada');
+                toast.error('Error', {
+                    description: 'Por favor configure su API Key en la configuración.'
+                });
+                return;
+            }
+
+            const documentValidationService = createDocumentValidationService(apiKey);
             const response = await documentValidationService.startDocumentValidation(
                 country,
                 idType,
@@ -91,6 +102,15 @@ export default function DocumentValidation() {
         stopPolling();
 
         try {
+            if (!apiKey.trim()) {
+                setError('API Key no configurada');
+                toast.error('Error', {
+                    description: 'Por favor configure su API Key en la configuración.'
+                });
+                return;
+            }
+
+            const documentValidationService = createDocumentValidationService(apiKey);
             const response = await documentValidationService.getValidationData(
                 scanReference,
                 false
@@ -134,6 +154,16 @@ export default function DocumentValidation() {
         // Función que se ejecutará a intervalos regulares
         const checkStatus = async () => {
             try {
+                if (!apiKey.trim()) {
+                    stopPolling();
+                    setError('API Key no configurada');
+                    toast.error('Error', {
+                        description: 'API Key requerida para continuar el polling.'
+                    });
+                    return;
+                }
+
+                const documentValidationService = createDocumentValidationService(apiKey);
                 const statusResponse = await documentValidationService.checkValidationStatus(
                     scanReference,
                     false
