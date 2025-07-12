@@ -334,6 +334,23 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             onGetValidationData(scanReference);
         };
 
+        // Validar si hay datos suficientes para habilitar el botón de ejecución
+        const hasRequiredDataForStart = () => {
+            return (
+                country.trim() !== '' &&
+                idType !== '' &&
+                frontsideImageBase64.trim() !== ''
+            );
+        };
+
+        const hasRequiredDataForGet = () => {
+            return scanReference.trim() !== '';
+        };
+
+        const hasRequiredData = () => {
+            return inputMethod === 'start' ? hasRequiredDataForStart() : hasRequiredDataForGet();
+        };
+
         // Limpiar resources cuando el componente se desmonte
         useEffect(() => {
             return () => {
@@ -737,7 +754,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                 ? handleStartValidation
                                 : handleGetValidationData
                         }
-                        disabled={isLoading || isPolling || frontsideLoading || backsideLoading}
+                        disabled={isLoading || isPolling || frontsideLoading || backsideLoading || !hasRequiredData()}
                         className='flex-1'
                     >
                         {isLoading ? (
@@ -771,7 +788,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                         onClick={onReset}
                         variant='secondary'
                         type='button'
-                        disabled={isLoading || isPolling || frontsideLoading || backsideLoading}
+                        disabled={isLoading || isPolling || frontsideLoading || backsideLoading || !hasRequiredData()}
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
                         Limpiar
