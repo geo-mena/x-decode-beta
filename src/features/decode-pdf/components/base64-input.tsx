@@ -29,7 +29,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
-const MAX_CODES = 10;
+const MAX_CODES = 2;
 
 interface Base64InputProps {
     onSubmit: (codes: string[]) => void;
