@@ -28,5 +28,5 @@ export async function getContentLayout(): Promise<ContentLayout> {
     const value = cookieStore.get('content_layout')?.value;
     return allowedContentLayouts.includes(value as ContentLayout)
         ? (value as ContentLayout)
-        : 'centered';
+        : 'full-width';
 }
