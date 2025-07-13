@@ -60,7 +60,10 @@ const ServiceBlankState = () => {
                             <h3 className='text font-semibold'>Download Latest Image</h3>
                         </div>
                         <div className='ml-11'>
-                            <ShellHighlighter code="docker pull geomena/x-decode:latest" />
+                            <ShellHighlighter 
+                                code="docker pull geomena/x-decode:latest" 
+                                filename="terminal"
+                            />
                         </div>
                     </div>
                     
@@ -72,7 +75,10 @@ const ServiceBlankState = () => {
                             <h3 className='text font-semibold'>Run Container</h3>
                         </div>
                         <div className='ml-11'>
-                            <ShellHighlighter code="docker run -p 3000:3000 geomena/x-decode:latest" />
+                            <ShellHighlighter 
+                                code="docker run -p 3000:3000 geomena/x-decode:latest" 
+                                filename="terminal"
+                            />
                         </div>
                     </div>
                     
@@ -84,7 +90,11 @@ const ServiceBlankState = () => {
                             <h3 className='text font-semibold'>Access Application</h3>
                         </div>
                         <div className='ml-11'>
-                            <ShellHighlighter code="http://localhost:3000" />
+                            <ShellHighlighter 
+                                code="http://localhost:3000" 
+                                filename="browser"
+                                language="text"
+                            />
                         </div>
                     </div>
                 </motion.div>

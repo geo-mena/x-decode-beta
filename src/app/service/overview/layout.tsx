@@ -12,6 +12,10 @@ import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
 import ServiceBlankState from '@/features/overview/components/service-blank-state';
 import React from 'react';
 
+export const metadata = {
+    title: 'Overview'
+};
+
 export default function OverViewLayout({
     sales,
     pie_stats,
