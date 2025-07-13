@@ -4,16 +4,13 @@ import { useState } from 'react';
 import {
     Check,
     CircleCheck,
-    Cloud,
     CloudAlert,
     CloudCog,
-    CloudLightning,
     Copy,
     FileWarning,
     Loader
 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -65,53 +62,53 @@ export function DocumentValidationResult({
     };
 
     // Renderizar estado del polling
-    const renderPollingStatus = () => {
-        if (!isPolling && !pollingStatus) return null;
+    // const renderPollingStatus = () => {
+    //     if (!isPolling && !pollingStatus) return null;
 
-        let estado = pollingStatus;
-        if (!estado && data?.status) {
-            estado = data.status;
-        }
-        if (!estado && data?.transaction?.status) {
-            estado = data.transaction.status;
-        }
+    //     let estado = pollingStatus;
+    //     if (!estado && data?.status) {
+    //         estado = data.status;
+    //     }
+    //     if (!estado && data?.transaction?.status) {
+    //         estado = data.transaction.status;
+    //     }
 
-        return (
-            <div className='mb-4 flex items-center justify-between rounded-md border p-3'>
-                <div className='flex items-center gap-2'>
-                    {(estado === 'PENDING' || !estado) && (
-                        <CloudLightning className='h-5 w-5 animate-pulse text-yellow-500' />
-                    )}
-                    {estado === 'DONE' && <Cloud className='h-5 w-5 text-green-500' />}
-                    {estado === 'FAILED' && <CloudAlert className='h-5 w-5 text-red-500' />}
-                    <div>
-                        <p className='text-sm font-medium'>
-                            Estado:{' '}
-                            <Badge
-                                variant={
-                                    estado === 'DONE'
-                                        ? 'success'
-                                        : estado === 'FAILED'
-                                          ? 'destructive'
-                                          : 'default'
-                                }
-                            >
-                                {(estado === 'PENDING' || !estado) && 'Pendiente'}
-                                {estado === 'DONE' && 'Completado'}
-                                {estado === 'FAILED' && 'Fallido'}
-                            </Badge>
-                        </p>
-                        <p className='text-muted-foreground mt-1 text-sm'>
-                            {(estado === 'PENDING' || !estado) &&
-                                'La validación está en proceso, espere un momento...'}
-                            {estado === 'DONE' && 'La validación se ha completado correctamente.'}
-                            {estado === 'FAILED' && 'La validación ha fallado.'}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        );
-    };
+    //     return (
+    //         <div className='mb-4 flex items-center justify-between rounded-md border p-3'>
+    //             <div className='flex items-center gap-2'>
+    //                 {(estado === 'PENDING' || !estado) && (
+    //                     <CloudLightning className='h-5 w-5 animate-pulse text-yellow-500' />
+    //                 )}
+    //                 {estado === 'DONE' && <Cloud className='h-5 w-5 text-green-500' />}
+    //                 {estado === 'FAILED' && <CloudAlert className='h-5 w-5 text-red-500' />}
+    //                 <div>
+    //                     <p className='text-sm font-medium'>
+    //                         Estado:{' '}
+    //                         <Badge
+    //                             variant={
+    //                                 estado === 'DONE'
+    //                                     ? 'success'
+    //                                     : estado === 'FAILED'
+    //                                       ? 'destructive'
+    //                                       : 'default'
+    //                             }
+    //                         >
+    //                             {(estado === 'PENDING' || !estado) && 'Pendiente'}
+    //                             {estado === 'DONE' && 'Completado'}
+    //                             {estado === 'FAILED' && 'Fallido'}
+    //                         </Badge>
+    //                     </p>
+    //                     <p className='text-muted-foreground mt-1 text-sm'>
+    //                         {(estado === 'PENDING' || !estado) &&
+    //                             'La validación está en proceso, espere un momento...'}
+    //                         {estado === 'DONE' && 'La validación se ha completado correctamente.'}
+    //                         {estado === 'FAILED' && 'La validación ha fallado.'}
+    //                     </p>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
     return (
         <Card className='flex h-full w-full max-w-full flex-col overflow-hidden'>
@@ -158,7 +155,7 @@ export function DocumentValidationResult({
                 {data && (
                     <div className='space-y-4'>
                         {/* Mostrar estado de polling si está activo */}
-                        {renderPollingStatus()}
+                        {/* {renderPollingStatus()} */}
 
                         {/* Controles para el formato JSON */}
                         <div className='flex items-center justify-between'>
@@ -170,7 +167,7 @@ export function DocumentValidationResult({
                         <div className='relative'>
                             <JsonHighlighter
                                 code={formatJson(data)}
-                                className='mt-2 max-h-[400px] overflow-auto'
+                                className='mt-2 max-h-[550px] overflow-auto'
                             />
 
                             {/* Botón de copiar */}
@@ -213,25 +210,25 @@ export function DocumentValidationResult({
                         {(pollingStatus === 'DONE' ||
                             data.status === 'DONE' ||
                             data.transaction?.status === 'DONE') && (
-                            <Alert className='mt-4 border-l-4 border-l-green-500'>
-                                <CircleCheck className='h-5 w-5 stroke-green-500' />
-                                <AlertTitle>Validación completada</AlertTitle>
+                            <Alert className='mt-4 border-l-4 border-l-primary'>
+                                <CircleCheck className='h-5 w-5 stroke-primary' />
+                                <AlertTitle>Validación Completada</AlertTitle>
                                 <AlertDescription>
                                     {data.document?.status === 'ERROR_NOT_READABLE_ID' && (
-                                        <span className='mt-1 block text-amber-600'>
-                                            Nota: Se ha detectado que el documento tiene problemas
+                                        <span className='mt-1 block'>
+                                            Se ha detectado que el documento tiene problemas
                                             de legibilidad.
                                         </span>
                                     )}
                                     {data.document?.status === 'DENIED_FRAUD' && (
-                                        <span className='mt-1 block text-red-600'>
-                                            Nota: El documento ha sido rechazado por sospecha de
+                                        <span className='mt-1 block'>
+                                            El documento ha sido rechazado por sospecha de
                                             fraude.
                                         </span>
                                     )}
                                     {data.document?.status === 'APPROVED_VERIFIED' && (
-                                        <span className='mt-1 block text-green-600'>
-                                            Nota: El documento ha sido verificado y aprobado.
+                                        <span className='mt-1 block'>
+                                            El documento ha sido verificado y aprobado.
                                         </span>
                                     )}
                                 </AlertDescription>
