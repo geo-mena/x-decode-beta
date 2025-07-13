@@ -71,9 +71,9 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
         return (
             <div className='space-y-4'>
                 <div>
-                    <h3 className='mb-2 text-sm font-medium'>Información de la imagen</h3>
+                    <h3 className='mb-2 text-sm font-medium'>Image Information</h3>
                     <div className='grid grid-cols-2 gap-x-4 gap-y-2 text-sm'>
-                        <div className='text-muted-foreground'>Nombre:</div>
+                        <div className='text-muted-foreground'>Name:</div>
                         <div className='truncate font-medium' title={resultData.original_name}>
                             {resultData.original_name}
                         </div>
@@ -95,17 +95,17 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                             </>
                         )}
 
-                        <div className='text-muted-foreground'>Tipo:</div>
+                        <div className='text-muted-foreground'>Type:</div>
                         <div>
                             <Badge variant='default' className='font-mono text-xs'>
                                 {resultData.mime_type}
                             </Badge>
                         </div>
 
-                        <div className='text-muted-foreground'>Tamaño:</div>
+                        <div className='text-muted-foreground'>Size:</div>
                         <div>{resultData.size_formatted || formatFileSize(resultData.size)}</div>
 
-                        <div className='text-muted-foreground'>Dimensiones:</div>
+                        <div className='text-muted-foreground'>Dimensions:</div>
                         <div>
                             {resultData.width} × {resultData.height} px
                         </div>
@@ -116,7 +116,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
 
                 <div className='space-y-3'>
                     <div className='flex items-center justify-between'>
-                        <h3 className='text-sm font-medium'>Código Base64</h3>
+                        <h3 className='text-sm font-medium'>Base64 Code</h3>
                         <div className='flex items-center space-x-2'>
                             <Switch
                                 id='truncate-switch'
@@ -127,7 +127,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                                 htmlFor='truncate-switch'
                                 className='text-muted-foreground text-xs'
                             >
-                                Mostrar truncado
+                                Show truncated
                             </Label>
                         </div>
                     </div>
@@ -149,12 +149,12 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                             {copyState[base64Key] === 'copied' ? (
                                 <>
                                     <Check className='mr-2 h-4 w-4' />
-                                    ¡Copiado!
+                                    Copied!
                                 </>
                             ) : (
                                 <>
                                     <Copy className='mr-2 h-4 w-4' />
-                                    Copiar Base64
+                                    Copy Base64
                                 </>
                             )}
                         </Button>
@@ -167,7 +167,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                             className='flex-1'
                         >
                             <Download className='mr-2 h-4 w-4' />
-                            Descargar TXT
+                            Download TXT
                         </Button>
                     </div>
                 </div>
@@ -179,11 +179,11 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
         <Card className='flex h-full w-full max-w-full flex-col overflow-hidden'>
             <CardHeader className='flex flex-row items-center justify-between pb-2'>
                 <div>
-                    <CardTitle>Resultados Base64</CardTitle>
+                    <CardTitle>Output Results</CardTitle>
                     <CardDescription className='mt-1'>
                         {hasMultipleResults
-                            ? 'Códigos base64 generados a partir de las imágenes'
-                            : 'Código base64 generado a partir de la imagen'}
+                            ? 'Base64 codes generated from images'
+                            : 'Base64 code generated from image'}
                     </CardDescription>
                 </div>
             </CardHeader>
@@ -191,7 +191,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                 {isLoading && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='mb-4 h-20 w-20 animate-pulse' />
-                        <p className='text-sm'>Codificando imagen(es) a Base64...</p>
+                        <p className='text-sm'>Encoding image(s) to Base64...</p>
                     </div>
                 )}
 
@@ -206,7 +206,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='mb-4 h-20 w-20' />
                         <p className='text-sm'>
-                            Suba una imagen o proporcione una URL para obtener su código Base64
+                            Upload an image or provide a URL to get its Base64 code
                         </p>
                     </div>
                 )}
@@ -220,7 +220,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                                         <TabsTrigger key={index} value={index.toString()}>
                                             <div className='flex items-center gap-1.5'>
                                                 <Images className='h-4 w-4' />
-                                                <span>Resultado {index + 1}</span>
+                                                <span>Result {index + 1}</span>
                                             </div>
                                         </TabsTrigger>
                                     ))}

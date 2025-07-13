@@ -26,31 +26,31 @@ export default function EncodeImage() {
             const response = await base64EncodeService.encodeImages(files, true);
 
             if (!response.success || !response.data) {
-                setError(response.message || 'Error al codificar la imagen.');
+                setError(response.message || 'Error encoding the image.');
                 setEncodedData(null);
 
-                toast.error('Error de codificación', {
-                    description: response.message || 'No se pudieron procesar las imágenes.'
+                toast.error('Encoding error', {
+                    description: response.message || 'Could not process the images.'
                 });
             } else {
                 // Si es un solo resultado o múltiples, normalizamos a un array
                 if (Array.isArray(response.data)) {
                     setEncodedData(response.data);
 
-                    toast.success('Imágenes codificadas', {
-                        description: `Se codificaron ${response.data.length} imágenes exitosamente`
+                    toast.success('Images encoded', {
+                        description: `Successfully encoded ${response.data.length} images`
                     });
                 } else {
                     // Si es una sola imagen
                     setEncodedData([response.data]);
 
-                    toast.success('Imagen codificada', {
+                    toast.success('Image encoded', {
                         description: `${response.data.original_name} (${response.data.width}×${response.data.height})`
                     });
                 }
             }
         } catch (err) {
-            const errorMessage = 'Error al procesar la solicitud. Intente nuevamente.';
+            const errorMessage = 'Error processing the request. Please try again.';
             setError(errorMessage);
             setEncodedData(null);
 
@@ -73,22 +73,22 @@ export default function EncodeImage() {
             const response = await base64EncodeService.encodeImageFromUrl(imageUrl, true);
 
             if (!response.success || !response.data) {
-                setError(response.message || 'Error al codificar la imagen desde URL.');
+                setError(response.message || 'Error encoding image from URL.');
                 setEncodedData(null);
 
-                toast.error('Error de codificación', {
-                    description: response.message || 'No se pudo procesar la URL de imagen.'
+                toast.error('Encoding error', {
+                    description: response.message || 'Could not process the image URL.'
                 });
             } else {
                 // Establecer resultado
                 setEncodedData(Array.isArray(response.data) ? response.data : [response.data]);
 
-                toast.success('Imagen codificada', {
-                    description: `URL procesada exitosamente`
+                toast.success('Image encoded', {
+                    description: `URL processed successfully`
                 });
             }
         } catch (err) {
-            const errorMessage = 'Error al procesar la URL. Intente nuevamente.';
+            const errorMessage = 'Error processing the URL. Please try again.';
             setError(errorMessage);
             setEncodedData(null);
 
@@ -104,11 +104,11 @@ export default function EncodeImage() {
         const result = await base64EncodeService.copyToClipboard(content, isDataUri);
 
         if (result.success) {
-            toast.success('Copiado al portapapeles', {
+            toast.success('Copied to clipboard', {
                 description: result.message
             });
         } else {
-            toast.error('Error al copiar', {
+            toast.error('Copy error', {
                 description: result.message
             });
         }
@@ -117,8 +117,8 @@ export default function EncodeImage() {
     const handleDownloadFromDataUri = (dataUri: string, fileName: string) => {
         base64EncodeService.downloadFromDataUri(dataUri, fileName);
 
-        toast.success('Descargando imagen', {
-            description: `Descargando ${fileName}`
+        toast.success('Downloading image', {
+            description: `Downloading ${fileName}`
         });
     };
 
@@ -131,8 +131,8 @@ export default function EncodeImage() {
             imageInputRef.current.reset();
         }
 
-        toast.info('Formulario restablecido', {
-            description: 'Todos los datos han sido borrados para una nueva consulta.'
+        toast.info('Form reset', {
+            description: 'All data has been cleared for a new query.'
         });
     };
 
@@ -142,16 +142,15 @@ export default function EncodeImage() {
             <>
                 <div className='mb-6 flex items-center justify-between'>
                     <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>Imagen a Base64</h1>
+                        <h1 className='text-2xl font-bold tracking-tight'>Image to Base64</h1>
                         <p className='text-muted-foreground text-sm'>
-                            Convierte imágenes a códigos base64 para usar en HTML, CSS o cualquier
-                            otro documento.
+                            Convert images to base64 codes for use in HTML, CSS or any other document.
                         </p>
                     </div>
                 </div>
 
                 <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Formulario de entrada de imágenes */}
+                    {/* Image input form */}
                     <ImageInput
                         ref={imageInputRef}
                         onSubmitFiles={handleEncodeImages}
@@ -160,7 +159,7 @@ export default function EncodeImage() {
                         isLoading={loading}
                     />
 
-                    {/* Visualización de resultados Base64 */}
+                    {/* Base64 results visualization */}
                     <Base64Result
                         data={encodedData}
                         error={error}

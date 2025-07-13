@@ -56,8 +56,8 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
                 (file) => file.size > MAX_SIZE_MB * 1024 * 1024
             );
             if (oversizedFiles.length > 0) {
-                toast.error('Archivo demasiado grande', {
-                    description: `Uno o más archivos exceden el límite de ${MAX_SIZE_MB} MB.`
+                toast.error('File too large', {
+                    description: `One or more files exceed the ${MAX_SIZE_MB} MB limit.`
                 });
                 return;
             }
@@ -65,8 +65,8 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
             // Limitar cantidad
             const filesToAdd = filesArray.slice(0, MAX_FILES - files.length);
             if (filesArray.length + files.length > MAX_FILES) {
-                toast.warning('Límite de archivos excedido', {
-                    description: `Solo se procesarán hasta ${MAX_FILES} archivos en total. Se ignorarán los demás.`
+                toast.warning('File limit exceeded', {
+                    description: `Only up to ${MAX_FILES} files will be processed in total. The rest will be ignored.`
                 });
             }
 
@@ -77,8 +77,8 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
             setFiles([...files, ...filesToAdd]);
             setPreviewUrls([...previewUrls, ...newPreviewUrls]);
 
-            toast.success('Imágenes cargadas', {
-                description: `${filesToAdd.length} ${filesToAdd.length === 1 ? 'imagen cargada' : 'imágenes cargadas'}.`
+            toast.success('Images loaded', {
+                description: `${filesToAdd.length} ${filesToAdd.length === 1 ? 'image loaded' : 'images loaded'}.`
             });
 
             // Limpiar el input de archivos
@@ -107,16 +107,16 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
         const handleSubmit = () => {
             if (inputMethod === 'upload') {
                 if (files.length === 0) {
-                    toast.error('Imagen requerida', {
-                        description: 'Por favor seleccione al menos una imagen para codificar.'
+                    toast.error('Image required', {
+                        description: 'Please select at least one image to encode.'
                     });
                     return;
                 }
                 onSubmitFiles(files);
             } else {
                 if (!imageUrl.trim()) {
-                    toast.error('URL requerida', {
-                        description: 'Por favor ingrese una URL de imagen válida.'
+                    toast.error('URL required', {
+                        description: 'Please enter a valid image URL.'
                     });
                     return;
                 }
@@ -135,9 +135,9 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
         return (
             <Card>
                 <CardHeader>
-                    <CardTitle>Entrada de Imagen</CardTitle>
+                    <CardTitle>Input Parameters</CardTitle>
                     <CardDescription>
-                        Suba hasta {MAX_FILES} imágenes o ingrese una URL de imagen
+                        Upload up to {MAX_FILES} images or enter an image URL
                     </CardDescription>
                 </CardHeader>
                 <CardContent className='space-y-4'>
@@ -148,25 +148,25 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
                         <TabsList className='grid w-full grid-cols-2'>
                             <TabsTrigger value='upload'>
                                 <CloudUpload className='mr-2 h-4 w-4' />
-                                Subir Archivos
+                                Upload Files
                             </TabsTrigger>
                             <TabsTrigger value='url'>
                                 <Link className='mr-2 h-4 w-4' />
-                                URL de Imagen
+                                Image URL
                             </TabsTrigger>
                         </TabsList>
 
                         <TabsContent value='upload' className='space-y-4'>
                             <div className='space-y-2'>
                                 <div className='flex items-center justify-between'>
-                                    <Label>Imágenes para codificar</Label>
+                                    <Label>Images to encode</Label>
                                     <Badge
                                         variant={
                                             files.length >= MAX_FILES ? 'destructive' : 'secondary'
                                         }
                                         className='ml-2'
                                     >
-                                        {files.length}/{MAX_FILES} imagen(es)
+                                        {files.length}/{MAX_FILES} image(s)
                                     </Badge>
                                 </div>
 
@@ -191,12 +191,12 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
                                             <ImageUp className='text-muted-foreground mb-2 h-12 w-12' />
                                             <p className='text-muted-foreground mb-2 text-sm'>
                                                 <span className='font-semibold'>
-                                                    Haga clic para subir
+                                                    Click to upload
                                                 </span>{' '}
-                                                o arrastre y suelte
+                                                or drag and drop
                                             </p>
                                             <p className='text-muted-foreground text-xs'>
-                                                JPG, PNG, GIF, SVG, WebP (máx. {MAX_SIZE_MB} MB)
+                                                JPG, PNG, GIF, SVG, WebP (max. {MAX_SIZE_MB} MB)
                                             </p>
                                         </div>
                                     </label>
@@ -251,7 +251,7 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
                                                 disabled={isLoading}
                                             >
                                                 <Plus className='mr-2 h-4 w-4' />
-                                                Agregar otra imagen
+                                                Add another image
                                             </Button>
                                         )}
                                     </div>
@@ -261,7 +261,7 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
 
                         <TabsContent value='url' className='space-y-4'>
                             <div className='space-y-2'>
-                                <Label htmlFor='image-url'>URL de la imagen</Label>
+                                <Label htmlFor='image-url'>Image URL</Label>
                                 <Input
                                     id='image-url'
                                     placeholder='https://ejemplo.com/imagen.jpg'
@@ -270,7 +270,7 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
                                     disabled={isLoading}
                                 />
                                 <p className='text-muted-foreground mt-1 text-xs'>
-                                    Ingrese la URL directa de una imagen accesible públicamente.
+                                    Enter the direct URL of a publicly accessible image.
                                 </p>
                             </div>
                         </TabsContent>
@@ -288,12 +288,12 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
                         {isLoading ? (
                             <>
                                 <Loader className='mr-2 h-4 w-4 animate-spin' />
-                                Procesando...
+                                Processing...
                             </>
                         ) : (
                             <>
                                 <Play className='mr-2 h-4 w-4' />
-                                Codificar
+                                Encode
                             </>
                         )}
                     </Button>
@@ -307,7 +307,7 @@ export const ImageInput = forwardRef<any, ImageInputProps>(
                         }
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
-                        Limpiar
+                        Clear
                     </Button>
                 </CardFooter>
             </Card>
