@@ -80,16 +80,6 @@ The Dockerfile uses a multi-stage build approach:
 - Standalone output for optimal container size
 - Disabled telemetry and Sentry for production builds
 
-### Environment Variables
-
-The container sets the following environment variables:
-
-- `NODE_ENV=production`
-- `NEXT_TELEMETRY_DISABLED=1`
-- `NEXT_PUBLIC_SENTRY_DISABLED=1`
-- `PORT=3000`
-- `HOSTNAME=0.0.0.0`
-
 ## Troubleshooting
 
 ### Common Issues
