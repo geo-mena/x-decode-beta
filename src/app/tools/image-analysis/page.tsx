@@ -2,7 +2,7 @@ import PageContainer from '@/components/layout/page-container';
 import ImageAnalysis from '@/features/image-analysis';
 
 export const metadata = {
-    title: 'TOOLS - Análisis de Imágenes'
+    title: 'TOOLS - Image Analysis'
 };
 
 export default function page() {

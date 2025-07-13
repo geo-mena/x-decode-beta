@@ -37,15 +37,15 @@ export const ImageAnalysisResults = ({
         return (
             <Card className='flex h-full flex-col'>
                 <CardHeader>
-                    <CardTitle>Reporte de análisis</CardTitle>
+                    <CardTitle>Output Results</CardTitle>
                     <CardDescription>
-                        Ingrese una imagen para analizar si fue creada por IA o por humanos
+                        Enter an image to analyze if it was created by AI or by humans
                     </CardDescription>
                 </CardHeader>
                 <CardContent className='flex-grow'>
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='h-20 w-20 animate-pulse' />
-                        <p className='mt-4 text-sm'>Analizando imagen...</p>
+                        <p className='mt-4 text-sm'>Analyzing image...</p>
                     </div>
                 </CardContent>
             </Card>
@@ -56,15 +56,15 @@ export const ImageAnalysisResults = ({
         return (
             <Card className='flex h-full flex-col'>
                 <CardHeader>
-                    <CardTitle>Error de análisis</CardTitle>
-                    <CardDescription>No se pudo procesar la solicitud</CardDescription>
+                    <CardTitle>Analysis error</CardTitle>
+                    <CardDescription>Could not process the request</CardDescription>
                 </CardHeader>
                 <CardContent className='flex-grow'>
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         {/* <AlertCircle className='mb-4 h-20 w-20 text-red-500' /> */}
                         <CloudAlert className='h-20 w-20' />
                         <p className='text-sm'>
-                            Intente nuevamente con otra imagen o verifique su conexión.
+                            Try again with another image or check your connection.
                         </p>
                     </div>
                 </CardContent>
@@ -76,16 +76,16 @@ export const ImageAnalysisResults = ({
         return (
             <Card className='flex h-full flex-col'>
                 <CardHeader>
-                    <CardTitle>Reporte de análisis</CardTitle>
+                    <CardTitle>Output Results</CardTitle>
                     <CardDescription>
-                        Ingrese una imagen para analizar si fue creada por IA o por humanos
+                        Enter an image to analyze if it was created by AI or by humans
                     </CardDescription>
                 </CardHeader>
                 <CardContent className='flex-grow'>
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='h-20 w-20' />
                         <p className='mt-4 text-sm'>
-                            Sin datos para mostrar, por favor sube una imagen
+                            No data to display, please upload an image
                         </p>
                     </div>
                 </CardContent>
@@ -142,9 +142,9 @@ export const ImageAnalysisResults = ({
     return (
         <Card className='w-full' ref={cardRef}>
             <CardHeader>
-                <CardTitle>Reporte de análisis</CardTitle>
+                <CardTitle>Output Results</CardTitle>
                 <CardDescription>
-                    A continuación se muestran los resultados del análisis de la imagen
+                    Below are the results of the image analysis
                 </CardDescription>
             </CardHeader>
             <CardContent className='space-y-6'>
@@ -159,7 +159,7 @@ export const ImageAnalysisResults = ({
                         {imagePreview ? (
                             <img
                                 src={imagePreview || '/placeholder.svg'}
-                                alt='Imagen analizada'
+                                alt='Analyzed image'
                                 className={cn(
                                     'h-full w-full object-cover',
                                     !imageLoaded && 'opacity-0'
@@ -178,7 +178,7 @@ export const ImageAnalysisResults = ({
                         {/* Veredicto principal */}
                         <div className='rounded-md bg-zinc-200/50 p-4 dark:bg-zinc-800/50'>
                             <h2 className='text-center text-lg font-semibold text-emerald-500'>
-                                {isAI ? 'Probablemente Generada por IA' : 'Probablemente Humano'}
+                                {isAI ? 'Probably AI Generated' : 'Probably Human'}
                             </h2>
                         </div>
                         {/* Indicadores de calidad y NSFW */}
@@ -211,12 +211,12 @@ export const ImageAnalysisResults = ({
                                         </svg>
                                         <div className='absolute right-0 bottom-0 left-0 text-center'>
                                             <span className='text-muted-foreground text-xs font-normal'>
-                                                Calidad
+                                                Quality
                                             </span>
                                         </div>
                                     </div>
                                     <span className='mt-2 text-lg font-semibold'>
-                                        {facets.quality.is_detected ? 'Buena' : 'Pobre'}
+                                        {facets.quality.is_detected ? 'Good' : 'Poor'}
                                     </span>
                                 </div>
                             </div>
@@ -252,7 +252,7 @@ export const ImageAnalysisResults = ({
                                         </div>
                                     </div>
                                     <span className='mt-2 text-lg font-semibold'>
-                                        {facets.nsfw.is_detected ? 'Si' : 'No'}
+                                        {facets.nsfw.is_detected ? 'Yes' : 'No'}
                                     </span>
                                 </div>
                             </div>
@@ -374,8 +374,8 @@ export const ImageAnalysisResults = ({
                         {/* Desglose de clases */}
                         <div className='rounded-md bg-zinc-200/50 p-4 dark:bg-zinc-800/50'>
                             <div className='mb-2 flex items-center justify-between border-b border-zinc-500 pb-2'>
-                                <span className='text-sm font-semibold'>Clase</span>
-                                <span className='text-sm font-semibold'>Probabilidad</span>
+                                <span className='text-sm font-semibold'>Class</span>
+                                <span className='text-sm font-semibold'>Probability</span>
                             </div>
                             <div className='space-y-2'>
                                 {generators.map((generator) => (

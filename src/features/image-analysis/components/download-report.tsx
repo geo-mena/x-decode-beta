@@ -19,7 +19,7 @@ const DownloadReport: FC<DownloadReportProps> = ({
         return (
             <Button className='flex items-center gap-2' disabled>
                 <Loader className='h-4 w-4 animate-spin' />
-                <span className='text-sm'>Descargando...</span>
+                <span className='text-sm'>Downloading...</span>
             </Button>
         );
     }
@@ -29,12 +29,12 @@ const DownloadReport: FC<DownloadReportProps> = ({
             {isDownloading ? (
                 <>
                     <Loader className='h-4 w-4 animate-spin' />
-                    <span>Generando...</span>
+                    <span>Generating...</span>
                 </>
             ) : (
                 <>
                     <Download className='h-4 w-4' />
-                    <span>Descargar</span>
+                    <span>Download</span>
                 </>
             )}
         </Button>

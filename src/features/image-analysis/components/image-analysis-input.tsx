@@ -59,7 +59,7 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
 
             const file = files[0];
             if (!file.type.startsWith('image/')) {
-                setFormError('El archivo debe ser una imagen válida (JPG, PNG, GIF, WEBP, SVG).');
+                setFormError('The file must be a valid image (JPG, PNG, GIF, WEBP, SVG).');
                 return;
             }
 
@@ -67,8 +67,8 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
             setFileName(file.name);
             setFormError(null);
 
-            toast.success('Imagen seleccionada', {
-                description: `${file.name} lista para análisis`
+            toast.success('Image selected', {
+                description: `${file.name} ready for analysis`
             });
         };
 
@@ -86,16 +86,16 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
         const validateForm = (): boolean => {
             if (activeTab === 'url') {
                 if (!imageUrl.trim()) {
-                    setFormError('La URL de la imagen es obligatoria.');
+                    setFormError('Image URL is required.');
                     return false;
                 }
                 if (!validateUrl(imageUrl)) {
-                    setFormError('Ingrese una URL válida.');
+                    setFormError('Enter a valid URL.');
                     return false;
                 }
             } else {
                 if (!selectedFile) {
-                    setFormError('Seleccione una imagen para analizar.');
+                    setFormError('Select an image to analyze.');
                     return false;
                 }
             }
@@ -126,9 +126,9 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
         return (
             <Card className='w-full'>
                 <CardHeader>
-                    <CardTitle>Análisis de Imagen (IA o No)</CardTitle>
+                    <CardTitle>Input Parameters</CardTitle>
                     <CardDescription>
-                        Determine si una imagen fue generada por IA o creada por un humano
+                        Determine if an image was AI-generated or created by a human
                     </CardDescription>
                 </CardHeader>
 
@@ -142,18 +142,18 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                         <TabsList className='grid w-full grid-cols-2'>
                             <TabsTrigger value='url' disabled={isLoading}>
                                 <Link className='mr-2 h-4 w-4' />
-                                URL de Imagen
+                                Image URL
                             </TabsTrigger>
                             <TabsTrigger value='file' disabled={isLoading}>
                                 <CloudUpload className='mr-2 h-4 w-4' />
-                                Subir Archivo
+                                Upload File
                             </TabsTrigger>
                         </TabsList>
 
                         {/* Contenido de la pestaña URL */}
                         <TabsContent value='url' className='space-y-4'>
                             <div className='space-y-2'>
-                                <Label htmlFor='imageUrl'>URL de la imagen *</Label>
+                                <Label htmlFor='imageUrl'>Image URL *</Label>
                                 <Input
                                     ref={urlInputRef}
                                     id='imageUrl'
@@ -163,7 +163,7 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                                     disabled={isLoading}
                                 />
                                 <p className='text-muted-foreground text-xs'>
-                                    Ingrese la URL directa de una imagen accesible públicamente
+                                    Enter the direct URL of a publicly accessible image
                                 </p>
                             </div>
                         </TabsContent>
@@ -171,7 +171,7 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                         {/* Contenido de la pestaña Archivo */}
                         <TabsContent value='file'>
                             <div className='space-y-2'>
-                                <Label htmlFor='imageFile'>Archivo de imagen *</Label>
+                                <Label htmlFor='imageFile'>Image file *</Label>
                                 <div className='border-muted-foreground/25 hover:border-muted-foreground/50 flex flex-col items-center justify-center rounded-md border-2 border-dashed p-6 transition-colors'>
                                     <input
                                         ref={fileInputRef}
@@ -187,7 +187,7 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                                             <Image className='text-muted-foreground mb-2 h-12 w-12' />
                                             <p className='text-sm font-medium'>{fileName}</p>
                                             <p className='text-muted-foreground text-xs'>
-                                                Imagen lista para análisis
+                                                Image ready for analysis
                                             </p>
                                             <Button
                                                 variant='outline'
@@ -196,17 +196,17 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                                                 onClick={() => fileInputRef.current?.click()}
                                                 disabled={isLoading}
                                             >
-                                                Cambiar archivo
+                                                Change file
                                             </Button>
                                         </div>
                                     ) : (
                                         <div className='flex flex-col items-center'>
                                             <ImageUp className='text-muted-foreground mb-2 h-12 w-12' />
                                             <p className='text-sm font-medium'>
-                                                Click para seleccionar imagen
+                                                Click to select image
                                             </p>
                                             <p className='text-muted-foreground text-xs'>
-                                                O arrastre y suelte archivos aquí
+                                                Or drag and drop files here
                                             </p>
                                             <Button
                                                 variant='outline'
@@ -215,7 +215,7 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                                                 onClick={() => fileInputRef.current?.click()}
                                                 disabled={isLoading}
                                             >
-                                                Seleccionar Archivo
+                                                Select File
                                             </Button>
                                         </div>
                                     )}
@@ -233,7 +233,7 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                                 onCheckedChange={setSaveToDb}
                                 disabled={isLoading}
                             />
-                            <Label htmlFor='saveToDb'>Guardar en DB</Label>
+                            <Label htmlFor='saveToDb'>Save to DB</Label>
                         </div>
                         <div className='flex items-center space-x-2'>
                             <Switch
@@ -242,7 +242,7 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                                 onCheckedChange={setStoreFile}
                                 disabled={isLoading}
                             />
-                            <Label htmlFor='storeFile'>Guardar en R2</Label>
+                            <Label htmlFor='storeFile'>Save to R2</Label>
                         </div>
                     </div>
 
@@ -265,12 +265,12 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                         {isLoading ? (
                             <>
                                 <Loader className='mr-2 h-4 w-4 animate-spin' />
-                                Analizando...
+                                Analyzing...
                             </>
                         ) : (
                             <>
                                 <Play className='mr-2 h-4 w-4' />
-                                Analizar Imagen
+                                Analyze Image
                             </>
                         )}
                     </Button>
@@ -282,7 +282,7 @@ export const ImageAnalysisInput = forwardRef<{ reset: () => void }, ImageAnalysi
                         }
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
-                        Limpiar
+                        Clear
                     </Button>
                 </CardFooter>
             </Card>
