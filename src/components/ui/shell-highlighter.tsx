@@ -74,18 +74,18 @@ export function ShellHighlighter({ code, className = '' }: ShellHighlighterProps
     return (
         <div className={`relative group ${className}`}>
             <div
-                className='overflow-auto rounded-md text-sm border-2'
+                className='overflow-auto rounded-lg text-sm border border-border bg-muted/50'
                 dangerouslySetInnerHTML={{ __html: highlightedCode }}
             />
             <button
                 onClick={copyToClipboard}
-                className='absolute top-2 right-2 p-2 rounded-md bg-background/80 hover:bg-background border border-border opacity-0 group-hover:opacity-100 transition-opacity duration-200'
+                className='absolute top-3 right-3 p-1.5 rounded-md bg-background/90 hover:bg-background border border-border/50 opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-sm hover:shadow-md'
                 title={copied ? 'Copied!' : 'Copy to clipboard'}
             >
                 {copied ? (
-                    <Check size={16} className='text-green-500' />
+                    <Check size={14} className='text-green-600' />
                 ) : (
-                    <Copy size={16} className='text-muted-foreground' />
+                    <Copy size={14} className='text-muted-foreground hover:text-foreground' />
                 )}
             </button>
         </div>
