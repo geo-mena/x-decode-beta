@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { JsonHighlighter } from '@/components/ui/json-highlighter';
 
 interface DocumentValidationResultProps {
     data: Record<string, any> | null;
@@ -180,13 +181,10 @@ export function DocumentValidationResult({
 
                         {/* Visualización del JSON */}
                         <div className='relative'>
-                            <pre
-                                className={`bg-muted mt-2 max-h-[400px] overflow-auto rounded-md p-4 font-mono text-xs ${
-                                    showPrettyJson ? 'whitespace-pre' : 'whitespace-pre-wrap'
-                                }`}
-                            >
-                                {formatJson(data)}
-                            </pre>
+                            <JsonHighlighter
+                                code={formatJson(data)}
+                                className='mt-2 max-h-[400px] overflow-auto'
+                            />
 
                             {/* Botón de copiar */}
                             <Button
