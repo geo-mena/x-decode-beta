@@ -17,7 +17,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { JsonHighlighter } from '@/components/ui/json-highlighter';
 
 interface DocumentValidationResultProps {
@@ -164,19 +163,7 @@ export function DocumentValidationResult({
                         {/* Controles para el formato JSON */}
                         <div className='flex items-center justify-between'>
                             <Label className='text-sm font-medium'>Respuesta JSON</Label>
-                            <div className='flex items-center space-x-2'>
-                                <Switch
-                                    checked={showPrettyJson}
-                                    onCheckedChange={setShowPrettyJson}
-                                    id='pretty-json'
-                                />
-                                <Label
-                                    htmlFor='pretty-json'
-                                    className='text-muted-foreground text-xs'
-                                >
-                                    Formato legible
-                                </Label>
-                            </div>
+                            
                         </div>
 
                         {/* Visualización del JSON */}
