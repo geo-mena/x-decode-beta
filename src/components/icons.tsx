@@ -40,7 +40,7 @@ import {
     IconLink,
     IconCloudDownload,
     IconCloudUpload,
-    IconTools,
+    IconTools
 } from '@tabler/icons-react';
 import { link } from 'fs';
 import { MonitorCog } from 'lucide-react';

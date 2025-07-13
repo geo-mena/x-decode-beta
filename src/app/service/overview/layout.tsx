@@ -32,7 +32,7 @@ export default function OverViewLayout({
     if (!hasData) {
         return (
             <PageContainer scrollable={true}>
-                <div className='flex flex-1 items-center justify-center mb-8'>
+                <div className='mb-8 flex flex-1 items-center justify-center'>
                     <ServiceBlankState />
                 </div>
             </PageContainer>

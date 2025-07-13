@@ -13,9 +13,9 @@ interface ShellHighlighterProps {
     noBackground?: boolean;
 }
 
-export function ShellHighlighter({ 
-    code, 
-    className = '', 
+export function ShellHighlighter({
+    code,
+    className = '',
     filename,
     hideLineNumbers = true,
     language = 'shell'
@@ -82,35 +82,40 @@ export function ShellHighlighter({
     }
 
     return (
-        <div className={`relative group border border-border rounded-lg overflow-hidden bg-background ${className}`}>
+        <div
+            className={`group border-border bg-background relative overflow-hidden rounded-lg border ${className}`}
+        >
             {filename && (
-                <div className='flex items-center justify-between px-4 py-2 bg-muted/30 border-b border-border'>
-                    <div className='flex items-center gap-2 text-sm font-mono text-muted-foreground'>
+                <div className='bg-muted/30 border-border flex items-center justify-between border-b px-4 py-2'>
+                    <div className='text-muted-foreground flex items-center gap-2 font-mono text-sm'>
                         <Terminal size={14} />
                         <span>{filename}</span>
                     </div>
                     <button
                         onClick={copyToClipboard}
-                        className='p-1.5 rounded-md hover:bg-muted transition-colors duration-200'
+                        className='hover:bg-muted rounded-md p-1.5 transition-colors duration-200'
                         title={copied ? 'Copied!' : 'Copy to clipboard'}
                     >
                         {copied ? (
                             <Check size={14} className='text-green-600' />
                         ) : (
-                            <Copy size={14} className='text-muted-foreground hover:text-foreground' />
+                            <Copy
+                                size={14}
+                                className='text-muted-foreground hover:text-foreground'
+                            />
                         )}
                     </button>
                 </div>
             )}
             <div
-                className='overflow-auto text-sm p-4'
+                className='overflow-auto p-4 text-sm'
                 style={{ backgroundColor: isDark ? '#121212' : '#ffffff' }}
                 dangerouslySetInnerHTML={{ __html: highlightedCode }}
             />
             {!filename && (
                 <button
                     onClick={copyToClipboard}
-                    className='absolute top-3 right-3 p-1.5 rounded-md bg-background/90 hover:bg-background border border-border/50 opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-sm hover:shadow-md'
+                    className='bg-background/90 hover:bg-background border-border/50 absolute top-3 right-3 rounded-md border p-1.5 opacity-0 shadow-sm transition-all duration-200 group-hover:opacity-100 hover:shadow-md'
                     title={copied ? 'Copied!' : 'Copy to clipboard'}
                 >
                     {copied ? (

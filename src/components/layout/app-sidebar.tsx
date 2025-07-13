@@ -30,10 +30,7 @@ import {
 import { navItems } from '@/constants/data';
 import { useMediaQuery } from '@/hooks/use-media-query';
 // import { useUser } from '@clerk/nextjs';
-import {
-    IconChevronRight,
-    IconPhotoUp,
-} from '@tabler/icons-react';
+import { IconChevronRight, IconPhotoUp } from '@tabler/icons-react';
 // import { SignOutButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

@@ -62,7 +62,7 @@ export const navItems: NavItem[] = [
         title: 'Installation',
         url: '/service/overview',
         icon: 'monitorCog',
-        isActive: true,
+        isActive: true
     },
     {
         title: 'Identity API',
