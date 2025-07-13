@@ -2,7 +2,7 @@ import PageContainer from '@/components/layout/page-container';
 import Detokenize from '@/features/detokenize';
 
 export const metadata = {
-    title: 'IDAPI - Detokenizar Imagen'
+    title: 'IDAPI - Detokenize Image'
 };
 
 export default function page() {

@@ -31,11 +31,11 @@ export default function Detokenize() {
             });
 
             if (!response.success || !response.data) {
-                setError(response.message || 'Error al detokenizar la imagen.');
+                setError(response.message || 'Error detokenizing the image.');
                 setImageData(null);
 
-                toast.error('Error de detokenización', {
-                    description: response.message || 'No se pudo procesar los tokens de imagen.'
+                toast.error('Detokenization error', {
+                    description: response.message || 'Could not process the image tokens.'
                 });
             } else {
                 // Agregar índice de token a cada imagen para referencia
@@ -46,8 +46,8 @@ export default function Detokenize() {
                     }));
                     setImageData(processedData);
 
-                    toast.success('Imágenes recuperadas', {
-                        description: `Se recuperaron ${processedData.length} imágenes exitosamente`
+                    toast.success('Images retrieved', {
+                        description: `${processedData.length} images retrieved successfully`
                     });
                 } else {
                     // Si es una sola imagen
@@ -56,13 +56,13 @@ export default function Detokenize() {
                         tokenIndex: 0
                     });
 
-                    toast.success('Imagen recuperada', {
+                    toast.success('Image retrieved', {
                         description: `${response.data.file_name} (${response.data.width}×${response.data.height})`
                     });
                 }
             }
         } catch (err) {
-            const errorMessage = 'Error al procesar la solicitud. Intente nuevamente.';
+            const errorMessage = 'Error processing the request. Please try again.';
             setError(errorMessage);
             setImageData(null);
 
@@ -79,8 +79,8 @@ export default function Detokenize() {
         if (fileName) {
             detokenizeService.downloadImage(fileName);
 
-            toast.success('Descargando imagen', {
-                description: `Descargando ${fileName}`
+            toast.success('Downloading image', {
+                description: `Downloading ${fileName}`
             });
         }
     };
@@ -94,8 +94,8 @@ export default function Detokenize() {
             tokenInputRef.current.reset();
         }
 
-        toast.info('Formulario restablecido', {
-            description: 'Todos los datos han sido borrados para una nueva consulta.'
+        toast.info('Form reset', {
+            description: 'All data has been cleared for a new query.'
         });
     };
 
@@ -114,10 +114,9 @@ export default function Detokenize() {
             <>
                 <div className='mb-6 flex items-center justify-between'>
                     <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>Detokenizar Imagen</h1>
+                        <h1 className='text-2xl font-bold tracking-tight'>Detokenize Image</h1>
                         <p className='text-muted-foreground text-sm'>
-                            Convierte tokens de imagen en archivos de imagen visualizables y
-                            descargables.
+                            Convert image tokens into viewable and downloadable image files.
                         </p>
                     </div>
                 </div>
@@ -134,11 +133,11 @@ export default function Detokenize() {
                     }
                 >
                     <File className='h-4 w-4' />
-                    <span className='ml-2'>Documentación</span>
+                    <span className='ml-2'>Documentation</span>
                 </Badge>
 
                 <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Formulario de entrada de token */}
+                    {/* Token input form */}
                     <TokenInput
                         ref={tokenInputRef}
                         onSubmit={handleDetokenize}
@@ -146,7 +145,7 @@ export default function Detokenize() {
                         isLoading={loading}
                     />
 
-                    {/* Visualización de la imagen */}
+                    {/* Image visualization */}
                     <ImagePreview
                         data={imageData}
                         error={error}

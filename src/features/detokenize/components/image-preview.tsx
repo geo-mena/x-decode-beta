@@ -80,8 +80,8 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
         if (imageData?.preview_url) {
             window.open(imageData.preview_url, '_blank');
 
-            toast.info('Abriendo imagen', {
-                description: 'Visualizando la imagen en una nueva pestaña'
+            toast.info('Opening image', {
+                description: 'Viewing image in a new tab'
             });
         }
     };
@@ -118,8 +118,8 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                         try {
                             const data = [new ClipboardItem({ [blob.type]: blob })];
                             await navigator.clipboard.write(data);
-                            toast.success('Imagen copiada', {
-                                description: 'La imagen fue copiada al portapapeles'
+                            toast.success('Image copied', {
+                                description: 'Image was copied to clipboard'
                             });
                         } catch (err) {
                             tryFallbackCopyMethod(canvas, imageData);
@@ -130,8 +130,8 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                 tryFallbackCopyMethod(canvas, imageData);
             }
         } catch (error) {
-            toast.error('Error al copiar', {
-                description: 'No se pudo copiar la imagen. Intente con la opción "Descargar"'
+            toast.error('Copy error', {
+                description: 'Could not copy image. Try the "Download" option'
             });
         } finally {
             setCopyLoading(false);
@@ -148,16 +148,16 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
             link.href = canvas.toDataURL('image/png');
             link.download = imageData?.file_name || 'imagen.png';
 
-            toast.info('Descargando imagen', {
-                description: 'La imagen no se puede copiar directamente. Se descargará en su lugar.'
+            toast.info('Downloading image', {
+                description: 'Image cannot be copied directly. It will be downloaded instead.'
             });
 
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         } catch (fallbackError) {
-            toast.error('Error al procesar', {
-                description: 'No se pudo procesar la imagen. Intente con la opción "Descargar"'
+            toast.error('Processing error', {
+                description: 'Could not process image. Try the "Download" option'
             });
         }
     };
@@ -203,15 +203,15 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
     const renderImageDetails = (imageData: DetokenizeResponseData) => (
         <div className='space-y-4'>
             <div>
-                <h3 className='mb-2 text-sm font-medium'>Información de la imagen</h3>
+                <h3 className='mb-2 text-sm font-medium'>Image Information</h3>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className='border-r'>Formato</TableHead>
-                            <TableHead className='border-r'>Tamaño</TableHead>
-                            <TableHead className='border-r'>Resolución</TableHead>
+                            <TableHead className='border-r'>Format</TableHead>
+                            <TableHead className='border-r'>Size</TableHead>
+                            <TableHead className='border-r'>Resolution</TableHead>
                             {imageData.jpeg_quality !== undefined && (
-                                <TableHead>Calidad JPEG</TableHead>
+                                <TableHead>JPEG Quality</TableHead>
                             )}
                         </TableRow>
                     </TableHeader>
@@ -239,7 +239,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
             <div className='flex flex-wrap items-center gap-2'>
                 <Button variant='outline' size='sm' onClick={() => handleOpenOriginal(imageData)}>
                     <ExternalLink className='mr-2 h-4 w-4' />
-                    Ver Original
+                    View Original
                 </Button>
                 <Button
                     variant='outline'
@@ -252,7 +252,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                     ) : (
                         <Copy className='mr-2 h-4 w-4' />
                     )}
-                    Copiar Imagen
+                    Copy Image
                 </Button>
             </div>
         </div>
@@ -263,13 +263,11 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
             <Card className='flex h-full flex-col'>
                 <CardHeader className='flex flex-row items-center justify-between pb-2'>
                     <div>
-                        <CardTitle>
-                            {hasMultipleImages ? 'Imágenes Detokenizadas' : 'Imagen Detokenizada'}
-                        </CardTitle>
+                        <CardTitle>Output Results</CardTitle>
                         <CardDescription className='mt-1'>
                             {hasMultipleImages
-                                ? 'Vistas previas y detalles de las imágenes recuperadas'
-                                : 'Vista previa y detalles de la imagen recuperada'}
+                                ? 'Previews and details of retrieved images'
+                                : 'Preview and details of retrieved image'}
                         </CardDescription>
                     </div>
 
@@ -287,7 +285,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                     {isLoading && (
                         <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                             <CloudCog className='mb-4 h-20 w-20 animate-pulse' />
-                            <p className='text-sm'>Procesando token(es) de imagen...</p>
+                            <p className='text-sm'>Processing image token(s)...</p>
                         </div>
                     )}
 
@@ -301,7 +299,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                     {!data && !error && !isLoading && (
                         <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                             <CloudCog className='mb-4 h-20 w-20' />
-                            <p className='text-sm'>Ingrese un token para ver la imagen</p>
+                            <p className='text-sm'>Enter a token to view the image</p>
                         </div>
                     )}
 
@@ -318,7 +316,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                                             <TabsTrigger key={index} value={index.toString()}>
                                                 <div className='flex items-center gap-1.5'>
                                                     <Images className='h-4 w-4' />
-                                                    <span>Imagen {index + 1}</span>
+                                                    <span>Image {index + 1}</span>
                                                 </div>
                                             </TabsTrigger>
                                         ))}
@@ -341,7 +339,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                                                     <div className='relative'>
                                                         <img
                                                             src={img.preview_url}
-                                                            alt={`Imagen detokenizada ${index + 1}`}
+                                                            alt={`Detokenized image ${index + 1}`}
                                                             className='max-h-[300px] max-w-full rounded object-contain shadow-sm'
                                                             style={{
                                                                 transform: `scale(${controls.zoomLevel / 100}) rotate(${controls.rotation}deg)`,
@@ -371,7 +369,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                                         <div className='relative'>
                                             <img
                                                 src={activeImage?.preview_url}
-                                                alt='Imagen detokenizada'
+                                                alt='Detokenized image'
                                                 className='max-h-[300px] max-w-full rounded object-contain shadow-sm'
                                                 style={{
                                                     transform: `scale(${activeControls.zoomLevel / 100}) rotate(${activeControls.rotation}deg)`,
@@ -402,7 +400,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                             className='w-full'
                         >
                             <Download className='mr-2 h-4 w-4' />
-                            Descargar Imagen
+                            Download Image
                         </Button>
                     </CardFooter>
                 )}

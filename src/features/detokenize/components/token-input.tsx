@@ -72,12 +72,12 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                             setTokens(validTokens);
 
                             if (jsonContent.length > MAX_TOKENS) {
-                                toast.warning('Límite de tokens excedido', {
-                                    description: `Solo se procesarán los primeros ${MAX_TOKENS} tokens. Se ignorarán los demás.`
+                                toast.warning('Token limit exceeded', {
+                                    description: `Only the first ${MAX_TOKENS} tokens will be processed. Others will be ignored.`
                                 });
                             } else {
-                                toast.success('Tokens cargados', {
-                                    description: `Se cargaron ${validTokens.length} tokens del archivo ${file.name}`
+                                toast.success('Tokens loaded', {
+                                    description: `${validTokens.length} tokens loaded from file ${file.name}`
                                 });
                             }
                             return;
@@ -87,12 +87,12 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                     }
 
                     setTokens([tokenContent]);
-                    toast.success('Archivo cargado', {
-                        description: `Token extraído del archivo ${file.name}`
+                    toast.success('File loaded', {
+                        description: `Token extracted from file ${file.name}`
                     });
                 } catch (error) {
-                    toast.error('Error al procesar el archivo', {
-                        description: 'El archivo no contiene tokens válidos.'
+                    toast.error('Error processing file', {
+                        description: 'The file does not contain valid tokens.'
                     });
                 }
             };
@@ -103,8 +103,8 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
             if (!token) return;
             navigator.clipboard.writeText(token);
 
-            toast.success('Copiado al portapapeles', {
-                description: 'El token ha sido copiado al portapapeles.'
+            toast.success('Copied to clipboard', {
+                description: 'The token has been copied to clipboard.'
             });
         };
 
@@ -112,8 +112,8 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
             const validTokens = tokens.filter((token) => token.trim() !== '');
 
             if (validTokens.length === 0) {
-                toast.error('Token requerido', {
-                    description: 'Por favor ingrese al menos un token de imagen válido.'
+                toast.error('Token required', {
+                    description: 'Please enter at least one valid image token.'
                 });
                 return;
             }
@@ -128,8 +128,8 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
 
         const addTokenField = () => {
             if (tokens.length >= MAX_TOKENS) {
-                toast.warning('Límite alcanzado', {
-                    description: `No se pueden agregar más de ${MAX_TOKENS} tokens.`
+                toast.warning('Limit reached', {
+                    description: `Cannot add more than ${MAX_TOKENS} tokens.`
                 });
                 return;
             }
@@ -156,9 +156,9 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
         return (
             <Card>
                 <CardHeader>
-                    <CardTitle>Tokens de Imagen</CardTitle>
+                    <CardTitle>Input Parameters</CardTitle>
                     <CardDescription>
-                        Ingrese hasta {MAX_TOKENS} tokens para recuperar la imagen
+                        Enter up to {MAX_TOKENS} tokens to retrieve the image
                     </CardDescription>
                 </CardHeader>
                 <CardContent className='space-y-4'>
@@ -169,18 +169,18 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                         <TabsList className='grid w-full grid-cols-2'>
                             <TabsTrigger value='paste'>
                                 <Brackets className='mr-2 h-4 w-4' />
-                                Ingresar Tokens
+                                Enter Tokens
                             </TabsTrigger>
                             <TabsTrigger value='upload'>
                                 <CloudUpload className='mr-2 h-4 w-4' />
-                                Subir Archivo
+                                Upload File
                             </TabsTrigger>
                         </TabsList>
 
                         <TabsContent value='paste' className='space-y-4'>
                             <div className='space-y-2'>
                                 <div className='flex items-center justify-between'>
-                                    <Label>Tokens de Imagen</Label>
+                                    <Label>Image Tokens</Label>
                                     <Badge
                                         variant={
                                             tokens.length >= MAX_TOKENS ? 'destructive' : 'outline'
@@ -195,7 +195,7 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                                 {tokens.map((token, index) => (
                                     <div key={index} className='flex space-x-2'>
                                         <Textarea
-                                            placeholder={`Token de imagen ${index + 1}`}
+                                            placeholder={`Image token ${index + 1}`}
                                             value={token}
                                             onChange={(e) => updateToken(e.target.value, index)}
                                             className='max-h-[100px] min-h-[100px] flex-grow resize-none overflow-y-auto font-mono text-xs'
@@ -206,7 +206,7 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                                                     variant='outline'
                                                     size='icon'
                                                     onClick={() => copyToClipboard(token)}
-                                                    title='Copiar token'
+                                                    title='Copy token'
                                                 >
                                                     <Copy className='h-4 w-4' />
                                                 </Button>
@@ -215,7 +215,7 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                                                 variant='outline'
                                                 size='icon'
                                                 onClick={() => removeTokenField(index)}
-                                                title='Eliminar campo'
+                                                title='Remove field'
                                             >
                                                 <X className='h-4 w-4' />
                                             </Button>
@@ -231,15 +231,15 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                                 >
                                     <Plus className='mr-2 h-4 w-4' />
                                     {tokens.length >= MAX_TOKENS
-                                        ? `Máximo ${MAX_TOKENS} tokens`
-                                        : 'Agregar otro token'}
+                                        ? `Maximum ${MAX_TOKENS} tokens`
+                                        : 'Add another token'}
                                 </Button>
                             </div>
                         </TabsContent>
 
                         <TabsContent value='upload' className='space-y-4'>
                             <div className='space-y-2'>
-                                <Label htmlFor='file-upload'>Subir archivo de token(s)</Label>
+                                <Label htmlFor='file-upload'>Upload token file(s)</Label>
                                 <label
                                     htmlFor='file-upload'
                                     className='border-muted-foreground/25 hover:border-muted-foreground/50 flex flex-col items-center justify-center rounded-md border-2 border-dashed p-6 transition-colors'
@@ -248,12 +248,12 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                                         <FileText className='text-muted-foreground mb-2 h-12 w-12' />
                                         <p className='text-muted-foreground mb-2 text-sm'>
                                             <span className='font-semibold'>
-                                                Haga clic para subir
+                                                Click to upload
                                             </span>{' '}
-                                            o arrastre y suelte
+                                            or drag and drop
                                         </p>
                                         <p className='text-muted-foreground text-xs'>
-                                            Archivo de texto (.txt) o JSON (máx. {MAX_TOKENS}{' '}
+                                            Text file (.txt) or JSON (max. {MAX_TOKENS}{' '}
                                             tokens)
                                         </p>
                                     </div>
@@ -271,7 +271,7 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                                         value={
                                             tokens.length === 1
                                                 ? tokens[0]
-                                                : `${tokens.length} tokens cargados`
+                                                : `${tokens.length} tokens loaded`
                                         }
                                         className='bg-muted w-full resize-none text-sm'
                                     />
@@ -281,10 +281,10 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                     </Tabs>
 
                     <div className='space-y-2'>
-                        <Label htmlFor='transactionId'>ID de Transacción (opcional)</Label>
+                        <Label htmlFor='transactionId'>Transaction ID (optional)</Label>
                         <Input
                             id='transactionId'
-                            placeholder='Ingrese el ID de transacción si está disponible'
+                            placeholder='Enter transaction ID if available'
                             value={transactionId}
                             onChange={(e) => setTransactionId(e.target.value)}
                         />
@@ -299,12 +299,12 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                         {isLoading ? (
                             <>
                                 <Loader className='mr-2 h-4 w-4 animate-spin' />
-                                Procesando...
+                                Processing...
                             </>
                         ) : (
                             <>
                                 <Play className='mr-2 h-4 w-4' />
-                                Detokenizar
+                                Detokenize
                             </>
                         )}
                     </Button>
@@ -315,7 +315,7 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                         disabled={isLoading || tokens.every((token) => !token.trim())}
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
-                        Limpiar
+                        Clear
                     </Button>
                 </CardFooter>
             </Card>
