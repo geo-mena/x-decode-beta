@@ -71,19 +71,19 @@ const CellAction = ({
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant='ghost' className='h-8 w-8 p-0'>
-                    <span className='sr-only'>Abrir menú</span>
+                    <span className='sr-only'>Open menu</span>
                     <MoreHorizontal className='h-4 w-4' />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
-                <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem onClick={handleViewImage} disabled={!result.imageUrl}>
                     <Eye className='mr-2 h-4 w-4' />
-                    Ver imagen
+                    View image
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleDownloadImage} disabled={!result.imageUrl}>
                     <Download className='mr-2 h-4 w-4' />
-                    Descargar
+                    Download
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
@@ -91,15 +91,15 @@ const CellAction = ({
 };
 
 export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTableProps) {
-    // Estados para filtros
+    // Filter states
     const [searchValue, setSearchValue] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('all');
 
-    // Estados para el modal de imagen
+    // Image modal states
     const [imageModalOpen, setImageModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<LivenessResult | null>(null);
 
-    // Obtener tags únicos de SDK para columnas dinámicas
+    // Get unique SDK tags for dynamic columns
     const sdkTags = useMemo(() => {
         if (!useSDK) return [];
 
@@ -112,7 +112,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
         return Array.from(tags).sort();
     }, [results, useSDK]);
 
-    // Estado para columnas visibles (dinámico basado en SDK)
+    // State for visible columns (dynamic based on SDK)
     const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(() => {
         const baseColumns: Record<string, boolean> = {
             imagen: true,
@@ -123,7 +123,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
             acciones: true
         };
 
-        // Agregar columnas SDK dinámicamente
+        // Add SDK columns dynamically
         sdkTags.forEach((tag) => {
             baseColumns[`sdk_${tag}`] = true;
         });
@@ -131,7 +131,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
         return baseColumns;
     });
 
-    // Actualizar columnas visibles cuando cambien los tags SDK
+    // Update visible columns when SDK tags change
     React.useEffect(() => {
         if (useSDK && sdkTags.length > 0) {
             setVisibleColumns((prev) => {
@@ -147,7 +147,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
         }
     }, [sdkTags, useSDK]);
 
-    // Obtener valores únicos de diagnóstico para filtros
+    // Get unique diagnostic values for filters
     const uniqueDiagnosticValues = useMemo(() => {
         const values = new Set<string>();
 
@@ -168,30 +168,30 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
         });
 
         if (values.size === 0) {
-            values.add('Pendiente');
+            values.add('Pending');
         }
 
         return Array.from(values).sort();
     }, [results]);
 
-    // Filtrar resultados
+    // Filter results
     const filteredResults = useMemo(() => {
         return results.filter((result) => {
-            // Filtro de búsqueda por título y path
+            // Search filter by title and path
             const matchesSearch =
                 searchValue === '' ||
                 result.title.toLowerCase().includes(searchValue.toLowerCase()) ||
                 result.imagePath.toLowerCase().includes(searchValue.toLowerCase());
 
-            // Filtro por estado
+            // Status filter
             let matchesStatus = true;
             if (statusFilter !== 'all') {
-                // Verificar si coincide con SaaS
+                // Check if matches SaaS
                 const saasMatch =
                     result.diagnosticSaaS &&
                     statusFilter === `SaaS: ${result.diagnosticSaaS.trim()}`;
 
-                // Verificar si coincide con algún SDK
+                // Check if matches any SDK
                 let sdkMatch = false;
                 if (result.sdkDiagnostics) {
                     sdkMatch = Object.entries(result.sdkDiagnostics).some(
@@ -199,14 +199,14 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                     );
                 }
 
-                matchesStatus = saasMatch || sdkMatch || statusFilter === 'Pendiente';
+                matchesStatus = saasMatch || sdkMatch || statusFilter === 'Pending';
             }
 
             return matchesSearch && matchesStatus;
         });
     }, [results, searchValue, statusFilter]);
 
-    // Contar resultados por cada filtro
+    // Count results for each filter
     const getFilterCount = (filterValue: string) => {
         if (filterValue === 'all') return results.length;
 
@@ -221,11 +221,11 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                 );
             }
 
-            return saasMatch || sdkMatch || filterValue === 'Pendiente';
+            return saasMatch || sdkMatch || filterValue === 'Pending';
         }).length;
     };
 
-    // Funciones para el modal de imagen
+    // Image modal functions
     const handleViewImage = (result: LivenessResult) => {
         setSelectedImage(result);
         setImageModalOpen(true);
@@ -236,7 +236,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
         setSelectedImage(null);
     };
 
-    // Función para actualizar visibilidad de columna
+    // Function to update column visibility
     const updateColumnVisibility = (columnKey: string, checked: boolean) => {
         setVisibleColumns((prev) => ({
             ...prev,
@@ -244,7 +244,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
         }));
     };
 
-    // Componente Toolbar
+    // Toolbar component
     const DataTableToolbar = () => {
         const isFiltered = searchValue !== '' || statusFilter !== 'all';
 
@@ -256,23 +256,23 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
         return (
             <div className='flex w-full items-start justify-between gap-2 p-1'>
                 <div className='flex flex-1 flex-wrap items-center gap-2'>
-                    {/* Búsqueda por texto */}
+                    {/* Text search */}
                     <div className='relative'>
                         <Search className='text-muted-foreground absolute top-2.5 left-2 h-4 w-4' />
                         <Input
-                            placeholder='Buscar por título o archivo...'
+                            placeholder='Search by title or file...'
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
                             className='h-8 w-[200px] pl-8 lg:w-[250px]'
                         />
                     </div>
 
-                    {/* Filtro por estado dinámico */}
+                    {/* Dynamic status filter */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant='outline' size='sm' className='h-8 border-dashed'>
                                 <Filter className='mr-2 h-4 w-4' />
-                                Estado
+                                Status
                                 {statusFilter !== 'all' && (
                                     <Badge variant='secondary' className='ml-2 h-5 px-1 text-xs'>
                                         1
@@ -284,16 +284,16 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                             align='start'
                             className='max-h-[400px] w-[300px] overflow-y-auto'
                         >
-                            <DropdownMenuLabel>Filtrar por diagnóstico</DropdownMenuLabel>
+                            <DropdownMenuLabel>Filter by diagnostic</DropdownMenuLabel>
                             <DropdownMenuSeparator />
 
-                            {/* Opción "Todos" */}
+                            {/* "All" option */}
                             <DropdownMenuCheckboxItem
                                 checked={statusFilter === 'all'}
                                 onCheckedChange={() => setStatusFilter('all')}
                             >
                                 <div className='flex w-full items-center justify-between'>
-                                    <span>Todos los resultados</span>
+                                    <span>All results</span>
                                     <Badge variant='outline' className='ml-2 h-5 px-1 text-xs'>
                                         {getFilterCount('all')}
                                     </Badge>
@@ -302,7 +302,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
 
                             <DropdownMenuSeparator />
 
-                            {/* Opciones dinámicas */}
+                            {/* Dynamic options */}
                             {uniqueDiagnosticValues.map((diagnosticValue) => (
                                 <DropdownMenuCheckboxItem
                                     key={diagnosticValue}
@@ -320,13 +320,13 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
 
                             {uniqueDiagnosticValues.length === 0 && (
                                 <div className='text-muted-foreground px-2 py-1.5 text-sm'>
-                                    No hay diagnósticos disponibles
+                                    No diagnostics available
                                 </div>
                             )}
                         </DropdownMenuContent>
                     </DropdownMenu>
 
-                    {/* Botón reset */}
+                    {/* Reset button */}
                     {isFiltered && (
                         <Button
                             variant='outline'
@@ -341,16 +341,16 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                 </div>
 
                 <div className='flex items-center gap-2'>
-                    {/* Vista de columnas */}
+                    {/* Column view */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant='outline' size='sm' className='ml-auto h-8'>
                                 <Settings2 className='mr-2 h-4 w-4' />
-                                Ver
+                                View
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align='end' className='w-[200px]'>
-                            <DropdownMenuLabel>Alternar columnas</DropdownMenuLabel>
+                            <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.imagen}
@@ -358,7 +358,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                     updateColumnVisibility('imagen', checked as boolean)
                                 }
                             >
-                                Imagen
+                                Image
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.titulo}
@@ -366,7 +366,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                     updateColumnVisibility('titulo', checked as boolean)
                                 }
                             >
-                                Título
+                                Title
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.resolucion}
@@ -374,7 +374,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                     updateColumnVisibility('resolucion', checked as boolean)
                                 }
                             >
-                                Resolución
+                                Resolution
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.tamaño}
@@ -382,7 +382,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                     updateColumnVisibility('tamaño', checked as boolean)
                                 }
                             >
-                                Tamaño
+                                Size
                             </DropdownMenuCheckboxItem>
                             <DropdownMenuCheckboxItem
                                 checked={visibleColumns.diagnosticoSaaS}
@@ -390,15 +390,15 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                     updateColumnVisibility('diagnosticoSaaS', checked as boolean)
                                 }
                             >
-                                Diagnóstico SaaS
+                                SaaS Diagnostic
                             </DropdownMenuCheckboxItem>
 
-                            {/* Columnas SDK dinámicas */}
+                            {/* Dynamic SDK columns */}
                             {useSDK && sdkTags.length > 0 && (
                                 <>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuLabel className='text-xs'>
-                                        SDK Diagnósticos
+                                        SDK Diagnostics
                                     </DropdownMenuLabel>
                                     {sdkTags.map((tag) => {
                                         const columnKey = `sdk_${tag}`;
@@ -422,10 +422,10 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                         </DropdownMenuContent>
                     </DropdownMenu>
 
-                    {/* Botón Limpiar */}
+                    {/* Clear button */}
                     <Button variant='outline' size='sm' className='h-8' onClick={onClear}>
                         <Trash2 className='mr-2 h-4 w-4' />
-                        Limpiar
+                        Clear
                     </Button>
                 </div>
             </div>
@@ -454,16 +454,16 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
     };
 
     const getDiagnosticDisplay = (diagnostic: string | undefined) => {
-        if (!diagnostic) return 'Pendiente';
+        if (!diagnostic) return 'Pending';
 
-        // Truncar mensaje muy largo
+        // Truncate very long message
         if (diagnostic.length > 50) {
             return diagnostic.substring(0, 47) + '...';
         }
         return diagnostic;
     };
 
-    // Mostrar skeleton cuando esté cargando
+    // Show skeleton when loading
     if (isLoading) {
         return <ResultsTableSkeleton visibleColumns={visibleColumns} rows={5} />;
     }
@@ -474,7 +474,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                 <CardContent className='text-muted-foreground flex h-64 items-center justify-center'>
                     <div className='text-center'>
                         <Sheet className='mx-auto mb-2 h-12 w-12 opacity-50' />
-                        <p className='text-sm'>Esperando resultados de evaluación...</p>
+                        <p className='text-sm'>Waiting for evaluation results...</p>
                     </div>
                 </CardContent>
             </Card>
@@ -484,43 +484,43 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
     return (
         <Card className='w-full'>
             <CardContent className='space-y-4'>
-                {/* Toolbar mejorado */}
+                {/* Enhanced toolbar */}
                 <DataTableToolbar />
 
-                {/* Tabla mejorada */}
+                {/* Enhanced table */}
                 <div className='rounded-md border'>
                     <Table>
                         <TableHeader>
                             <TableRow>
                                 {visibleColumns.imagen && (
-                                    <TableHead className='w-20 text-center'>Imagen</TableHead>
+                                    <TableHead className='w-20 text-center'>Image</TableHead>
                                 )}
                                 {visibleColumns.titulo && (
-                                    <TableHead className='text-center'>Título</TableHead>
+                                    <TableHead className='text-center'>Title</TableHead>
                                 )}
                                 {visibleColumns.resolucion && (
-                                    <TableHead className='text-center'>Resolución</TableHead>
+                                    <TableHead className='text-center'>Resolution</TableHead>
                                 )}
                                 {visibleColumns.tamaño && (
-                                    <TableHead className='text-center'>Tamaño</TableHead>
+                                    <TableHead className='text-center'>Size</TableHead>
                                 )}
                                 {visibleColumns.diagnosticoSaaS && (
-                                    <TableHead className='text-center'>Diagnóstico SaaS</TableHead>
+                                    <TableHead className='text-center'>SaaS Diagnostic</TableHead>
                                 )}
-                                {/* Columnas SDK dinámicas */}
+                                {/* Dynamic SDK columns */}
                                 {useSDK &&
                                     sdkTags.map((tag) => {
                                         const columnKey = `sdk_${tag}`;
                                         return (
                                             visibleColumns[columnKey] && (
                                                 <TableHead key={tag} className='text-center'>
-                                                    Diagnóstico SDK {tag}
+                                                    SDK Diagnostic {tag}
                                                 </TableHead>
                                             )
                                         );
                                     })}
                                 {visibleColumns.acciones && (
-                                    <TableHead className='w-20 text-center'>Acciones</TableHead>
+                                    <TableHead className='w-20 text-center'>Actions</TableHead>
                                 )}
                             </TableRow>
                         </TableHeader>
@@ -534,14 +534,14 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                         className='h-24 text-center'
                                     >
                                         {searchValue || statusFilter !== 'all'
-                                            ? 'No se encontraron resultados con los filtros aplicados.'
-                                            : 'No hay resultados.'}
+                                            ? 'No results found with applied filters.'
+                                            : 'No results.'}
                                     </TableCell>
                                 </TableRow>
                             ) : (
                                 filteredResults.map((result, index) => (
                                     <TableRow key={index} className='hover:bg-muted/50'>
-                                        {/* Imagen */}
+                                        {/* Image */}
                                         {visibleColumns.imagen && (
                                             <TableCell className='text-center'>
                                                 {result.imageUrl ? (
@@ -563,7 +563,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                             </TableCell>
                                         )}
 
-                                        {/* Título */}
+                                        {/* Title */}
                                         {visibleColumns.titulo && (
                                             <TableCell className='text-center font-medium'>
                                                 <div className='space-y-1'>
@@ -574,7 +574,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                             </TableCell>
                                         )}
 
-                                        {/* Resolución */}
+                                        {/* Resolution */}
                                         {visibleColumns.resolucion && (
                                             <TableCell className='text-center'>
                                                 <span className='font-sm font-medium'>
@@ -583,7 +583,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                             </TableCell>
                                         )}
 
-                                        {/* Tamaño */}
+                                        {/* Size */}
                                         {visibleColumns.tamaño && (
                                             <TableCell className='text-center'>
                                                 <span className='text-sm font-medium'>
@@ -592,7 +592,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                             </TableCell>
                                         )}
 
-                                        {/* Diagnóstico SaaS */}
+                                        {/* SaaS Diagnostic */}
                                         {visibleColumns.diagnosticoSaaS && (
                                             <TableCell className='text-center'>
                                                 <div className='space-y-1'>
@@ -609,7 +609,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                             </TableCell>
                                         )}
 
-                                        {/* Columnas SDK dinámicas */}
+                                        {/* Dynamic SDK columns */}
                                         {useSDK &&
                                             sdkTags.map((tag) => {
                                                 const columnKey = `sdk_${tag}`;
@@ -635,7 +635,7 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                                                 );
                                             })}
 
-                                        {/* Acciones */}
+                                        {/* Actions */}
                                         {visibleColumns.acciones && (
                                             <TableCell className='text-center'>
                                                 <CellAction
@@ -651,21 +651,21 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                     </Table>
                 </div>
 
-                {/* Información de resultados */}
+                {/* Results information */}
                 <div className='text-muted-foreground flex items-center justify-between text-sm'>
                     <div>
-                        Mostrando {filteredResults.length} de {results.length} resultado
+                        Showing {filteredResults.length} of {results.length} result
                         {results.length !== 1 ? 's' : ''}
                         {statusFilter !== 'all' && (
                             <span className='ml-2'>
-                                • Filtrado por: <span className='font-medium'>{statusFilter}</span>
+                                • Filtered by: <span className='font-medium'>{statusFilter}</span>
                             </span>
                         )}
                     </div>
                 </div>
             </CardContent>
 
-            {/* Modal de vista previa de imagen */}
+            {/* Image preview modal */}
             <ImagePreviewModal
                 isOpen={imageModalOpen}
                 onClose={handleCloseImageModal}

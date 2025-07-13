@@ -27,9 +27,9 @@ export function ImagePreviewModal({ isOpen, onClose, result }: ImagePreviewModal
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className='max-h-[90vh] max-w-4xl p-0'>
                 <DialogHeader className='p-6 pb-4'>
-                    <DialogTitle>Vista previa de la imagen</DialogTitle>
+                    <DialogTitle>Image Preview</DialogTitle>
                 </DialogHeader>
-                {/* Imagen */}
+                {/* Image */}
                 <div className='flex items-center justify-center px-6'>
                     <div className='relative max-h-[70vh] max-w-full overflow-hidden rounded-lg border'>
                         <Image
@@ -43,11 +43,11 @@ export function ImagePreviewModal({ isOpen, onClose, result }: ImagePreviewModal
                     </div>
                 </div>
 
-                {/* Botón descargar */}
+                {/* Download button */}
                 <div className='flex justify-center p-6 pt-4'>
                     <Button variant='outline' size='sm' onClick={handleDownload} className='gap-2'>
                         <Download className='h-4 w-4' />
-                        Descargar imagen
+                        Download Image
                     </Button>
                 </div>
             </DialogContent>
