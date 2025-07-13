@@ -72,9 +72,7 @@ export default function LivenessContent() {
             <>
                 <div className='mb-6 flex items-center justify-between'>
                     <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>
-                            Liveness Evaluation
-                        </h1>
+                        <h1 className='text-2xl font-bold tracking-tight'>Liveness Evaluation</h1>
                         <p className='text-muted-foreground text-sm'>
                             Evaluate the authenticity of facial images to detect spoofing attacks.
                         </p>

@@ -183,9 +183,7 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
             const aiDetectionResult = await aiDetectionService.detectAIImage(imageFile);
 
             if (!aiDetectionResult.success) {
-                throw new Error(
-                    aiDetectionResult.smart_explanation || 'AI detection error'
-                );
+                throw new Error(aiDetectionResult.smart_explanation || 'AI detection error');
             }
 
             // Finalización del análisis
@@ -249,9 +247,7 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
                         <div className='space-y-4'>
                             <div>
                                 <div className='mb-2 flex items-center justify-between text-xs'>
-                                    <span className='text-muted-foreground'>
-                                        Confidence Level
-                                    </span>
+                                    <span className='text-muted-foreground'>Confidence Level</span>
                                     <span className='font-medium'>{confidencePercent}%</span>
                                 </div>
                                 <Progress

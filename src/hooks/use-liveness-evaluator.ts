@@ -506,9 +506,7 @@ export const useLivenessEvaluator = () => {
                 });
             } catch (error) {
                 const errorMessage =
-                    error instanceof Error
-                        ? error.message
-                        : 'Unknown error during evaluation';
+                    error instanceof Error ? error.message : 'Unknown error during evaluation';
                 setError(errorMessage);
                 toast.error('Error', {
                     description: errorMessage
@@ -558,9 +556,7 @@ export const useLivenessEvaluator = () => {
                 });
             } catch (error) {
                 const errorMessage =
-                    error instanceof Error
-                        ? error.message
-                        : 'Unknown error during evaluation';
+                    error instanceof Error ? error.message : 'Unknown error during evaluation';
                 setError(errorMessage);
                 toast.error('Error', {
                     description: errorMessage

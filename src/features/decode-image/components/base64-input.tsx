@@ -294,9 +294,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
 
                         <TabsContent value='upload' className='space-y-4'>
                             <div className='space-y-2'>
-                                <Label htmlFor='file-upload'>
-                                    Upload base64 code(s) file
-                                </Label>
+                                <Label htmlFor='file-upload'>Upload base64 code(s) file</Label>
 
                                 <label
                                     htmlFor='file-upload'
@@ -305,14 +303,11 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                     <div className='flex flex-col items-center justify-center p-4'>
                                         <FileText className='text-muted-foreground mb-2 h-12 w-12' />
                                         <p className='text-muted-foreground mb-2 text-sm'>
-                                            <span className='font-semibold'>
-                                                Click to upload
-                                            </span>{' '}
+                                            <span className='font-semibold'>Click to upload</span>{' '}
                                             or drag and drop
                                         </p>
                                         <p className='text-muted-foreground text-xs'>
-                                            Text file (.txt) or JSON (max. {MAX_CODES}{' '}
-                                            codes)
+                                            Text file (.txt) or JSON (max. {MAX_CODES} codes)
                                         </p>
                                     </div>
                                     <input

@@ -368,9 +368,7 @@ export function ImageUpload({
         <Card className='w-full'>
             <CardHeader>
                 <CardTitle className='flex items-center gap-2'>Input Parameters</CardTitle>
-                <CardDescription>
-                    Upload images from files or enter base64 manually
-                </CardDescription>
+                <CardDescription>Upload images from files or enter base64 manually</CardDescription>
             </CardHeader>
 
             <CardContent className='space-y-6'>
@@ -470,7 +468,8 @@ export function ImageUpload({
 
                             {selectedSDKEndpoints.length > 0 && (
                                 <div className='text-muted-foreground text-sm'>
-                                    {selectedSDKEndpoints.length} endpoint{selectedSDKEndpoints.length > 1 ? 's' : ''} selected
+                                    {selectedSDKEndpoints.length} endpoint
+                                    {selectedSDKEndpoints.length > 1 ? 's' : ''} selected
                                 </div>
                             )}
                         </div>
@@ -569,7 +568,8 @@ export function ImageUpload({
                                     </p>
                                     {selectedFiles.length > 0 && (
                                         <p className='mt-1 text-xs text-emerald-500'>
-                                            {selectedFiles.length} file{selectedFiles.length > 1 ? 's' : ''} selected
+                                            {selectedFiles.length} file
+                                            {selectedFiles.length > 1 ? 's' : ''} selected
                                         </p>
                                     )}
                                 </div>

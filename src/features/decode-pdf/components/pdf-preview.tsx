@@ -358,12 +358,10 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                         // Vista de error con opciones de recuperación
                         <div className='flex h-full flex-col items-center justify-center p-6'>
                             <AlertCircle className='text-destructive mb-4 h-16 w-16 opacity-50' />
-                            <h5 className='mb-2 text-lg font-medium'>
-                                Error loading preview
-                            </h5>
+                            <h5 className='mb-2 text-lg font-medium'>Error loading preview</h5>
                             <p className='text-muted-foreground mb-4 max-w-md text-center text-sm'>
-                                The PDF file exists but cannot be displayed in this preview.
-                                This may be due to browser restrictions or specific PDF features.
+                                The PDF file exists but cannot be displayed in this preview. This
+                                may be due to browser restrictions or specific PDF features.
                             </p>
                             <div className='flex flex-wrap justify-center gap-2'>
                                 <Button
@@ -473,9 +471,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                 {!pdfs.length && !error && !isLoading && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='mb-4 h-20 w-20' />
-                        <p className='text-sm font-medium'>
-                            Enter a base64 code to view the PDF
-                        </p>
+                        <p className='text-sm font-medium'>Enter a base64 code to view the PDF</p>
                     </div>
                 )}
 

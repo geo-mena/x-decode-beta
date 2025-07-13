@@ -116,8 +116,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                 } catch (error) {
                     console.error('File processing error:', error);
                     toast.error('Error processing file', {
-                        description:
-                            'The file does not contain valid base64 codes or is corrupted.'
+                        description: 'The file does not contain valid base64 codes or is corrupted.'
                     });
                 }
             };
@@ -272,7 +271,8 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                 <CardHeader>
                     <CardTitle>Input Parameters</CardTitle>
                     <CardDescription>
-                        Enter up to {MAX_CODES} codes to generate PDFs. The system automatically optimizes processing.
+                        Enter up to {MAX_CODES} codes to generate PDFs. The system automatically
+                        optimizes processing.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className='space-y-4'>
@@ -376,9 +376,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
 
                         <TabsContent value='upload' className='space-y-4'>
                             <div className='space-y-2'>
-                                <Label htmlFor='file-upload'>
-                                    Upload file with base64 code(s)
-                                </Label>
+                                <Label htmlFor='file-upload'>Upload file with base64 code(s)</Label>
 
                                 <label
                                     htmlFor='file-upload'
@@ -387,14 +385,11 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                     <div className='flex flex-col items-center justify-center p-4'>
                                         <FileText className='text-muted-foreground mb-2 h-12 w-12' />
                                         <p className='text-muted-foreground mb-2 text-sm'>
-                                            <span className='font-semibold'>
-                                                Click to upload
-                                            </span>{' '}
+                                            <span className='font-semibold'>Click to upload</span>{' '}
                                             or drag and drop
                                         </p>
                                         <p className='text-muted-foreground text-xs'>
-                                            Text file (.txt) or JSON (max. {MAX_CODES}{' '}
-                                            codes)
+                                            Text file (.txt) or JSON (max. {MAX_CODES} codes)
                                         </p>
                                     </div>
                                     <input
@@ -448,8 +443,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                         ) : (
                             <>
                                 <Play className='mr-2 h-4 w-4' />
-                                Decode{' '}
-                                {validCodesCount > 1 ? `${validCodesCount} PDFs` : 'PDF'}
+                                Decode {validCodesCount > 1 ? `${validCodesCount} PDFs` : 'PDF'}
                             </>
                         )}
                     </Button>

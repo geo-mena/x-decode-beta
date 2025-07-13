@@ -247,14 +247,11 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                                     <div className='flex flex-col items-center justify-center p-4'>
                                         <FileText className='text-muted-foreground mb-2 h-12 w-12' />
                                         <p className='text-muted-foreground mb-2 text-sm'>
-                                            <span className='font-semibold'>
-                                                Click to upload
-                                            </span>{' '}
+                                            <span className='font-semibold'>Click to upload</span>{' '}
                                             or drag and drop
                                         </p>
                                         <p className='text-muted-foreground text-xs'>
-                                            Text file (.txt) or JSON (max. {MAX_TOKENS}{' '}
-                                            tokens)
+                                            Text file (.txt) or JSON (max. {MAX_TOKENS} tokens)
                                         </p>
                                     </div>
                                     <input

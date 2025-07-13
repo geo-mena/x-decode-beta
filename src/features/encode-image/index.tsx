@@ -144,7 +144,8 @@ export default function EncodeImage() {
                     <div>
                         <h1 className='text-2xl font-bold tracking-tight'>Image to Base64</h1>
                         <p className='text-muted-foreground text-sm'>
-                            Convert images to base64 codes for use in HTML, CSS or any other document.
+                            Convert images to base64 codes for use in HTML, CSS or any other
+                            document.
                         </p>
                     </div>
                 </div>

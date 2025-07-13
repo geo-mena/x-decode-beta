@@ -84,9 +84,7 @@ export const ImageAnalysisResults = ({
                 <CardContent className='flex-grow'>
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='h-20 w-20' />
-                        <p className='mt-4 text-sm'>
-                            No data to display, please upload an image
-                        </p>
+                        <p className='mt-4 text-sm'>No data to display, please upload an image</p>
                     </div>
                 </CardContent>
             </Card>
@@ -143,9 +141,7 @@ export const ImageAnalysisResults = ({
         <Card className='w-full' ref={cardRef}>
             <CardHeader>
                 <CardTitle>Output Results</CardTitle>
-                <CardDescription>
-                    Below are the results of the image analysis
-                </CardDescription>
+                <CardDescription>Below are the results of the image analysis</CardDescription>
             </CardHeader>
             <CardContent className='space-y-6'>
                 <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>

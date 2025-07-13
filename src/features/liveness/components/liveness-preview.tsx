@@ -13,9 +13,7 @@ export function LivenessPreview({ isLoading, hasResults }: LivenessPreviewProps)
         <Card className='flex h-full flex-col'>
             <CardHeader>
                 <CardTitle>Output Results</CardTitle>
-                <CardDescription>
-                    Preview and results of liveness evaluation
-                </CardDescription>
+                <CardDescription>Preview and results of liveness evaluation</CardDescription>
             </CardHeader>
             <CardContent className='flex-grow'>
                 {isLoading && (
