@@ -26,18 +26,18 @@ export function DocumentValidationResult({
     const [showPrettyJson, _setShowPrettyJson] = useState(true);
     const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle');
 
-    // Formatear el JSON para mostrarlo
+    // Format JSON for display
     const formatJson = (data: Record<string, any> | null): string => {
         if (!data) return '';
 
         try {
             return showPrettyJson ? JSON.stringify(data, null, 2) : JSON.stringify(data);
         } catch (e) {
-            return 'Error al formatear JSON';
+            return 'Error formatting JSON';
         }
     };
 
-    // Copiar el JSON al portapapeles
+    // Copy JSON to clipboard
     const handleCopyJson = async () => {
         if (!data) return;
 
@@ -49,7 +49,7 @@ export function DocumentValidationResult({
                 setCopyState('idle');
             }, 2000);
         } catch (error) {
-            console.error('Error al copiar al portapapeles:', error);
+            console.error('Error copying to clipboard:', error);
         }
     };
 
@@ -106,9 +106,9 @@ export function DocumentValidationResult({
         <Card className='flex h-full w-full max-w-full flex-col overflow-hidden'>
             <CardHeader className='flex flex-row items-center justify-between pb-2'>
                 <div>
-                    <CardTitle>Resultados de Validación</CardTitle>
+                    <CardTitle>Output Results</CardTitle>
                     <CardDescription className='mt-1'>
-                        Información detallada del proceso de validación del documento
+                        Detailed information about the document validation process
                     </CardDescription>
                 </div>
             </CardHeader>
@@ -116,7 +116,7 @@ export function DocumentValidationResult({
                 {isLoading && (
                     <div className='flex h-full flex-col items-center justify-center'>
                         <CloudCog className='mb-4 h-20 w-20 animate-pulse' />
-                        <p className='text-muted-foreground'>Procesando solicitud...</p>
+                        <p className='text-muted-foreground'>Processing request...</p>
                     </div>
                 )}
 
@@ -131,7 +131,7 @@ export function DocumentValidationResult({
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='mb-4 h-20 w-20' />
                         <p className='text-sm'>
-                            Complete el formulario para iniciar o consultar una validación
+                            Complete the form to start or query a validation
                         </p>
                     </div>
                 )}
@@ -139,29 +139,29 @@ export function DocumentValidationResult({
                 {isPolling && !data && !error && !isLoading && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <Loader className='mb-4 h-20 w-20 animate-spin' />
-                        <p>Validando documento, esto puede tomar unos segundos...</p>
-                        <p className='mt-2 text-sm'>Estado: {pollingStatus || 'Pendiente'}</p>
+                        <p>Validating document, this may take a few seconds...</p>
+                        <p className='mt-2 text-sm'>Status: {pollingStatus || 'Pending'}</p>
                     </div>
                 )}
 
                 {data && (
                     <div className='space-y-4'>
-                        {/* Mostrar estado de polling si está activo */}
+                        {/* Show polling status if active */}
                         {/* {renderPollingStatus()} */}
 
                         {/* Controles para el formato JSON */}
                         <div className='flex items-center justify-between'>
-                            <Label className='text-sm font-medium'>Respuesta JSON</Label>
+                            <Label className='text-sm font-medium'>JSON Response</Label>
                         </div>
 
-                        {/* Visualización del JSON */}
+                        {/* JSON visualization */}
                         <div className='relative'>
                             <JsonHighlighter
                                 code={formatJson(data)}
                                 className='mt-2 max-h-[550px] overflow-auto'
                             />
 
-                            {/* Botón de copiar */}
+                            {/* Copy button */}
                             <Button
                                 variant='secondary'
                                 size='sm'
@@ -171,54 +171,54 @@ export function DocumentValidationResult({
                                 {copyState === 'copied' ? (
                                     <>
                                         <Check className='mr-1 h-3 w-3' />
-                                        Copiado
+                                        Copied
                                     </>
                                 ) : (
                                     <>
                                         <Copy className='mr-1 h-3 w-3' />
-                                        Copiar
+                                        Copy
                                     </>
                                 )}
                             </Button>
                         </div>
 
-                        {/* Mostrar advertencia si la validación falló */}
+                        {/* Show warning if validation failed */}
                         {(pollingStatus === 'FAILED' ||
                             data.status === 'FAILED' ||
                             data.transaction?.status === 'FAILED') && (
                             <Alert variant='destructive' className='mt-4'>
                                 <FileWarning className='h-4 w-4' />
-                                <AlertTitle>Validación fallida</AlertTitle>
+                                <AlertTitle>Validation failed</AlertTitle>
                                 <AlertDescription>
-                                    El proceso de validación del documento ha fallado. Verifique que
-                                    las imágenes sean claras y que los datos proporcionados sean
-                                    correctos.
+                                    The document validation process has failed. Verify that
+                                    the images are clear and that the provided data is
+                                    correct.
                                 </AlertDescription>
                             </Alert>
                         )}
 
-                        {/* Mostrar info si la validación fue exitosa */}
+                        {/* Show info if validation was successful */}
                         {(pollingStatus === 'DONE' ||
                             data.status === 'DONE' ||
                             data.transaction?.status === 'DONE') && (
                             <Alert className='border-l-primary mt-4 border-l-4'>
                                 <CircleCheck className='stroke-primary h-5 w-5' />
-                                <AlertTitle>Validación Completada</AlertTitle>
+                                <AlertTitle>Validation Completed</AlertTitle>
                                 <AlertDescription>
                                     {data.document?.status === 'ERROR_NOT_READABLE_ID' && (
                                         <span className='mt-1 block'>
-                                            Se ha detectado que el documento tiene problemas de
-                                            legibilidad.
+                                            It has been detected that the document has readability
+                                            problems.
                                         </span>
                                     )}
                                     {data.document?.status === 'DENIED_FRAUD' && (
                                         <span className='mt-1 block'>
-                                            El documento ha sido rechazado por sospecha de fraude.
+                                            The document has been rejected due to suspicion of fraud.
                                         </span>
                                     )}
                                     {data.document?.status === 'APPROVED_VERIFIED' && (
                                         <span className='mt-1 block'>
-                                            El documento ha sido verificado y aprobado.
+                                            The document has been verified and approved.
                                         </span>
                                     )}
                                 </AlertDescription>

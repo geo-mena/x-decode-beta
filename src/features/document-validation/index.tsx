@@ -29,7 +29,7 @@ export default function DocumentValidation() {
         };
     }, []);
 
-    // Función para iniciar la validación del documento
+    // Function to start document validation
     const handleStartValidation = async (
         country: string,
         idType: string,
@@ -47,9 +47,9 @@ export default function DocumentValidation() {
 
         try {
             if (!apiKey.trim()) {
-                setError('API Key no configurada');
+                setError('API Key not configured');
                 toast.error('Error', {
-                    description: 'Por favor configure su API Key en la configuración.'
+                    description: 'Please configure your API Key in settings.'
                 });
                 return;
             }
@@ -65,16 +65,16 @@ export default function DocumentValidation() {
             );
 
             if (!response.success) {
-                setError(response.message || 'Error al iniciar la validación del documento.');
+                setError(response.message || 'Error starting document validation.');
                 setValidationResult(null);
-                toast.error('Error de validación', {
-                    description: response.message || 'No se pudo iniciar el proceso de validación.'
+                toast.error('Validation error', {
+                    description: response.message || 'Could not start validation process.'
                 });
             } else {
                 setValidationResult(response.data ?? null);
 
-                toast.success('Validación iniciada', {
-                    description: `Referencia: ${response.data?.scanReference}`
+                toast.success('Validation started', {
+                    description: `Reference: ${response.data?.scanReference}`
                 });
 
                 if (response.data?.scanReference) {
@@ -83,7 +83,7 @@ export default function DocumentValidation() {
             }
         } catch (err) {
             console.error('Error en startDocumentValidation:', err);
-            const errorMessage = 'Error al procesar la solicitud. Intente nuevamente.';
+            const errorMessage = 'Error processing request. Please try again.';
             setError(errorMessage);
             setValidationResult(null);
             toast.error('Error', {
@@ -94,7 +94,7 @@ export default function DocumentValidation() {
         }
     };
 
-    // Función para obtener datos de validación por scanReference
+    // Function to get validation data by scanReference
     const handleGetValidationData = async (scanReference: string) => {
         setValidationResult(null);
         setError(null);
@@ -103,9 +103,9 @@ export default function DocumentValidation() {
 
         try {
             if (!apiKey.trim()) {
-                setError('API Key no configurada');
+                setError('API Key not configured');
                 toast.error('Error', {
-                    description: 'Por favor configure su API Key en la configuración.'
+                    description: 'Please configure your API Key in settings.'
                 });
                 return;
             }
@@ -117,21 +117,21 @@ export default function DocumentValidation() {
             );
 
             if (!response.success) {
-                setError(response.message || 'Error al obtener datos de validación.');
+                setError(response.message || 'Error getting validation data.');
                 setValidationResult(null);
                 toast.error('Error', {
                     description:
-                        response.message || 'No se pudieron obtener los datos de validación.'
+                        response.message || 'Could not get validation data.'
                 });
             } else {
                 setValidationResult(response.data ?? null);
-                toast.success('Datos obtenidos', {
-                    description: `Datos de validación para referencia: ${scanReference}`
+                toast.success('Data obtained', {
+                    description: `Validation data for reference: ${scanReference}`
                 });
             }
         } catch (err) {
             console.error('Error en getValidationData:', err);
-            const errorMessage = 'Error al procesar la solicitud. Intente nuevamente.';
+            const errorMessage = 'Error processing request. Please try again.';
             setError(errorMessage);
             setValidationResult(null);
             toast.error('Error', {
@@ -142,23 +142,23 @@ export default function DocumentValidation() {
         }
     };
 
-    // Función para iniciar el polling de estado
+    // Function to start status polling
     const startPolling = (scanReference: string, storeResponses: boolean) => {
         setPollingActive(true);
         setPollingStatus('PENDING');
 
-        toast.info('Verificando estado', {
-            description: 'Comprobando el estado de la validación del documento...'
+        toast.info('Checking status', {
+            description: 'Checking document validation status...'
         });
 
-        // Función que se ejecutará a intervalos regulares
+        // Function to be executed at regular intervals
         const checkStatus = async () => {
             try {
                 if (!apiKey.trim()) {
                     stopPolling();
-                    setError('API Key no configurada');
+                    setError('API Key not configured');
                     toast.error('Error', {
-                        description: 'API Key requerida para continuar el polling.'
+                        description: 'API Key required to continue polling.'
                     });
                     return;
                 }
@@ -177,8 +177,8 @@ export default function DocumentValidation() {
 
                     if (status === 'DONE') {
                         stopPolling();
-                        toast.success('Validación completada', {
-                            description: 'El proceso de validación ha finalizado correctamente.'
+                        toast.success('Validation completed', {
+                            description: 'Validation process completed successfully.'
                         });
 
                         const dataResponse = await documentValidationService.getValidationData(
@@ -188,29 +188,29 @@ export default function DocumentValidation() {
 
                         if (dataResponse.success) {
                             setValidationResult(dataResponse.data ?? null);
-                            toast.success('Datos obtenidos', {
-                                description: 'Se han recuperado los datos de validación.'
+                            toast.success('Data obtained', {
+                                description: 'Validation data has been retrieved.'
                             });
                         } else {
-                            setError('Error al obtener los datos finales de validación.');
+                            setError('Error getting final validation data.');
                             toast.error('Error', {
                                 description:
-                                    'No se pudieron obtener los datos finales de validación.'
+                                    'Could not get final validation data.'
                             });
                         }
                     } else if (status === 'FAILED') {
                         stopPolling();
-                        setError('La validación del documento ha fallado.');
-                        toast.error('Validación fallida', {
-                            description: 'El proceso de validación del documento ha fallado.'
+                        setError('Document validation failed.');
+                        toast.error('Validation failed', {
+                            description: 'Document validation process failed.'
                         });
                     }
-                    // Si sigue en PENDING, continuar el polling
+                    // If still PENDING, continue polling
                 }
             } catch (err) {
                 console.error('Error durante el polling:', err);
-                toast.error('Error de conexión', {
-                    description: 'Error al verificar el estado, reintentando...'
+                toast.error('Connection error', {
+                    description: 'Error checking status, retrying...'
                 });
             }
         };
@@ -220,7 +220,7 @@ export default function DocumentValidation() {
         pollingIntervalRef.current = setInterval(checkStatus, POLLING_INTERVAL);
     };
 
-    // Función para detener el polling
+    // Function to stop polling
     const stopPolling = () => {
         if (pollingIntervalRef.current) {
             clearInterval(pollingIntervalRef.current);
@@ -229,7 +229,7 @@ export default function DocumentValidation() {
         setPollingActive(false);
     };
 
-    // Función para restablecer el formulario
+    // Function to reset form
     const handleReset = () => {
         setValidationResult(null);
         setError(null);
@@ -241,8 +241,8 @@ export default function DocumentValidation() {
             inputRef.current.reset();
         }
 
-        toast.info('Formulario restablecido', {
-            description: 'Todos los datos han sido borrados para una nueva consulta.'
+        toast.info('Form reset', {
+            description: 'All data has been cleared for a new query.'
         });
     };
 
@@ -253,11 +253,11 @@ export default function DocumentValidation() {
                 <div className='mb-6 flex items-center justify-between'>
                     <div>
                         <h1 className='text-2xl font-bold tracking-tight'>
-                            Validación de Documentos
+                            Document Validation
                         </h1>
                         <p className='text-muted-foreground text-sm'>
-                            Valide documentos de identidad como pasaportes, licencias de conducir o
-                            tarjetas de identificación.
+                            Validate identity documents such as passports, driver's licenses or
+                            identification cards.
                         </p>
                     </div>
                 </div>
@@ -274,11 +274,11 @@ export default function DocumentValidation() {
                     }
                 >
                     <File className='h-4 w-4' />
-                    <span className='ml-2'>Documentación</span>
+                    <span className='ml-2'>Documentation</span>
                 </Badge>
 
                 <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Formulario de entrada de datos */}
+                    {/* Data input form */}
                     <DocumentValidationInput
                         ref={inputRef}
                         onStartValidation={handleStartValidation}
@@ -288,7 +288,7 @@ export default function DocumentValidation() {
                         isPolling={pollingActive}
                     />
 
-                    {/* Visualización de resultados */}
+                    {/* Results visualization */}
                     <DocumentValidationResult
                         data={validationResult}
                         error={error}

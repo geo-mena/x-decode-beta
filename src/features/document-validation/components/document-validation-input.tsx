@@ -45,9 +45,9 @@ countries.registerLocale(spanish);
 
 const MAX_SIZE_MB = 50;
 const ID_TYPES = [
-    { value: 'PASSPORT', label: 'Pasaporte' },
-    { value: 'DRIVING_LICENSE', label: 'Licencia de conducir' },
-    { value: 'ID_CARD', label: 'Tarjeta de identificación' },
+    { value: 'PASSPORT', label: 'Passport' },
+    { value: 'DRIVING_LICENSE', label: 'Driver\'s License' },
+    { value: 'ID_CARD', label: 'ID Card' },
     { value: 'VISA', label: 'Visa' }
 ];
 
@@ -77,7 +77,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
         const [merchantIdScanReference, setMerchantIdScanReference] = useState('');
         const [storeResponses, setStoreResponses] = useState(false);
 
-        // Estados para la interfaz de carga de archivos
+        // States for file upload interface
         const [frontsideTab, setFrontsideTab] = useState<'text' | 'file'>('file');
         const [backsideTab, setBacksideTab] = useState<'text' | 'file'>('file');
         const [frontsideFileName, setFrontsideFileName] = useState<string | null>(null);
@@ -95,13 +95,13 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             fileName: string;
         } | null>(null);
 
-        // Referencias a los elementos de formulario
+        // References to form elements
         const frontInputRef = useRef<HTMLTextAreaElement>(null);
         const backInputRef = useRef<HTMLTextAreaElement>(null);
         const frontFileInputRef = useRef<HTMLInputElement>(null);
         const backFileInputRef = useRef<HTMLInputElement>(null);
 
-        // Implementar la función reset que será expuesta a través de la ref
+        // Implement the reset function that will be exposed through the ref
         useImperativeHandle(ref, () => ({
             reset: () => {
                 setCountry('CHL');
@@ -120,7 +120,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                 setBacksideFileName(null);
                 setFormError(null);
 
-                // Limpiar referencias
+                // Clear references
                 if (frontInputRef.current) frontInputRef.current.value = '';
                 if (backInputRef.current) backInputRef.current.value = '';
                 if (frontFileInputRef.current) frontFileInputRef.current.value = '';
@@ -128,7 +128,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             }
         }));
 
-        // Validar el código de país
+        // Validate country code
         const validateCountryCode = (code: string): boolean => {
             if (!code.trim()) return false;
 
@@ -138,23 +138,23 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             return isValidCountryCode(code);
         };
 
-        // Manejar cambio del código de país
+        // Handle country code change
         const handleCountryCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value.toUpperCase();
             setCountry(value);
         };
 
-        // Manejar carga de archivo frontal
+        // Handle front file upload
         const handleFrontsideFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
 
             const file = files[0];
 
-            // Validar tamaño máximo
+            // Validate maximum size
             if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-                toast.error('Archivo demasiado grande', {
-                    description: `El archivo excede el límite de ${MAX_SIZE_MB} MB.`
+                toast.error('File too large', {
+                    description: `File exceeds the ${MAX_SIZE_MB} MB limit.`
                 });
                 return;
             }
@@ -163,12 +163,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             setFrontsideFileName(file.name);
 
             try {
-                // Convertir archivo a base64 usando el servicio existente
+                // Convert file to base64 using existing service
                 const response = await base64EncodeService.encodeImages([file], true);
 
                 if (!response.success || !response.data) {
-                    toast.error('Error de conversión', {
-                        description: response.message || 'No se pudo convertir la imagen a base64.'
+                    toast.error('Conversion error', {
+                        description: response.message || 'Could not convert image to base64.'
                     });
                     setFrontsideFileName(null);
                     return;
@@ -181,12 +181,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                 // Crear URL de vista previa
                 setFrontsidePreviewUrl(URL.createObjectURL(file));
 
-                toast.success('Imagen cargada', {
+                toast.success('Image loaded', {
                     description: `${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`
                 });
             } catch (error) {
                 toast.error('Error', {
-                    description: 'Error al procesar la imagen frontal.'
+                    description: 'Error processing front image.'
                 });
                 setFrontsideFileName(null);
             } finally {
@@ -195,17 +195,17 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             }
         };
 
-        // Manejar carga de archivo trasero
+        // Handle back file upload
         const handleBacksideFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
 
             const file = files[0];
 
-            // Validar tamaño máximo
+            // Validate maximum size
             if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-                toast.error('Archivo demasiado grande', {
-                    description: `El archivo excede el límite de ${MAX_SIZE_MB} MB.`
+                toast.error('File too large', {
+                    description: `File exceeds the ${MAX_SIZE_MB} MB limit.`
                 });
                 return;
             }
@@ -214,12 +214,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             setBacksideFileName(file.name);
 
             try {
-                // Convertir archivo a base64 usando el servicio existente
+                // Convert file to base64 using existing service
                 const response = await base64EncodeService.encodeImages([file], true);
 
                 if (!response.success || !response.data) {
-                    toast.error('Error de conversión', {
-                        description: response.message || 'No se pudo convertir la imagen a base64.'
+                    toast.error('Conversion error', {
+                        description: response.message || 'Could not convert image to base64.'
                     });
                     setBacksideFileName(null);
                     return;
@@ -232,12 +232,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                 // Crear URL de vista previa
                 setBacksidePreviewUrl(URL.createObjectURL(file));
 
-                toast.success('Imagen cargada', {
+                toast.success('Image loaded', {
                     description: `${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`
                 });
             } catch (error) {
                 toast.error('Error', {
-                    description: 'Error al procesar la imagen trasera.'
+                    description: 'Error processing back image.'
                 });
                 setBacksideFileName(null);
             } finally {
@@ -253,49 +253,49 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             return base64Regex.test(cleanStr.trim());
         };
 
-        // Validar formulario para iniciar validación
+        // Validate form to start validation
         const validateStartForm = (): boolean => {
             if (!validateCountryCode(country)) {
-                toast.error('País inválido', {
+                toast.error('Invalid country', {
                     description:
-                        'Por favor ingrese un código de país válido en formato ISO 3166-1 alpha-3.'
+                        'Please enter a valid country code in ISO 3166-1 alpha-3 format.'
                 });
                 return false;
             }
 
             if (!idType) {
-                toast.error('Tipo de documento requerido', {
-                    description: 'Por favor seleccione el tipo de documento.'
+                toast.error('Document type required', {
+                    description: 'Please select the document type.'
                 });
                 return false;
             }
 
             if (!frontsideImageBase64) {
-                toast.error('Imagen frontal requerida', {
-                    description: 'Por favor proporcione la imagen frontal del documento.'
+                toast.error('Front image required', {
+                    description: 'Please provide the front image of the document.'
                 });
                 return false;
             }
 
             if (!isBase64Like(frontsideImageBase64)) {
-                toast.error('Formato de imagen frontal inválido', {
-                    description: 'El formato del documento frontal no parece ser base64 válido.'
+                toast.error('Invalid front image format', {
+                    description: 'The front document format does not appear to be valid base64.'
                 });
                 return false;
             }
 
-            // Para pasaportes no es obligatorio el reverso, pero para otros documentos sí
+            // For passports the back is not mandatory, but for other documents it is
             if (idType !== 'PASSPORT' && !backsideImageBase64) {
-                toast.error('Imagen trasera requerida', {
+                toast.error('Back image required', {
                     description:
-                        'Para este tipo de documento es necesario proporcionar la imagen trasera.'
+                        'For this document type it is necessary to provide the back image.'
                 });
                 return false;
             }
 
             if (backsideImageBase64 && !isBase64Like(backsideImageBase64)) {
-                toast.error('Formato de imagen trasera inválido', {
-                    description: 'El formato del documento trasero no parece ser base64 válido.'
+                toast.error('Invalid back image format', {
+                    description: 'The back document format does not appear to be valid base64.'
                 });
                 return false;
             }
@@ -303,7 +303,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             return true;
         };
 
-        // Eliminar imagen frontal
+        // Remove front image
         const removeFrontsideImage = () => {
             if (frontsidePreviewUrl) {
                 URL.revokeObjectURL(frontsidePreviewUrl);
@@ -314,7 +314,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             if (frontFileInputRef.current) frontFileInputRef.current.value = '';
         };
 
-        // Eliminar imagen trasera
+        // Remove back image
         const removeBacksideImage = () => {
             if (backsidePreviewUrl) {
                 URL.revokeObjectURL(backsidePreviewUrl);
@@ -325,11 +325,11 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             if (backFileInputRef.current) backFileInputRef.current.value = '';
         };
 
-        // Manejar envío de formulario para iniciar validación
+        // Handle form submission to start validation
         const handleStartValidation = () => {
             if (!validateStartForm()) return;
 
-            // Iniciar la validación
+            // Start validation
             onStartValidation(
                 country,
                 idType,
@@ -340,11 +340,11 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             );
         };
 
-        // Manejar envío de formulario para obtener datos de validación
+        // Handle form submission to get validation data
         const handleGetValidationData = () => {
             if (!scanReference) {
-                toast.error('Referencia requerida', {
-                    description: 'Por favor ingrese la referencia de validación.'
+                toast.error('Reference required', {
+                    description: 'Please enter the validation reference.'
                 });
                 return;
             }
@@ -352,7 +352,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             onGetValidationData(scanReference);
         };
 
-        // Validar si hay datos suficientes para habilitar el botón de ejecución
+        // Validate if there is enough data to enable the execute button
         const hasRequiredDataForStart = () => {
             return country.trim() !== '' && idType !== '' && frontsideImageBase64.trim() !== '';
         };
@@ -365,13 +365,13 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             return inputMethod === 'start' ? hasRequiredDataForStart() : hasRequiredDataForGet();
         };
 
-        // Funciones para manejar el modal de imagen
+        // Functions to handle image modal
         const openImageModal = (url: string, title: string, fileName: string) => {
             setModalImageData({ url, title, fileName });
             setImageModalOpen(true);
         };
 
-        // Limpiar resources cuando el componente se desmonte
+        // Clear resources when component unmounts
         useEffect(() => {
             return () => {
                 if (frontsidePreviewUrl) {
@@ -386,9 +386,9 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
         return (
             <Card>
                 <CardHeader>
-                    <CardTitle>Validación de Documento</CardTitle>
+                    <CardTitle>Input Parameters</CardTitle>
                     <CardDescription>
-                        Inicie una nueva validación o consulte una existente
+                        Start a new validation or query an existing one
                     </CardDescription>
                 </CardHeader>
                 <CardContent className='space-y-4'>
@@ -399,43 +399,43 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                         <TabsList className='grid w-full grid-cols-2'>
                             <TabsTrigger value='start'>
                                 <CloudUpload className='mr-2 h-4 w-4' />
-                                Nueva Validación
+                                New Validation
                             </TabsTrigger>
                             <TabsTrigger value='get'>
                                 <Search className='mr-2 h-4 w-4' />
-                                Consultar Validación
+                                Query Validation
                             </TabsTrigger>
                         </TabsList>
 
                         <TabsContent value='start' className='space-y-4'>
-                            {/* Campos de país y tipo de documento en la misma línea */}
+                            {/* Country and document type fields on same line */}
                             <div className='grid grid-cols-1 gap-4 pt-2 md:grid-cols-2'>
-                                {/* Campo de código de país */}
+                                {/* Country code field */}
                                 <div className='space-y-2'>
-                                    <Label htmlFor='country'>País del documento *</Label>
+                                    <Label htmlFor='country'>Document Country *</Label>
                                     <Input
                                         id='country'
                                         value={country}
                                         onChange={handleCountryCodeChange}
-                                        placeholder='Ej: CHL, ARG, MEX'
+                                        placeholder='Ex: CHL, ARG, MEX'
                                         maxLength={3}
                                         disabled={isLoading || isPolling}
                                     />
                                     <span className='text-muted-foreground text-xs'>
-                                        Código ISO 3166-1 alpha-3
+                                        ISO 3166-1 alpha-3 code
                                     </span>
                                 </div>
 
-                                {/* Campo de tipo de documento */}
+                                {/* Document type field */}
                                 <div className='space-y-2'>
-                                    <Label htmlFor='idType'>Tipo de Documento *</Label>
+                                    <Label htmlFor='idType'>Document Type *</Label>
                                     <Select
                                         value={idType}
                                         onValueChange={setIdType}
                                         disabled={isLoading || isPolling}
                                     >
                                         <SelectTrigger id='idType' className='w-full'>
-                                            <SelectValue placeholder='Selecciona un tipo de documento' />
+                                            <SelectValue placeholder='Select a document type' />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {ID_TYPES.map((type) => (
@@ -448,12 +448,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                 </div>
                             </div>
 
-                            {/* Imagen frontal con tabs */}
+                            {/* Front image with tabs */}
                             <div className='space-y-2'>
                                 <div className='flex items-center justify-between'>
-                                    <Label>Imagen Frontal del Documento</Label>
+                                    <Label>Document Front Image</Label>
                                     <Badge variant='secondary' className='text-primary'>
-                                        Requerido
+                                        Required
                                     </Badge>
                                 </div>
 
@@ -469,7 +469,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                             disabled={isLoading || isPolling || frontsideLoading}
                                         >
                                             <CloudUpload className='mr-2 h-4 w-4' />
-                                            Archivo
+                                            File
                                         </TabsTrigger>
                                         <TabsTrigger
                                             value='text'
@@ -481,7 +481,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     </TabsList>
 
                                     <TabsContent value='file' className='pt-2'>
-                                        {/* Input para subir imagen */}
+                                        {/* Input to upload image */}
                                         <input
                                             ref={frontFileInputRef}
                                             id='frontside-image'
@@ -498,12 +498,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                     <ImageUp className='text-muted-foreground mb-2 h-12 w-12' />
                                                     <p className='text-muted-foreground text-sm'>
                                                         <span className='font-semibold'>
-                                                            Haga clic para subir
+                                                            Click to upload
                                                         </span>{' '}
-                                                        o arrastre y suelte
+                                                        or drag and drop
                                                     </p>
                                                     <p className='text-muted-foreground text-xs'>
-                                                        JPG, PNG, GIF (máx. {MAX_SIZE_MB} MB)
+                                                        JPG, PNG, GIF (max. {MAX_SIZE_MB} MB)
                                                     </p>
                                                     <Button
                                                         variant='outline'
@@ -514,7 +514,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         }
                                                         disabled={isLoading || isPolling}
                                                     >
-                                                        Seleccionar Archivo
+                                                        Select File
                                                     </Button>
                                                 </div>
                                             </div>
@@ -524,7 +524,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                             <div className='flex h-32 flex-col items-center justify-center rounded-md border p-6'>
                                                 <Loader className='text-muted-foreground mb-2 h-8 w-8 animate-spin' />
                                                 <p className='text-muted-foreground text-sm'>
-                                                    Procesando imagen...
+                                                    Processing image...
                                                 </p>
                                             </div>
                                         )}
@@ -536,14 +536,14 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         <div className='bg-muted h-12 w-12 flex-shrink-0 overflow-hidden rounded'>
                                                             <img
                                                                 src={frontsidePreviewUrl}
-                                                                alt='Imagen frontal'
+                                                                alt='Front image'
                                                                 className='h-full w-full object-cover'
                                                             />
                                                         </div>
                                                     )}
                                                     <div className='min-w-0 flex-1'>
                                                         <p className='truncate text-sm font-medium'>
-                                                            {frontsideFileName || 'Archivo cargado'}
+                                                            {frontsideFileName || 'File loaded'}
                                                         </p>
                                                         <p className='text-muted-foreground text-xs'>
                                                             {Math.round(
@@ -560,13 +560,13 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         onClick={() =>
                                                             openImageModal(
                                                                 frontsidePreviewUrl,
-                                                                'Imagen Frontal del Documento',
+                                                                'Document Front Image',
                                                                 frontsideFileName ||
-                                                                    'Imagen frontal'
+                                                                    'Front image'
                                                             )
                                                         }
                                                         disabled={isLoading || isPolling}
-                                                        title='Ver imagen en grande'
+                                                        title='View image full size'
                                                     >
                                                         <Eye className='h-4 w-4' />
                                                     </Button>
@@ -575,7 +575,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         size='icon'
                                                         onClick={removeFrontsideImage}
                                                         disabled={isLoading || isPolling}
-                                                        title='Eliminar imagen'
+                                                        title='Remove image'
                                                     >
                                                         <X className='h-4 w-4' />
                                                     </Button>
@@ -587,7 +587,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     <TabsContent value='text' className='pt-2'>
                                         <Textarea
                                             ref={frontInputRef}
-                                            placeholder='Ingrese el código base64 del frente del documento'
+                                            placeholder='Enter the base64 code of the document front'
                                             value={frontsideImageBase64}
                                             onChange={(e) =>
                                                 setFrontsideImageBase64(e.target.value)
@@ -599,12 +599,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                 </Tabs>
                             </div>
 
-                            {/* Imagen trasera (opcional para pasaportes) */}
+                            {/* Back image (optional for passports) */}
                             <div className='space-y-2'>
                                 <div className='flex items-center justify-between'>
-                                    <Label>Imagen Trasera del Documento</Label>
+                                    <Label>Document Back Image</Label>
                                     <Badge variant='secondary' className='text-primary'>
-                                        {idType === 'PASSPORT' ? 'Opcional' : 'Requerido'}
+                                        {idType === 'PASSPORT' ? 'Optional' : 'Required'}
                                     </Badge>
                                 </div>
 
@@ -620,7 +620,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                             disabled={isLoading || isPolling || backsideLoading}
                                         >
                                             <CloudUpload className='mr-2 h-4 w-4' />
-                                            Archivo
+                                            File
                                         </TabsTrigger>
                                         <TabsTrigger
                                             value='text'
@@ -632,7 +632,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     </TabsList>
 
                                     <TabsContent value='file' className='pt-2'>
-                                        {/* Input para subir imagen */}
+                                        {/* Input to upload image */}
                                         <input
                                             ref={backFileInputRef}
                                             id='backside-image'
@@ -649,12 +649,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                     <ImageUp className='text-muted-foreground mb-2 h-12 w-12' />
                                                     <p className='text-muted-foreground text-sm'>
                                                         <span className='font-semibold'>
-                                                            Haga clic para subir
+                                                            Click to upload
                                                         </span>{' '}
-                                                        o arrastre y suelte
+                                                        or drag and drop
                                                     </p>
                                                     <p className='text-muted-foreground text-xs'>
-                                                        JPG, PNG, GIF (máx. {MAX_SIZE_MB} MB)
+                                                        JPG, PNG, GIF (max. {MAX_SIZE_MB} MB)
                                                     </p>
                                                     <Button
                                                         variant='outline'
@@ -665,7 +665,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         }
                                                         disabled={isLoading || isPolling}
                                                     >
-                                                        Seleccionar Archivo
+                                                        Select File
                                                     </Button>
                                                 </div>
                                             </div>
@@ -675,7 +675,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                             <div className='flex h-32 flex-col items-center justify-center rounded-md border p-6'>
                                                 <Loader className='text-muted-foreground mb-2 h-8 w-8 animate-spin' />
                                                 <p className='text-muted-foreground text-sm'>
-                                                    Procesando imagen...
+                                                    Processing image...
                                                 </p>
                                             </div>
                                         )}
@@ -687,14 +687,14 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         <div className='bg-muted h-12 w-12 flex-shrink-0 overflow-hidden rounded'>
                                                             <img
                                                                 src={backsidePreviewUrl}
-                                                                alt='Imagen trasera'
+                                                                alt='Back image'
                                                                 className='h-full w-full object-cover'
                                                             />
                                                         </div>
                                                     )}
                                                     <div className='min-w-0 flex-1'>
                                                         <p className='truncate text-sm font-medium'>
-                                                            {backsideFileName || 'Archivo cargado'}
+                                                            {backsideFileName || 'File loaded'}
                                                         </p>
                                                         <p className='text-muted-foreground text-xs'>
                                                             {Math.round(
@@ -711,12 +711,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         onClick={() =>
                                                             openImageModal(
                                                                 backsidePreviewUrl,
-                                                                'Imagen Trasera del Documento',
-                                                                backsideFileName || 'Imagen trasera'
+                                                                'Document Back Image',
+                                                                backsideFileName || 'Back image'
                                                             )
                                                         }
                                                         disabled={isLoading || isPolling}
-                                                        title='Ver imagen en grande'
+                                                        title='View image full size'
                                                     >
                                                         <Eye className='h-4 w-4' />
                                                     </Button>
@@ -725,7 +725,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                         size='icon'
                                                         onClick={removeBacksideImage}
                                                         disabled={isLoading || isPolling}
-                                                        title='Eliminar imagen'
+                                                        title='Remove image'
                                                     >
                                                         <X className='h-4 w-4' />
                                                     </Button>
@@ -737,7 +737,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     <TabsContent value='text' className='pt-2'>
                                         <Textarea
                                             ref={backInputRef}
-                                            placeholder='Ingrese el código base64 del reverso del documento (opcional para pasaportes)'
+                                            placeholder='Enter the base64 code of the document back (optional for passports)'
                                             value={backsideImageBase64}
                                             onChange={(e) => setBacksideImageBase64(e.target.value)}
                                             disabled={isLoading || isPolling}
@@ -747,10 +747,10 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                 </Tabs>
                             </div>
 
-                            {/* Campo opcional de referencia personalizada */}
+                            {/* Optional custom reference field */}
                             <div className='space-y-2'>
                                 <Label htmlFor='merchantRef'>
-                                    Referencia Personalizada (opcional)
+                                    Custom Reference (optional)
                                 </Label>
                                 <Input
                                     id='merchantRef'
@@ -761,12 +761,12 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     maxLength={100}
                                 />
                                 <p className='text-muted-foreground text-xs'>
-                                    Referencia personalizada para identificar esta validación (máx.
-                                    100 caracteres)
+                                    Custom reference to identify this validation (max.
+                                    100 characters)
                                 </p>
                             </div>
 
-                            {/* Opción para almacenar respuestas */}
+                            {/* Option to store responses */}
                             <div className='flex items-center space-x-2 py-2'>
                                 <Switch
                                     id='storeResponses'
@@ -774,10 +774,10 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     onCheckedChange={setStoreResponses}
                                     disabled={isLoading || isPolling}
                                 />
-                                <Label htmlFor='storeResponses'>Guardar Respuestas</Label>
+                                <Label htmlFor='storeResponses'>Store Responses</Label>
                             </div>
 
-                            {/* Mensaje de error si existe */}
+                            {/* Error message if exists */}
                             {formError && (
                                 <div className='text-destructive text-sm font-medium'>
                                     {formError}
@@ -787,7 +787,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
 
                         <TabsContent value='get' className='space-y-4'>
                             <div className='space-y-2'>
-                                <Label htmlFor='scanReference'>Referencia de Validación</Label>
+                                <Label htmlFor='scanReference'>Validation Reference</Label>
                                 <Input
                                     id='scanReference'
                                     placeholder='fe294c25-17e1-4d98-a958-710edbf00064'
@@ -796,7 +796,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     disabled={isLoading || isPolling}
                                 />
                                 <p className='text-muted-foreground text-xs'>
-                                    Ingrese la referencia de la validación que desea consultar
+                                    Enter the reference of the validation you want to query
                                 </p>
                             </div>
                         </TabsContent>
@@ -821,27 +821,27 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                         {isLoading ? (
                             <>
                                 <Loader className='mr-2 h-4 w-4 animate-spin' />
-                                Procesando...
+                                Processing...
                             </>
                         ) : frontsideLoading || backsideLoading ? (
                             <>
                                 <Loader className='mr-2 h-4 w-4 animate-spin' />
-                                Cargando imagen...
+                                Loading image...
                             </>
                         ) : isPolling ? (
                             <>
                                 <Loader className='mr-2 h-4 w-4 animate-spin' />
-                                Validando documento...
+                                Validating document...
                             </>
                         ) : inputMethod === 'start' ? (
                             <>
                                 <Play className='mr-2 h-4 w-4' />
-                                Iniciar validación
+                                Start validation
                             </>
                         ) : (
                             <>
                                 <Play className='mr-2 h-4 w-4' />
-                                Consultar datos
+                                Query data
                             </>
                         )}
                     </Button>
@@ -858,11 +858,11 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                         }
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
-                        Limpiar
+                        Clear
                     </Button>
                 </CardFooter>
 
-                {/* Modal para ver imagen en grande */}
+                {/* Modal to view image full size */}
                 <Dialog
                     open={imageModalOpen}
                     onOpenChange={(open) => {
@@ -874,7 +874,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                 >
                     <DialogContent className='max-h-[90vh] max-w-4xl overflow-auto'>
                         <DialogHeader>
-                            <DialogTitle>{modalImageData?.title || 'Vista de Imagen'}</DialogTitle>
+                            <DialogTitle>{modalImageData?.title || 'Image View'}</DialogTitle>
                         </DialogHeader>
                         {modalImageData && (
                             <div className='flex flex-col items-center space-y-4'>
