@@ -1,15 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-    Check,
-    CircleCheck,
-    CloudAlert,
-    CloudCog,
-    Copy,
-    FileWarning,
-    Loader
-} from 'lucide-react';
+import { Check, CircleCheck, CloudAlert, CloudCog, Copy, FileWarning, Loader } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -160,7 +152,6 @@ export function DocumentValidationResult({
                         {/* Controles para el formato JSON */}
                         <div className='flex items-center justify-between'>
                             <Label className='text-sm font-medium'>Respuesta JSON</Label>
-                            
                         </div>
 
                         {/* Visualización del JSON */}
@@ -210,20 +201,19 @@ export function DocumentValidationResult({
                         {(pollingStatus === 'DONE' ||
                             data.status === 'DONE' ||
                             data.transaction?.status === 'DONE') && (
-                            <Alert className='mt-4 border-l-4 border-l-primary'>
-                                <CircleCheck className='h-5 w-5 stroke-primary' />
+                            <Alert className='border-l-primary mt-4 border-l-4'>
+                                <CircleCheck className='stroke-primary h-5 w-5' />
                                 <AlertTitle>Validación Completada</AlertTitle>
                                 <AlertDescription>
                                     {data.document?.status === 'ERROR_NOT_READABLE_ID' && (
                                         <span className='mt-1 block'>
-                                            Se ha detectado que el documento tiene problemas
-                                            de legibilidad.
+                                            Se ha detectado que el documento tiene problemas de
+                                            legibilidad.
                                         </span>
                                     )}
                                     {data.document?.status === 'DENIED_FRAUD' && (
                                         <span className='mt-1 block'>
-                                            El documento ha sido rechazado por sospecha de
-                                            fraude.
+                                            El documento ha sido rechazado por sospecha de fraude.
                                         </span>
                                     )}
                                     {data.document?.status === 'APPROVED_VERIFIED' && (
