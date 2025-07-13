@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { File } from 'lucide-react';
 import { toast } from 'sonner';
 import { createDocumentValidationService } from '@/lib/identity-api/document-validation.service';
@@ -246,7 +247,12 @@ export default function DocumentValidation() {
 
     return (
         <>
-            <div className='mb-6 flex items-center justify-between'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className='mb-6 flex items-center justify-between'
+            >
                 <div>
                     <h1 className='text-2xl font-bold tracking-tight'>Document Validation</h1>
                     <p className='text-muted-foreground text-sm'>
@@ -254,24 +260,35 @@ export default function DocumentValidation() {
                         identification cards.
                     </p>
                 </div>
-            </div>
+            </motion.div>
 
-            <Badge
-                variant='secondary'
-                className='text-primary cursor-pointer p-2'
-                onClick={() =>
-                    window.open(
-                        'https://docs.identity-platform.io/docs/identity-api/resources/Verify/document-validation',
-                        '_blank',
-                        'noopener,noreferrer'
-                    )
-                }
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
             >
-                <File className='h-4 w-4' />
-                <span className='ml-2'>Documentation</span>
-            </Badge>
+                <Badge
+                    variant='secondary'
+                    className='text-primary cursor-pointer p-2'
+                    onClick={() =>
+                        window.open(
+                            'https://docs.identity-platform.io/docs/identity-api/resources/Verify/document-validation',
+                            '_blank',
+                            'noopener,noreferrer'
+                        )
+                    }
+                >
+                    <File className='h-4 w-4' />
+                    <span className='ml-2'>Documentation</span>
+                </Badge>
+            </motion.div>
 
-            <div className='grid gap-6 lg:grid-cols-2'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className='grid gap-6 lg:grid-cols-2'
+            >
                 {/* Data input form */}
                 <DocumentValidationInput
                     ref={inputRef}
@@ -290,7 +307,7 @@ export default function DocumentValidation() {
                     isPolling={pollingActive}
                     pollingStatus={pollingStatus}
                 />
-            </div>
+            </motion.div>
         </>
     );
 }

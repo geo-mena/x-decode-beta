@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { DetokenizeResponseData } from '@/types/detokenize';
 import { File } from 'lucide-react';
 import { toast } from 'sonner';
@@ -109,31 +110,47 @@ export default function Detokenize() {
 
     return (
         <>
-            <div className='mb-6 flex items-center justify-between'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className='mb-6 flex items-center justify-between'
+            >
                 <div>
                     <h1 className='text-2xl font-bold tracking-tight'>Detokenize Image</h1>
                     <p className='text-muted-foreground text-sm'>
                         Convert image tokens into viewable and downloadable image files.
                     </p>
                 </div>
-            </div>
+            </motion.div>
 
-            <Badge
-                variant='secondary'
-                className='text-primary cursor-pointer p-2'
-                onClick={() =>
-                    window.open(
-                        'https://docs.identity-platform.io/docs/identity-api/resources/Services/detokenize',
-                        '_blank',
-                        'noopener,noreferrer'
-                    )
-                }
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
             >
-                <File className='h-4 w-4' />
-                <span className='ml-2'>Documentation</span>
-            </Badge>
+                <Badge
+                    variant='secondary'
+                    className='text-primary cursor-pointer p-2'
+                    onClick={() =>
+                        window.open(
+                            'https://docs.identity-platform.io/docs/identity-api/resources/Services/detokenize',
+                            '_blank',
+                            'noopener,noreferrer'
+                        )
+                    }
+                >
+                    <File className='h-4 w-4' />
+                    <span className='ml-2'>Documentation</span>
+                </Badge>
+            </motion.div>
 
-            <div className='grid gap-6 lg:grid-cols-2'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className='grid gap-6 lg:grid-cols-2'
+            >
                 {/* Token input form */}
                 <TokenInput
                     ref={tokenInputRef}
@@ -149,7 +166,7 @@ export default function Detokenize() {
                     isLoading={loading}
                     onDownload={handleDownload}
                 />
-            </div>
+            </motion.div>
         </>
     );
 }

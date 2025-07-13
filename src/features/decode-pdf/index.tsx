@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
     Base64PdfResponseData,
     isMultiplePdfResponse,
@@ -183,16 +184,26 @@ export default function DecodePdf() {
     return (
         <>
             <div>
-                <div className='mb-6 flex items-center justify-between'>
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className='mb-6 flex items-center justify-between'
+                >
                     <div>
                         <h1 className='text-2xl font-bold tracking-tight'>Base64 to PDF</h1>
                         <p className='text-muted-foreground text-sm'>
                             Convert base64 codes into viewable and downloadable PDF files.
                         </p>
                     </div>
-                </div>
+                </motion.div>
 
-                <div className='grid gap-6 lg:grid-cols-2'>
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className='grid gap-6 lg:grid-cols-2'
+                >
                     {/* Base64 input form */}
                     <Base64Input
                         ref={base64InputRef}
@@ -208,7 +219,7 @@ export default function DecodePdf() {
                         isLoading={loading}
                         onDownload={handleDownload}
                     />
-                </div>
+                </motion.div>
             </div>
         </>
     );

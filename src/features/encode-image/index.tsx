@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Base64EncodeResponseData } from '@/types/image-base64';
 import { toast } from 'sonner';
 import { base64EncodeService } from '@/lib/tools/image-base64.service';
@@ -136,16 +137,26 @@ export default function EncodeImage() {
 
     return (
         <>
-            <div className='mb-6 flex items-center justify-between'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className='mb-6 flex items-center justify-between'
+            >
                 <div>
                     <h1 className='text-2xl font-bold tracking-tight'>Image to Base64</h1>
                     <p className='text-muted-foreground text-sm'>
                         Convert images to base64 codes for use in HTML, CSS or any other document.
                     </p>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className='grid gap-6 lg:grid-cols-2'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className='grid gap-6 lg:grid-cols-2'
+            >
                 {/* Image input form */}
                 <ImageInput
                     ref={imageInputRef}
@@ -163,7 +174,7 @@ export default function EncodeImage() {
                     onCopy={handleCopyToClipboard}
                     onDownload={handleDownloadFromDataUri}
                 />
-            </div>
+            </motion.div>
         </>
     );
 }

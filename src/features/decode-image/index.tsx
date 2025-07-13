@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Base64ImageResponseData } from '@/types/base64-image';
 import { toast } from 'sonner';
 import base64ImageService from '@/lib/tools/base64-image.service';
@@ -97,16 +98,26 @@ export default function DecodeImage() {
 
     return (
         <>
-            <div className='mb-6 flex items-center justify-between'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className='mb-6 flex items-center justify-between'
+            >
                 <div>
                     <h1 className='text-2xl font-bold tracking-tight'>Base64 to Image</h1>
                     <p className='text-muted-foreground text-sm'>
                         Convert base64 codes into viewable and downloadable image files.
                     </p>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className='grid gap-6 lg:grid-cols-2'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className='grid gap-6 lg:grid-cols-2'
+            >
                 {/* Base64 input form */}
                 <Base64Input
                     ref={base64InputRef}
@@ -122,7 +133,7 @@ export default function DecodeImage() {
                     isLoading={loading}
                     onDownload={handleDownload}
                 />
-            </div>
+            </motion.div>
         </>
     );
 }

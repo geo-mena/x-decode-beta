@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { File } from 'lucide-react';
 import { useLivenessEvaluator } from '@/hooks/use-liveness-evaluator';
 import { Badge } from '@/components/ui/badge';
@@ -68,31 +69,47 @@ export default function LivenessContent() {
 
     return (
         <>
-            <div className='mb-6 flex items-center justify-between'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className='mb-6 flex items-center justify-between'
+            >
                 <div>
                     <h1 className='text-2xl font-bold tracking-tight'>Liveness Evaluation</h1>
                     <p className='text-muted-foreground text-sm'>
                         Evaluate the authenticity of facial images to detect spoofing attacks.
                     </p>
                 </div>
-            </div>
+            </motion.div>
 
-            <Badge
-                variant='secondary'
-                className='text-primary cursor-pointer p-2'
-                onClick={() =>
-                    window.open(
-                        'https://docs.identity-platform.io/docs/identity-api/resources/Services/liveness',
-                        '_blank',
-                        'noopener,noreferrer'
-                    )
-                }
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
             >
-                <File className='h-4 w-4' />
-                <span className='ml-2'>Documentation</span>
-            </Badge>
+                <Badge
+                    variant='secondary'
+                    className='text-primary cursor-pointer p-2'
+                    onClick={() =>
+                        window.open(
+                            'https://docs.identity-platform.io/docs/identity-api/resources/Services/liveness',
+                            '_blank',
+                            'noopener,noreferrer'
+                        )
+                    }
+                >
+                    <File className='h-4 w-4' />
+                    <span className='ml-2'>Documentation</span>
+                </Badge>
+            </motion.div>
 
-            <div className='grid gap-6 lg:grid-cols-2'>
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className='grid gap-6 lg:grid-cols-2'
+            >
                 {/* Image upload form */}
                 <ImageUpload
                     onFilesSelected={handleFilesSelected}
@@ -109,7 +126,7 @@ export default function LivenessContent() {
 
                 {/* Results preview */}
                 <LivenessPreview isLoading={loading} hasResults={results.length > 0} />
-            </div>
+            </motion.div>
         </>
     );
 }
