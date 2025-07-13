@@ -104,7 +104,7 @@ export function ShellHighlighter({
             )}
             <div
                 className='overflow-auto text-sm p-4'
-                style={{ backgroundColor: '#121212' }}
+                style={{ backgroundColor: isDark ? '#121212' : '#ffffff' }}
                 dangerouslySetInnerHTML={{ __html: highlightedCode }}
             />
             {!filename && (
