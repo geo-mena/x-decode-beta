@@ -23,7 +23,7 @@ export function DocumentValidationResult({
     isPolling,
     pollingStatus
 }: DocumentValidationResultProps) {
-    const [showPrettyJson, setShowPrettyJson] = useState(true);
+    const [showPrettyJson, _setShowPrettyJson] = useState(true);
     const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle');
 
     // Formatear el JSON para mostrarlo
