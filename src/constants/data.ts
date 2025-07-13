@@ -59,6 +59,12 @@ export const navItems: NavItem[] = [
     //     items: [] // No child items
     // },
     {
+        title: 'Installation',
+        url: '/service/overview',
+        icon: 'monitorCog',
+        isActive: true,
+    },
+    {
         title: 'Identity API',
         url: '#', // Placeholder as there is no direct link for the parent
         icon: 'server',

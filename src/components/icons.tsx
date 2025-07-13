@@ -40,10 +40,10 @@ import {
     IconLink,
     IconCloudDownload,
     IconCloudUpload,
-    IconTools
+    IconTools,
 } from '@tabler/icons-react';
 import { link } from 'fs';
-import { Settings } from 'lucide-react';
+import { MonitorCog } from 'lucide-react';
 
 export type Icon = React.ComponentType<IconProps>;
 
@@ -90,5 +90,6 @@ export const Icons = {
     tools: IconTools,
     link: IconLink,
     cloudDownload: IconCloudDownload,
-    cloudUpload: IconCloudUpload
+    cloudUpload: IconCloudUpload,
+    monitorCog: MonitorCog
 };
