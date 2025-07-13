@@ -78,7 +78,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
     const formatDate = (dateString: string | null) => {
         if (!dateString) return 'N/A';
         try {
-            return new Date(dateString).toLocaleString('es-ES', {
+            return new Date(dateString).toLocaleString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
@@ -86,7 +86,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                 minute: '2-digit'
             });
         } catch (error) {
-            return 'Fecha inválida';
+            return 'Invalid date';
         }
     };
 
@@ -117,14 +117,14 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
             // Intentar de nuevo hasta 2 veces
             setRetryCount((prev) => new Map(prev.set(fileName, currentRetries + 1)));
 
-            toast.warning('Reintentando carga', {
-                description: `Intento ${currentRetries + 2} de 3 para ${fileName}`
+            toast.warning('Retrying load', {
+                description: `Attempt ${currentRetries + 2} of 3 for ${fileName}`
             });
         } else {
             // Marcar como error permanente
             setIframeErrors((prev) => new Set(prev).add(fileName));
-            toast.error('Error de vista previa', {
-                description: `No se pudo cargar la vista previa de ${fileName}. Use "Abrir en nueva pestaña" o descargue el archivo.`
+            toast.error('Preview error', {
+                description: `Could not load preview of ${fileName}. Use "Open in new tab" or download the file.`
             });
         }
     };
@@ -147,12 +147,12 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
 
         if (url) {
             window.open(url, '_blank');
-            toast.info('Abriendo PDF', {
-                description: `Visualizando ${pdfData.file_name} en una nueva pestaña`
+            toast.info('Opening PDF', {
+                description: `Viewing ${pdfData.file_name} in a new tab`
             });
         } else {
-            toast.error('URL no disponible', {
-                description: 'No se encontró una URL válida para abrir el PDF'
+            toast.error('URL not available', {
+                description: 'No valid URL found to open the PDF'
             });
         }
     };
@@ -160,8 +160,8 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
     /* 🌱 Función para manejar descarga con validación */
     const handleDownloadClick = (pdfData: PdfDataWithIndex) => {
         if (!pdfData?.file_name) {
-            toast.error('Error de descarga', {
-                description: 'No se encontró el nombre del archivo.'
+            toast.error('Download error', {
+                description: 'File name not found.'
             });
             return;
         }
@@ -182,8 +182,8 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
             return newSet;
         });
 
-        toast.info('Reintentando', {
-            description: 'Recargando vista previa del PDF...'
+        toast.info('Retrying', {
+            description: 'Reloading PDF preview...'
         });
     };
 
@@ -193,7 +193,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
             <div className='flex items-center space-x-2'>
                 <FileType className='text-muted-foreground h-4 w-4' />
                 <div>
-                    <p className='text-muted-foreground text-xs'>Formato</p>
+                    <p className='text-muted-foreground text-xs'>Format</p>
                     <Badge variant='outline' className='text-xs'>
                         {pdfData.mime_type || 'application/pdf'}
                     </Badge>
@@ -203,7 +203,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
             <div className='flex items-center space-x-2'>
                 <Files className='text-muted-foreground h-4 w-4' />
                 <div>
-                    <p className='text-muted-foreground text-xs'>Tamaño</p>
+                    <p className='text-muted-foreground text-xs'>Size</p>
                     <p className='text-sm font-medium'>{formatFileSize(pdfData.size_kb || 0)}</p>
                 </div>
             </div>
@@ -211,7 +211,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
             <div className='flex items-center space-x-2'>
                 <FileText className='text-muted-foreground h-4 w-4' />
                 <div>
-                    <p className='text-muted-foreground text-xs'>Páginas</p>
+                    <p className='text-muted-foreground text-xs'>Pages</p>
                     <p className='text-sm font-medium'>{pdfData.pages || 'N/A'}</p>
                 </div>
             </div>
@@ -219,7 +219,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
             <div className='flex items-center space-x-2'>
                 <Info className='text-muted-foreground h-4 w-4' />
                 <div>
-                    <p className='text-muted-foreground text-xs'>Versión</p>
+                    <p className='text-muted-foreground text-xs'>Version</p>
                     {getPdfVersionBadge(pdfData.pdf_version)}
                 </div>
             </div>
@@ -229,14 +229,14 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
     /* 🌱 Renderizar metadatos del PDF con Accordion */
     const renderPdfMetadata = (pdfData: PdfDataWithIndex) => {
         const metadata = [
-            { icon: FileText, label: 'Título', value: pdfData.title },
-            { icon: User, label: 'Autor', value: pdfData.author },
-            { icon: Info, label: 'Asunto', value: pdfData.subject },
-            { icon: Calendar, label: 'Creado', value: formatDate(pdfData.creation_date) },
-            { icon: Calendar, label: 'Modificado', value: formatDate(pdfData.modification_date) },
-            { icon: Info, label: 'Creador', value: pdfData.creator },
-            { icon: Info, label: 'Productor', value: pdfData.producer },
-            { icon: Info, label: 'Palabras clave', value: pdfData.keywords }
+            { icon: FileText, label: 'Title', value: pdfData.title },
+            { icon: User, label: 'Author', value: pdfData.author },
+            { icon: Info, label: 'Subject', value: pdfData.subject },
+            { icon: Calendar, label: 'Created', value: formatDate(pdfData.creation_date) },
+            { icon: Calendar, label: 'Modified', value: formatDate(pdfData.modification_date) },
+            { icon: Info, label: 'Creator', value: pdfData.creator },
+            { icon: Info, label: 'Producer', value: pdfData.producer },
+            { icon: Info, label: 'Keywords', value: pdfData.keywords }
         ].filter((item) => item.value && item.value !== 'N/A');
 
         if (metadata.length === 0) {
@@ -246,18 +246,18 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                         <AccordionTrigger className='text-sm font-medium'>
                             <div className='flex items-center space-x-2'>
                                 <Info className='h-4 w-4' />
-                                <span>Metadatos</span>
+                                <span>Metadata</span>
                                 <Badge variant='outline' className='text-xs'>
-                                    Sin datos
+                                    No data
                                 </Badge>
                             </div>
                         </AccordionTrigger>
                         <AccordionContent>
                             <div className='text-muted-foreground py-6 text-center'>
                                 <Info className='mx-auto mb-2 h-8 w-8 opacity-50' />
-                                <p className='text-sm'>No hay metadatos disponibles</p>
+                                <p className='text-sm'>No metadata available</p>
                                 <p className='mt-1 text-xs'>
-                                    El PDF no contiene información adicional
+                                    The PDF does not contain additional information
                                 </p>
                             </div>
                         </AccordionContent>
@@ -272,9 +272,9 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                     <AccordionTrigger className='text-sm font-medium'>
                         <div className='flex items-center space-x-2'>
                             <Info className='h-4 w-4' />
-                            <span>Metadatos</span>
+                            <span>Metadata</span>
                             <Badge variant='secondary' className='text-xs'>
-                                {metadata.length} campo{metadata.length > 1 ? 's' : ''}
+                                {metadata.length} field{metadata.length > 1 ? 's' : ''}
                             </Badge>
                         </div>
                     </AccordionTrigger>
@@ -325,11 +325,11 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
             <div className='space-y-4'>
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center space-x-2'>
-                        <h4 className='text-sm font-medium'>Vista previa</h4>
+                        <h4 className='text-sm font-medium'>Preview</h4>
                         {isLoaded && !hasError && (
                             <Badge variant='secondary' className='text-xs'>
                                 <CheckCircle className='mr-1 h-3 w-3' />
-                                Cargado
+                                Loaded
                             </Badge>
                         )}
                         {hasError && (
@@ -340,7 +340,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                         )}
                         {retries > 0 && !hasError && (
                             <Badge variant='outline' className='text-xs'>
-                                Intento {retries + 1}
+                                Attempt {retries + 1}
                             </Badge>
                         )}
                     </div>
@@ -359,12 +359,11 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                         <div className='flex h-full flex-col items-center justify-center p-6'>
                             <AlertCircle className='text-destructive mb-4 h-16 w-16 opacity-50' />
                             <h5 className='mb-2 text-lg font-medium'>
-                                Error al cargar vista previa
+                                Error loading preview
                             </h5>
                             <p className='text-muted-foreground mb-4 max-w-md text-center text-sm'>
-                                El archivo PDF existe pero no se puede mostrar en esta vista previa.
-                                Esto puede deberse a restricciones del navegador o características
-                                específicas del PDF.
+                                The PDF file exists but cannot be displayed in this preview.
+                                This may be due to browser restrictions or specific PDF features.
                             </p>
                             <div className='flex flex-wrap justify-center gap-2'>
                                 <Button
@@ -373,7 +372,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                                     onClick={() => handleRetryIframe(pdfData.file_name)}
                                 >
                                     <RefreshCw className='mr-2 h-4 w-4' />
-                                    Reintentar vista previa
+                                    Retry preview
                                 </Button>
                                 <Button
                                     variant='default'
@@ -381,7 +380,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                                     onClick={() => handleOpenPdf(pdfData)}
                                 >
                                     <ExternalLink className='mr-2 h-4 w-4' />
-                                    Abrir en nueva pestaña
+                                    Open in new tab
                                 </Button>
                                 <Button
                                     variant='secondary'
@@ -389,7 +388,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                                     onClick={() => handleDownloadClick(pdfData)}
                                 >
                                     <Download className='mr-2 h-4 w-4' />
-                                    Descargar archivo
+                                    Download file
                                 </Button>
                             </div>
                         </div>
@@ -400,7 +399,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                                 <div className='bg-muted text-muted-foreground absolute inset-0 z-10 flex items-center justify-center'>
                                     <div className='text-center'>
                                         <FileDown className='mx-auto mb-2 h-8 w-8 animate-pulse' />
-                                        <p className='text-sm'>Cargando vista previa...</p>
+                                        <p className='text-sm'>Loading preview...</p>
                                     </div>
                                 </div>
                             )}
@@ -408,7 +407,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                                 key={`${pdfData.file_name}_${retries}`} // Force re-render on retry
                                 src={`${previewUrl}#toolbar=0&navpanes=0&view=FitH`}
                                 className='h-full w-full'
-                                title={`Vista previa de ${pdfData.file_name}`}
+                                title={`Preview of ${pdfData.file_name}`}
                                 onError={() => handleIframeError(pdfData.file_name)}
                                 onLoad={() => handleIframeLoad(pdfData.file_name)}
                                 allowFullScreen
@@ -420,10 +419,10 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                             <div className='text-center'>
                                 <FileText className='text-muted-foreground mx-auto mb-2 h-12 w-12' />
                                 <p className='text-muted-foreground text-sm'>
-                                    Vista previa no disponible
+                                    Preview not available
                                 </p>
                                 <p className='text-muted-foreground mt-1 text-xs'>
-                                    No se encontró URL de vista previa
+                                    Preview URL not found
                                 </p>
                             </div>
                         </div>
@@ -438,23 +437,19 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
             <CardHeader className='flex flex-row items-center justify-between pb-2'>
                 <div>
                     <CardTitle className='flex items-center space-x-2'>
-                        <span>
-                            {hasMultiplePdfs
-                                ? `PDFs Decodificados (${pdfs.length})`
-                                : 'PDF Decodificado'}
-                        </span>
+                        <span>Output Results</span>
                     </CardTitle>
                     <CardDescription className='mt-1'>
                         {hasMultiplePdfs
-                            ? 'Vista previa y detalles de los PDFs generados'
-                            : 'Vista previa y detalles del PDF generado'}
+                            ? 'Preview and details of generated PDFs'
+                            : 'Preview and details of generated PDF'}
                     </CardDescription>
                 </div>
                 {pdfs.length > 0 && (
                     <Badge variant='secondary' className='flex items-center space-x-1'>
                         <Files className='h-3 w-3' />
                         <span>
-                            {pdfs.length} archivo{pdfs.length > 1 ? 's' : ''}
+                            {pdfs.length} file{pdfs.length > 1 ? 's' : ''}
                         </span>
                     </Badge>
                 )}
@@ -464,7 +459,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                 {isLoading && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='mb-4 h-20 w-20 animate-pulse' />
-                        <p className='text-sm font-medium'>Procesando código(s) base64...</p>
+                        <p className='text-sm font-medium'>Processing base64 code(s)...</p>
                     </div>
                 )}
 
@@ -479,7 +474,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='mb-4 h-20 w-20' />
                         <p className='text-sm font-medium'>
-                            Ingrese un código base64 para ver el PDF
+                            Enter a base64 code to view the PDF
                         </p>
                     </div>
                 )}
@@ -510,7 +505,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                                     ))}
                                     {pdfs.length > 4 && (
                                         <TabsTrigger value='more'>
-                                            <span>+{pdfs.length - 4} más</span>
+                                            <span>+{pdfs.length - 4} more</span>
                                         </TabsTrigger>
                                     )}
                                 </TabsList>
@@ -532,7 +527,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                                         <div className='space-y-4'>
                                             <h4 className='flex items-center space-x-2 text-sm font-medium'>
                                                 <Files className='h-4 w-4' />
-                                                <span>PDFs adicionales</span>
+                                                <span>Additional PDFs</span>
                                             </h4>
                                             <div className='grid gap-2'>
                                                 {pdfs.slice(4).map((pdf, index) => (
@@ -584,7 +579,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                         disabled={isLoading}
                     >
                         <Download className='mr-2 h-4 w-4' />
-                        Descargar PDF
+                        Download PDF
                     </Button>
                     {activePdf.view_url && (
                         <Button
@@ -593,7 +588,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                             disabled={isLoading}
                         >
                             <ExternalLink className='mr-2 h-4 w-4' />
-                            Nueva pestaña
+                            New tab
                         </Button>
                     )}
                 </CardFooter>

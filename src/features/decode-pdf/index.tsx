@@ -41,7 +41,7 @@ export default function DecodePdf() {
             }
 
             if (!response.success) {
-                const errorMsg = response.message || 'Error al decodificar el PDF.';
+                const errorMsg = response.message || 'Error decoding the PDF.';
                 setError(errorMsg);
                 setPdfData(null);
 
@@ -49,27 +49,27 @@ export default function DecodePdf() {
                 if ('error_type' in response) {
                     switch (response.error_type) {
                         case 'invalid_base64':
-                            toast.error('Base64 inválido', {
-                                description: 'El código proporcionado no es un Base64 válido.'
+                            toast.error('Invalid Base64', {
+                                description: 'The provided code is not a valid Base64.'
                             });
                             break;
                         case 'no_valid_pdfs':
-                            toast.error('Sin PDFs válidos', {
-                                description: 'Ninguno de los códigos pudo ser procesado como PDF.'
+                            toast.error('No valid PDFs', {
+                                description: 'None of the codes could be processed as PDF.'
                             });
                             break;
                         case 'network_error':
-                            toast.error('Error de conexión', {
-                                description: 'No se pudo conectar con el servidor.'
+                            toast.error('Connection error', {
+                                description: 'Could not connect to the server.'
                             });
                             break;
                         default:
-                            toast.error('Error de decodificación', {
+                            toast.error('Decoding error', {
                                 description: errorMsg
                             });
                     }
                 } else {
-                    toast.error('Error de decodificación', {
+                    toast.error('Decoding error', {
                         description: errorMsg
                     });
                 }
@@ -78,7 +78,7 @@ export default function DecodePdf() {
 
             // Procesar respuesta exitosa
             if (!response.data) {
-                setError('No se recibieron datos del servidor');
+                setError('No data received from server');
                 return;
             }
 
@@ -93,8 +93,8 @@ export default function DecodePdf() {
                     }
                 ];
 
-                toast.success('PDF decodificado', {
-                    description: `${response.data.file_name} (${response.data.pages} páginas, ${response.data.size_kb.toFixed(2)} KB)`
+                toast.success('PDF decoded', {
+                    description: `${response.data.file_name} (${response.data.pages} pages, ${response.data.size_kb.toFixed(2)} KB)`
                 });
             } else if (isMultiplePdfResponse(response)) {
                 // Respuesta de múltiples PDFs
@@ -107,22 +107,22 @@ export default function DecodePdf() {
                 const totalFailed = response.data.total_failed;
 
                 if (totalProcessed > 0) {
-                    toast.success('PDFs decodificados', {
-                        description: `${totalProcessed} PDFs procesados exitosamente${totalFailed > 0 ? `, ${totalFailed} fallaron` : ''}`
+                    toast.success('PDFs decoded', {
+                        description: `${totalProcessed} PDFs processed successfully${totalFailed > 0 ? `, ${totalFailed} failed` : ''}`
                     });
 
                     // Mostrar advertencias sobre archivos fallidos
                     if (totalFailed > 0 && response.data.failed_files.length > 0) {
                         const failedReason =
-                            response.data.failed_files[0]?.reason || 'Error desconocido';
-                        toast.warning('Algunos archivos fallaron', {
-                            description: `${totalFailed} archivo(s) no pudieron procesarse: ${failedReason}`
+                            response.data.failed_files[0]?.reason || 'Unknown error';
+                        toast.warning('Some files failed', {
+                            description: `${totalFailed} file(s) could not be processed: ${failedReason}`
                         });
                     }
                 } else {
-                    setError('No se pudo procesar ningún PDF');
+                    setError('Could not process any PDF');
                     toast.error('Error', {
-                        description: 'Ninguno de los códigos Base64 pudo ser procesado.'
+                        description: 'None of the Base64 codes could be processed.'
                     });
                     return;
                 }
@@ -130,12 +130,12 @@ export default function DecodePdf() {
 
             setPdfData(processedData);
         } catch (err) {
-            const errorMessage = 'Error inesperado al procesar la solicitud. Intente nuevamente.';
+            const errorMessage = 'Unexpected error processing the request. Please try again.';
             setError(errorMessage);
             setPdfData(null);
 
             console.error('Decode error:', err);
-            toast.error('Error inesperado', {
+            toast.error('Unexpected error', {
                 description: errorMessage
             });
         } finally {
@@ -149,18 +149,18 @@ export default function DecodePdf() {
             const success = await base64PdfService.downloadPdfWithFetch(fileName);
 
             if (success) {
-                toast.success('Descarga iniciada', {
-                    description: `Descargando ${fileName}`
+                toast.success('Download started', {
+                    description: `Downloading ${fileName}`
                 });
             } else {
-                toast.error('Error de descarga', {
-                    description: 'No se pudo descargar el archivo. Inténtelo nuevamente.'
+                toast.error('Download error', {
+                    description: 'Could not download the file. Please try again.'
                 });
             }
         } catch (error) {
             console.error('Download error:', error);
-            toast.error('Error de descarga', {
-                description: 'Ocurrió un error al descargar el archivo.'
+            toast.error('Download error', {
+                description: 'An error occurred while downloading the file.'
             });
         }
     };
@@ -175,8 +175,8 @@ export default function DecodePdf() {
             base64InputRef.current.reset();
         }
 
-        toast.info('Formulario restablecido', {
-            description: 'Todos los datos han sido borrados para una nueva consulta.'
+        toast.info('Form reset', {
+            description: 'All data has been cleared for a new query.'
         });
     };
 
@@ -186,16 +186,15 @@ export default function DecodePdf() {
             <div>
                 <div className='mb-6 flex items-center justify-between'>
                     <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>Base64 a PDF</h1>
+                        <h1 className='text-2xl font-bold tracking-tight'>Base64 to PDF</h1>
                         <p className='text-muted-foreground text-sm'>
-                            Convierte códigos base64 en archivos de PDF visualizables y
-                            descargables.
+                            Convert base64 codes into viewable and downloadable PDF files.
                         </p>
                     </div>
                 </div>
 
                 <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Formulario de entrada de base64 */}
+                    {/* Base64 input form */}
                     <Base64Input
                         ref={base64InputRef}
                         onSubmit={handleDecode}
@@ -203,7 +202,7 @@ export default function DecodePdf() {
                         isLoading={loading}
                     />
 
-                    {/* Visualización del PDF */}
+                    {/* PDF visualization */}
                     <PdfPreview
                         data={pdfData}
                         error={error}

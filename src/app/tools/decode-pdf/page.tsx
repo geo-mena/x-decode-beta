@@ -2,7 +2,7 @@ import PageContainer from '@/components/layout/page-container';
 import DecodePdf from '@/features/decode-pdf';
 
 export const metadata = {
-    title: 'TOOLS - Base64 a PDF'
+    title: 'TOOLS - Base64 to PDF'
 };
 
 export default function page() {
