@@ -5,7 +5,6 @@ import Image from 'next/image';
 import React from 'react';
 import { ShellHighlighter } from '@/components/ui/shell-highlighter';
 
-
 const ServiceBlankState = () => {
     return (
         <section
