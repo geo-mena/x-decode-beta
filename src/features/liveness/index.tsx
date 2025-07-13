@@ -73,11 +73,10 @@ export default function LivenessContent() {
                 <div className='mb-6 flex items-center justify-between'>
                     <div>
                         <h1 className='text-2xl font-bold tracking-tight'>
-                            Evaluación de Liveness
+                            Liveness Evaluation
                         </h1>
                         <p className='text-muted-foreground text-sm'>
-                            Evalúa la autenticidad de imágenes faciales para detectar ataques de
-                            spoofing.
+                            Evaluate the authenticity of facial images to detect spoofing attacks.
                         </p>
                     </div>
                 </div>
@@ -94,11 +93,11 @@ export default function LivenessContent() {
                     }
                 >
                     <File className='h-4 w-4' />
-                    <span className='ml-2'>Documentación</span>
+                    <span className='ml-2'>Documentation</span>
                 </Badge>
 
                 <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Formulario de subida de imágenes */}
+                    {/* Image upload form */}
                     <ImageUpload
                         onFilesSelected={handleFilesSelected}
                         onBase64Selected={handleBase64Selected}
@@ -112,7 +111,7 @@ export default function LivenessContent() {
                         checkSDKEndpointStatus={checkSDKEndpointStatus}
                     />
 
-                    {/* Vista previa de resultados */}
+                    {/* Results preview */}
                     <LivenessPreview isLoading={loading} hasResults={results.length > 0} />
                 </div>
             </>

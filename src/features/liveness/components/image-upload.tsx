@@ -101,22 +101,22 @@ export function ImageUpload({
             const invalidFiles = fileArray.filter((file) => !isValidFile(file));
 
             if (invalidFiles.length > 0) {
-                toast.warning('Archivos no válidos', {
-                    description: `${invalidFiles.length} archivo(s) ignorado(s). Solo se admiten: ${supportedExtensions.join(', ')}`
+                toast.warning('Invalid files', {
+                    description: `${invalidFiles.length} file(s) ignored. Only accepted: ${supportedExtensions.join(', ')}`
                 });
             }
 
             if (validFiles.length === 0) {
                 toast.error('Error', {
-                    description: 'No se seleccionaron archivos de imagen válidos'
+                    description: 'No valid image files were selected'
                 });
                 return;
             }
 
             setSelectedFiles(validFiles);
 
-            toast.success('Archivos seleccionados', {
-                description: `${validFiles.length} imagen${validFiles.length > 1 ? 'es' : ''} seleccionada${validFiles.length > 1 ? 's' : ''}`
+            toast.success('Files selected', {
+                description: `${validFiles.length} image${validFiles.length > 1 ? 's' : ''} selected`
             });
         },
         [isValidFile, supportedExtensions, isDirectoryMode]
@@ -160,8 +160,8 @@ export function ImageUpload({
     // Funciones para manejar Base64
     const addBase64Field = useCallback(() => {
         if (base64Inputs.length >= MAX_BASE64_INPUTS) {
-            toast.warning('Límite alcanzado', {
-                description: `No se pueden agregar más de ${MAX_BASE64_INPUTS} entradas de base64.`
+            toast.warning('Limit reached', {
+                description: `Cannot add more than ${MAX_BASE64_INPUTS} base64 entries.`
             });
             return;
         }
@@ -193,8 +193,8 @@ export function ImageUpload({
     const copyToClipboard = useCallback((base64: string) => {
         if (!base64) return;
         navigator.clipboard.writeText(base64);
-        toast.success('Copiado al portapapeles', {
-            description: 'El base64 ha sido copiado al portapapeles.'
+        toast.success('Copied to clipboard', {
+            description: 'Base64 has been copied to clipboard.'
         });
     }, []);
 
@@ -249,18 +249,18 @@ export function ImageUpload({
         if (inputMethod === 'files') {
             if (selectedFiles.length === 0) {
                 toast.error('Error', {
-                    description: 'Seleccione al menos una imagen para evaluar'
+                    description: 'Select at least one image to evaluate'
                 });
                 return;
             }
 
-            // Verificar que si SDK está habilitado, al menos un endpoint esté seleccionado y activo
+            // Verify that if SDK is enabled, at least one endpoint is selected and active
             if (useSDK) {
                 const activeSelected = getSelectedActiveEndpoints();
                 if (activeSelected.length === 0) {
                     toast.error('Error', {
                         description:
-                            'Debe seleccionar al menos un endpoint SDK activo o deshabilitar la evaluación SDK'
+                            'Must select at least one active SDK endpoint or disable SDK evaluation'
                     });
                     return;
                 }
@@ -277,18 +277,18 @@ export function ImageUpload({
 
             if (validBase64s.length === 0) {
                 toast.error('Error', {
-                    description: 'Ingrese al menos un base64 válido para evaluar'
+                    description: 'Enter at least one valid base64 to evaluate'
                 });
                 return;
             }
 
-            // Verificar que si SDK está habilitado, al menos un endpoint esté seleccionado y activo
+            // Verify that if SDK is enabled, at least one endpoint is selected and active
             if (useSDK) {
                 const activeSelected = getSelectedActiveEndpoints();
                 if (activeSelected.length === 0) {
                     toast.error('Error', {
                         description:
-                            'Debe seleccionar al menos un endpoint SDK activo o deshabilitar la evaluación SDK'
+                            'Must select at least one active SDK endpoint or disable SDK evaluation'
                     });
                     return;
                 }
@@ -347,12 +347,12 @@ export function ImageUpload({
 
     const getSubmitText = () => {
         if (inputMethod === 'files') {
-            return selectedFiles.length > 1 ? 'Evaluar Imágenes' : 'Evaluar Imagen';
+            return selectedFiles.length > 1 ? 'Evaluate Images' : 'Evaluate Image';
         } else {
             const validCount = base64Inputs.filter(
                 (b) => b.trim() && validateBase64(b.trim())
             ).length;
-            return validCount > 1 ? 'Evaluar Base64s' : 'Evaluar Base64';
+            return validCount > 1 ? 'Evaluate Base64s' : 'Evaluate Base64';
         }
     };
 
@@ -367,9 +367,9 @@ export function ImageUpload({
     return (
         <Card className='w-full'>
             <CardHeader>
-                <CardTitle className='flex items-center gap-2'>Evaluación de Liveness</CardTitle>
+                <CardTitle className='flex items-center gap-2'>Input Parameters</CardTitle>
                 <CardDescription>
-                    Suba imágenes desde archivos o ingrese base64 manualmente
+                    Upload images from files or enter base64 manually
                 </CardDescription>
             </CardHeader>
 
@@ -380,7 +380,7 @@ export function ImageUpload({
                         <div className='flex items-center space-x-2'>
                             <Server className='h-4 w-4' />
                             <Label htmlFor='sdk-toggle' className='text-sm font-medium'>
-                                Evaluación con SDK Local
+                                Local SDK Evaluation
                             </Label>
                         </div>
                         <Switch
@@ -395,7 +395,7 @@ export function ImageUpload({
                         <div className='space-y-3'>
                             <div className='flex items-center justify-between'>
                                 <Label className='text-muted-foreground text-sm'>
-                                    Seleccionar endpoints SDK:
+                                    Select SDK endpoints:
                                 </Label>
                                 <Button
                                     variant='outline'
@@ -408,7 +408,7 @@ export function ImageUpload({
                                     ) : (
                                         <RefreshCw className='mr-2 h-3 w-3' />
                                     )}
-                                    Verificar estado
+                                    Check status
                                 </Button>
                             </div>
 
@@ -456,7 +456,7 @@ export function ImageUpload({
                                             variant={endpoint.isActive ? 'default' : 'secondary'}
                                             className='text-xs'
                                         >
-                                            {endpoint.isActive ? 'Activo' : 'Inactivo'}
+                                            {endpoint.isActive ? 'Active' : 'Inactive'}
                                         </Badge>
                                     </div>
                                 ))}
@@ -464,16 +464,13 @@ export function ImageUpload({
 
                             {userEndpoints.length === 0 && (
                                 <p className='text-muted-foreground text-sm'>
-                                    No hay endpoints configurados. Configure endpoints en la
-                                    configuración.
+                                    No endpoints configured. Configure endpoints in settings.
                                 </p>
                             )}
 
                             {selectedSDKEndpoints.length > 0 && (
                                 <div className='text-muted-foreground text-sm'>
-                                    {selectedSDKEndpoints.length} endpoint
-                                    {selectedSDKEndpoints.length > 1 ? 's' : ''} seleccionado
-                                    {selectedSDKEndpoints.length > 1 ? 's' : ''}
+                                    {selectedSDKEndpoints.length} endpoint{selectedSDKEndpoints.length > 1 ? 's' : ''} selected
                                 </div>
                             )}
                         </div>
@@ -485,11 +482,11 @@ export function ImageUpload({
                     <TabsList className='grid w-full grid-cols-2'>
                         <TabsTrigger value='files'>
                             <Files className='mr-2 h-4 w-4' />
-                            Subir Archivos
+                            Upload Files
                         </TabsTrigger>
                         <TabsTrigger value='base64'>
                             <FileText className='mr-2 h-4 w-4' />
-                            Ingresar Base64
+                            Enter Base64
                         </TabsTrigger>
                     </TabsList>
 
@@ -504,7 +501,7 @@ export function ImageUpload({
                                 className='flex items-center gap-2'
                             >
                                 <Files className='h-4 w-4' />
-                                Archivos individuales
+                                Individual files
                             </Button>
                             <Button
                                 variant={isDirectoryMode ? 'default' : 'outline'}
@@ -514,7 +511,7 @@ export function ImageUpload({
                                 className='flex items-center gap-2'
                             >
                                 <Folder className='h-4 w-4' />
-                                Carpeta completa
+                                Complete folder
                             </Button>
                         </div>
 
@@ -562,19 +559,17 @@ export function ImageUpload({
                                 <div>
                                     <p className='text-sm font-medium'>
                                         {isDirectoryMode
-                                            ? 'Haga clic para seleccionar una carpeta o arrastre una carpeta aquí'
-                                            : 'Haga clic para seleccionar archivos o arrastre archivos aquí'}
+                                            ? 'Click to select a folder or drag a folder here'
+                                            : 'Click to select files or drag files here'}
                                     </p>
                                     <p className='text-muted-foreground text-xs'>
                                         {isDirectoryMode
-                                            ? 'Se seleccionarán todas las imágenes de la carpeta (máx. 10MB por archivo)'
-                                            : 'Imagen individual o múltiples imágenes (máx. 10MB por archivo)'}
+                                            ? 'All images in the folder will be selected (max. 10MB per file)'
+                                            : 'Individual image or multiple images (max. 10MB per file)'}
                                     </p>
                                     {selectedFiles.length > 0 && (
                                         <p className='mt-1 text-xs text-emerald-500'>
-                                            {selectedFiles.length} archivo
-                                            {selectedFiles.length > 1 ? 's' : ''} seleccionado
-                                            {selectedFiles.length > 1 ? 's' : ''}
+                                            {selectedFiles.length} file{selectedFiles.length > 1 ? 's' : ''} selected
                                         </p>
                                     )}
                                 </div>
@@ -587,7 +582,7 @@ export function ImageUpload({
                         <div className='space-y-4'>
                             <div className='space-y-2'>
                                 <div className='flex items-center justify-between'>
-                                    <Label>Base64 de Imágenes</Label>
+                                    <Label>Image Base64</Label>
                                     <Badge
                                         variant={
                                             base64Inputs.length >= MAX_BASE64_INPUTS
@@ -604,7 +599,7 @@ export function ImageUpload({
                                 {base64Inputs.map((base64, index) => (
                                     <div key={index} className='flex space-x-2'>
                                         <Textarea
-                                            placeholder={`Base64 de imagen ${index + 1}`}
+                                            placeholder={`Image base64 ${index + 1}`}
                                             value={base64}
                                             onChange={(e) =>
                                                 updateBase64Input(e.target.value, index)
@@ -617,7 +612,7 @@ export function ImageUpload({
                                                     variant='outline'
                                                     size='icon'
                                                     onClick={() => copyToClipboard(base64)}
-                                                    title='Copiar base64'
+                                                    title='Copy base64'
                                                 >
                                                     <Copy className='h-4 w-4' />
                                                 </Button>
@@ -626,7 +621,7 @@ export function ImageUpload({
                                                 variant='outline'
                                                 size='icon'
                                                 onClick={() => removeBase64Field(index)}
-                                                title='Eliminar campo'
+                                                title='Remove field'
                                             >
                                                 <X className='h-4 w-4' />
                                             </Button>
@@ -642,8 +637,8 @@ export function ImageUpload({
                                 >
                                     <Plus className='mr-2 h-4 w-4' />
                                     {base64Inputs.length >= MAX_BASE64_INPUTS
-                                        ? `Máximo ${MAX_BASE64_INPUTS} base64s`
-                                        : 'Agregar otro base64'}
+                                        ? `Maximum ${MAX_BASE64_INPUTS} base64s`
+                                        : 'Add another base64'}
                                 </Button>
                             </div>
                         </div>
@@ -661,7 +656,7 @@ export function ImageUpload({
                     {isLoading ? (
                         <>
                             <Loader className='mr-2 h-4 w-4 animate-spin' />
-                            Evaluando...
+                            Evaluating...
                         </>
                     ) : (
                         <>
@@ -677,7 +672,7 @@ export function ImageUpload({
                     disabled={isLoading || !canSubmit()}
                 >
                     <RefreshCw className='mr-2 h-4 w-4' />
-                    Limpiar
+                    Clear
                 </Button>
             </CardFooter>
         </Card>

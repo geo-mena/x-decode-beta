@@ -28,7 +28,7 @@ export const useLivenessEvaluator = () => {
     const [selectedSDKEndpoints, setSelectedSDKEndpoints] = useState<string[]>([]);
     const { apiKey, userEndpoints } = usePlaygroundStore();
 
-    // Función para convertir imagen a base64
+    // Function to convert image to base64
     const convertImageToBase64 = useCallback((file: File): Promise<string> => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -38,15 +38,15 @@ export const useLivenessEvaluator = () => {
                     const base64 = reader.result.split(',')[1];
                     resolve(base64);
                 } else {
-                    reject(new Error('Error al convertir imagen a base64'));
+                    reject(new Error('Error converting image to base64'));
                 }
             };
-            reader.onerror = () => reject(new Error('Error al leer el archivo'));
+            reader.onerror = () => reject(new Error('Error reading file'));
             reader.readAsDataURL(file);
         });
     }, []);
 
-    // Función para limpiar base64 (remover prefijos si existen)
+    // Function to clean base64 (remove prefixes if they exist)
     const cleanBase64 = useCallback((base64String: string): string => {
         const trimmed = base64String.trim();
 
@@ -58,7 +58,7 @@ export const useLivenessEvaluator = () => {
         return trimmed;
     }, []);
 
-    // Función para obtener información de imagen desde base64
+    // Function to get image information from base64
     const getImageInfoFromBase64 = useCallback(
         (base64String: string, index: number): Promise<ImageInfo> => {
             return new Promise((resolve, reject) => {
@@ -67,7 +67,7 @@ export const useLivenessEvaluator = () => {
                 const dataUrl = `data:image/jpeg;base64,${cleanedBase64}`;
 
                 img.onload = () => {
-                    // Calcular tamaño aproximado del base64
+                    // Calculate approximate base64 size
                     const base64Length = cleanedBase64.length;
                     const sizeInBytes = Math.floor(base64Length * 0.75);
 
@@ -81,7 +81,7 @@ export const useLivenessEvaluator = () => {
                 };
 
                 img.onerror = () => {
-                    reject(new Error('Error al cargar la imagen desde base64'));
+                    reject(new Error('Error loading image from base64'));
                 };
 
                 img.src = dataUrl;
@@ -90,7 +90,7 @@ export const useLivenessEvaluator = () => {
         [cleanBase64]
     );
 
-    // Función para obtener información de la imagen desde archivo
+    // Function to get image information from file
     const getImageInfo = useCallback((file: File): Promise<ImageInfo> => {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -108,7 +108,7 @@ export const useLivenessEvaluator = () => {
             };
 
             img.onerror = () => {
-                reject(new Error('Error al cargar la imagen'));
+                reject(new Error('Error loading image'));
                 URL.revokeObjectURL(url);
             };
 
@@ -116,13 +116,13 @@ export const useLivenessEvaluator = () => {
         });
     }, []);
 
-    // Función para verificar si un endpoint SDK está activo
+    // Function to check if an SDK endpoint is active
     const checkSDKEndpointStatus = useCallback(async (url: string): Promise<boolean> => {
         try {
-            // Verificación básica de formato de URL
+            // Basic URL format verification
             const urlObj = new URL(url);
 
-            // Si la URL tiene un formato válido y un protocolo HTTP/HTTPS, marcarla como activa
+            // If URL has valid format and HTTP/HTTPS protocol, mark as active
             if (urlObj.protocol === 'http:' || urlObj.protocol === 'https:') {
                 const fullUrl = `${url}${SDK_ENDPOINT}`;
 
@@ -155,7 +155,7 @@ export const useLivenessEvaluator = () => {
         }
     }, []);
 
-    // Función para evaluar con SDK
+    // Function to evaluate with SDK
     const evaluateWithSDK = useCallback(
         async (
             imageBase64: string,
@@ -179,7 +179,7 @@ export const useLivenessEvaluator = () => {
                 let response;
 
                 if (needsProxy(fullUrl)) {
-                    // Usar proxy para endpoints externos
+                    // Use proxy for external endpoints
                     response = await fetch('/api/sdk-proxy', {
                         method: 'POST',
                         headers: {
@@ -192,7 +192,7 @@ export const useLivenessEvaluator = () => {
                         signal: controller.signal
                     });
                 } else {
-                    // Llamada directa para localhost
+                    // Direct call for localhost
                     response = await fetch(fullUrl, {
                         method: 'POST',
                         headers: {
@@ -213,29 +213,29 @@ export const useLivenessEvaluator = () => {
 
                 const result = await response.json();
                 return {
-                    diagnostic: result.diagnostic || `Evaluado con ${tag}`,
+                    diagnostic: result.diagnostic || `Evaluated with ${tag}`,
                     rawResponse: result
                 };
             } catch (error) {
                 if (error instanceof Error) {
                     if (error.name === 'AbortError') {
                         return {
-                            diagnostic: `Timeout: ${tag} no responde`
+                            diagnostic: `Timeout: ${tag} not responding`
                         };
                     }
                     return {
-                        diagnostic: `Error de conexión: ${error.message}`
+                        diagnostic: `Connection error: ${error.message}`
                     };
                 }
                 return {
-                    diagnostic: `Error desconocido en ${tag}`
+                    diagnostic: `Unknown error in ${tag}`
                 };
             }
         },
         [cleanBase64]
     );
 
-    // Función para evaluar con SaaS usando base64 directo
+    // Function to evaluate with SaaS using direct base64
     const evaluateWithSaaS = useCallback(
         async (
             imageBase64: string
@@ -249,7 +249,7 @@ export const useLivenessEvaluator = () => {
                 if (!apiKey.trim()) {
                     return {
                         diagnostic:
-                            'Error: API key no configurada. Configure la API key usando el botón "API Key" en la barra lateral.'
+                            'Error: API key not configured. Configure the API key using the "API Key" button in the sidebar.'
                     };
                 }
 
@@ -260,7 +260,7 @@ export const useLivenessEvaluator = () => {
                 });
 
                 return {
-                    diagnostic: response.serviceResultLog || 'Sin diagnóstico disponible',
+                    diagnostic: response.serviceResultLog || 'No diagnostic available',
                     rawResponse: response
                 };
             } catch (error) {
@@ -268,14 +268,14 @@ export const useLivenessEvaluator = () => {
                     return { diagnostic: `Error: ${error.message}` };
                 }
                 return {
-                    diagnostic: `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`
+                    diagnostic: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
                 };
             }
         },
         [cleanBase64, apiKey]
     );
 
-    // Función para evaluar con SaaS usando archivo
+    // Function to evaluate with SaaS using file
     const evaluateFileWithSaaS = useCallback(
         async (
             file: File
@@ -291,28 +291,28 @@ export const useLivenessEvaluator = () => {
                     return { diagnostic: `Error: ${error.message}` };
                 }
                 return {
-                    diagnostic: `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`
+                    diagnostic: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
                 };
             }
         },
         [convertImageToBase64, evaluateWithSaaS]
     );
 
-    // Función para formatear el tamaño del archivo
+    // Function to format file size
     const formatFileSize = useCallback((bytes: number): string => {
         if (bytes < 1024) return `${bytes} B`;
         if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
         return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
     }, []);
 
-    // Función para obtener endpoints SDK activos
+    // Function to get active SDK endpoints
     const getActiveSDKEndpoints = useCallback(() => {
         return userEndpoints.filter(
             (endpoint) => selectedSDKEndpoints.includes(endpoint.id) && endpoint.isActive
         );
     }, [userEndpoints, selectedSDKEndpoints]);
 
-    // Función para procesar una imagen individual desde archivo
+    // Function to process an individual image from file
     const processImage = useCallback(
         async (file: File): Promise<LivenessResult> => {
             try {
@@ -331,16 +331,16 @@ export const useLivenessEvaluator = () => {
                     imageInfo
                 };
 
-                // Evaluar con SaaS (siempre habilitado)
+                // Evaluate with SaaS (always enabled)
                 try {
                     const saasResult = await evaluateFileWithSaaS(file);
                     result.diagnosticSaaS = saasResult.diagnostic;
                     result.rawResponse = saasResult.rawResponse;
                 } catch (error) {
-                    result.diagnosticSaaS = `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
+                    result.diagnosticSaaS = `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
                 }
 
-                // Evaluar con SDK si está habilitado
+                // Evaluate with SDK if enabled
                 if (useSDK) {
                     const activeEndpoints = getActiveSDKEndpoints();
                     result.sdkDiagnostics = {};
@@ -359,7 +359,7 @@ export const useLivenessEvaluator = () => {
                             }
                         } catch (error) {
                             result.sdkDiagnostics[endpoint.tag] =
-                                `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
+                                `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
                         }
                     }
                 }
@@ -371,8 +371,8 @@ export const useLivenessEvaluator = () => {
                     imagePath: file.name,
                     resolution: 'N/A',
                     size: 'N/A',
-                    diagnosticSaaS: 'Error al procesar',
-                    error: error instanceof Error ? error.message : 'Error desconocido'
+                    diagnosticSaaS: 'Error processing',
+                    error: error instanceof Error ? error.message : 'Unknown error'
                 };
             }
         },
@@ -387,7 +387,7 @@ export const useLivenessEvaluator = () => {
         ]
     );
 
-    // Función para procesar base64 directamente
+    // Function to process base64 directly
     const processBase64 = useCallback(
         async (base64String: string, index: number): Promise<LivenessResult> => {
             try {
@@ -406,16 +406,16 @@ export const useLivenessEvaluator = () => {
                     imageInfo
                 };
 
-                // Evaluar con SaaS (siempre habilitado)
+                // Evaluate with SaaS (always enabled)
                 try {
                     const saasResult = await evaluateWithSaaS(base64String);
                     result.diagnosticSaaS = saasResult.diagnostic;
                     result.rawResponse = saasResult.rawResponse;
                 } catch (error) {
-                    result.diagnosticSaaS = `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
+                    result.diagnosticSaaS = `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
                 }
 
-                // Evaluar con SDK si está habilitado
+                // Evaluate with SDK if enabled
                 if (useSDK) {
                     const activeEndpoints = getActiveSDKEndpoints();
                     result.sdkDiagnostics = {};
@@ -434,7 +434,7 @@ export const useLivenessEvaluator = () => {
                             }
                         } catch (error) {
                             result.sdkDiagnostics[endpoint.tag] =
-                                `Error: ${error instanceof Error ? error.message : 'Error desconocido'}`;
+                                `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
                         }
                     }
                 }
@@ -446,8 +446,8 @@ export const useLivenessEvaluator = () => {
                     imagePath: `base64_image_${index + 1}`,
                     resolution: 'N/A',
                     size: 'N/A',
-                    diagnosticSaaS: 'Error al procesar base64',
-                    error: error instanceof Error ? error.message : 'Error desconocido'
+                    diagnosticSaaS: 'Error processing base64',
+                    error: error instanceof Error ? error.message : 'Unknown error'
                 };
             }
         },
@@ -462,10 +462,10 @@ export const useLivenessEvaluator = () => {
         ]
     );
 
-    // Función principal para evaluar imágenes desde archivos
+    // Main function to evaluate images from files
     const evaluateImages = useCallback(
         async (files: File[]) => {
-            // Filtrar solo archivos de imagen válidos
+            // Filter only valid image files
             const validFiles = files.filter((file) => {
                 const extension = '.' + file.name.split('.').pop()?.toLowerCase();
                 return VALID_IMAGE_EXTENSIONS.includes(extension);
@@ -473,7 +473,7 @@ export const useLivenessEvaluator = () => {
 
             if (validFiles.length === 0) {
                 toast.error('Error', {
-                    description: 'No se encontraron archivos de imagen válidos'
+                    description: 'No valid image files found'
                 });
                 return;
             }
@@ -485,30 +485,30 @@ export const useLivenessEvaluator = () => {
             try {
                 const startTime = Date.now();
 
-                toast.info('Procesando', {
-                    description: `Evaluando ${validFiles.length} imagen${validFiles.length > 1 ? 'es' : ''}...`
+                toast.info('Processing', {
+                    description: `Evaluating ${validFiles.length} image${validFiles.length > 1 ? 's' : ''}...`
                 });
 
-                // Procesar imágenes secuencialmente para evitar límites de API
+                // Process images sequentially to avoid API limits
                 const results: LivenessResult[] = [];
                 for (const file of validFiles) {
                     const result = await processImage(file);
                     results.push(result);
                 }
 
-                // Ordenar resultados por título
+                // Sort results by title
                 results.sort((a, b) => a.title.localeCompare(b.title));
                 setResults(results);
 
                 const elapsed = (Date.now() - startTime) / 1000;
-                toast.success('Evaluación completada', {
-                    description: `${results.length} imagen${results.length > 1 ? 'es' : ''} procesada${results.length > 1 ? 's' : ''} en ${elapsed.toFixed(1)}s`
+                toast.success('Evaluation completed', {
+                    description: `${results.length} image${results.length > 1 ? 's' : ''} processed in ${elapsed.toFixed(1)}s`
                 });
             } catch (error) {
                 const errorMessage =
                     error instanceof Error
                         ? error.message
-                        : 'Error desconocido durante la evaluación';
+                        : 'Unknown error during evaluation';
                 setError(errorMessage);
                 toast.error('Error', {
                     description: errorMessage
@@ -520,12 +520,12 @@ export const useLivenessEvaluator = () => {
         [processImage]
     );
 
-    // Función principal para evaluar base64s directamente
+    // Main function to evaluate base64s directly
     const evaluateBase64Images = useCallback(
         async (base64Strings: string[]) => {
             if (base64Strings.length === 0) {
                 toast.error('Error', {
-                    description: 'No se proporcionaron base64 válidos'
+                    description: 'No valid base64 provided'
                 });
                 return;
             }
@@ -537,30 +537,30 @@ export const useLivenessEvaluator = () => {
             try {
                 const startTime = Date.now();
 
-                toast.info('Procesando', {
-                    description: `Evaluando ${base64Strings.length} base64${base64Strings.length > 1 ? 's' : ''}...`
+                toast.info('Processing', {
+                    description: `Evaluating ${base64Strings.length} base64${base64Strings.length > 1 ? 's' : ''}...`
                 });
 
-                // Procesar base64s secuencialmente para evitar límites de API
+                // Process base64s sequentially to avoid API limits
                 const results: LivenessResult[] = [];
                 for (let i = 0; i < base64Strings.length; i++) {
                     const result = await processBase64(base64Strings[i], i);
                     results.push(result);
                 }
 
-                // Ordenar resultados por título
+                // Sort results by title
                 results.sort((a, b) => a.title.localeCompare(b.title));
                 setResults(results);
 
                 const elapsed = (Date.now() - startTime) / 1000;
-                toast.success('Evaluación completada', {
-                    description: `${results.length} base64${results.length > 1 ? 's' : ''} procesado${results.length > 1 ? 's' : ''} en ${elapsed.toFixed(1)}s`
+                toast.success('Evaluation completed', {
+                    description: `${results.length} base64${results.length > 1 ? 's' : ''} processed in ${elapsed.toFixed(1)}s`
                 });
             } catch (error) {
                 const errorMessage =
                     error instanceof Error
                         ? error.message
-                        : 'Error desconocido durante la evaluación';
+                        : 'Unknown error during evaluation';
                 setError(errorMessage);
                 toast.error('Error', {
                     description: errorMessage
@@ -572,9 +572,9 @@ export const useLivenessEvaluator = () => {
         [processBase64]
     );
 
-    // Función para limpiar resultados
+    // Function to clear results
     const clearResults = useCallback(() => {
-        // Limpiar URLs de objeto para evitar memory leaks
+        // Clean object URLs to avoid memory leaks
         results.forEach((result) => {
             if (result.imageUrl && result.imageUrl.startsWith('blob:')) {
                 URL.revokeObjectURL(result.imageUrl);
@@ -584,29 +584,29 @@ export const useLivenessEvaluator = () => {
         setResults([]);
         setError(null);
 
-        toast.info('Resultados limpiados', {
-            description: 'Todos los datos han sido borrados para una nueva evaluación'
+        toast.info('Results cleared', {
+            description: 'All data has been cleared for a new evaluation'
         });
     }, [results]);
 
-    // Función para verificar si un archivo es una imagen válida
+    // Function to check if a file is a valid image
     const isValidImageFile = useCallback((file: File): boolean => {
         const extension = '.' + file.name.split('.').pop()?.toLowerCase();
         return VALID_IMAGE_EXTENSIONS.includes(extension);
     }, []);
 
-    // Función para validar base64
+    // Function to validate base64
     const validateBase64 = useCallback((base64String: string): boolean => {
         try {
-            // Limpiar el base64 (remover espacios y saltos de línea)
+            // Clean base64 (remove spaces and line breaks)
             const cleanString = base64String.replace(/\s/g, '');
 
-            // Verificar si tiene el prefijo data:image
+            // Check if it has data:image prefix
             const base64WithoutPrefix = cleanString.startsWith('data:image/')
                 ? cleanString.split(',')[1]
                 : cleanString;
 
-            // Validar que sea base64 válido
+            // Validate that it's valid base64
             const decoded = atob(base64WithoutPrefix);
             return decoded.length > 0;
         } catch (error) {
