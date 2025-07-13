@@ -72,23 +72,23 @@ export const navItems: NavItem[] = [
 
         items: [
             {
-                title: 'Detokenize',
-                url: '/service/detokenize',
-                icon: 'route',
-                shortcut: ['m', 'm']
-            },
-            {
-                title: 'Prueba de vida',
+                title: 'Liveness Test',
                 url: '/service/liveness',
                 icon: 'route',
                 shortcut: ['m', 'm']
             },
             {
-                title: 'Morfología',
+                title: 'Morphology',
                 url: '/service/morphology',
                 icon: 'route',
                 shortcut: ['m', 'm']
-            }
+            },
+            {
+                title: 'Detokenize',
+                url: '/service/detokenize',
+                icon: 'route',
+                shortcut: ['m', 'm']
+            },
         ]
     },
 
@@ -100,13 +100,13 @@ export const navItems: NavItem[] = [
 
         items: [
             {
-                title: 'Base64 a Imagen',
+                title: 'Base64 to Image',
                 url: '/tools/decode-image',
                 icon: 'route',
                 shortcut: ['m', 'm']
             },
             {
-                title: 'Base64 a PDF',
+                title: 'Base64 to PDF',
                 url: '/tools/decode-pdf',
                 icon: 'route',
                 shortcut: ['m', 'm']
@@ -122,7 +122,7 @@ export const navItems: NavItem[] = [
 
         items: [
             {
-                title: 'Imagen a Base64',
+                title: 'Image to Base64',
                 url: '/tools/encode-image',
                 icon: 'route',
                 shortcut: ['m', 'm']
@@ -138,7 +138,7 @@ export const navItems: NavItem[] = [
 
         items: [
             {
-                title: 'Análisis de Imágenes',
+                title: 'Image Analysis',
                 url: '/tools/image-analysis',
                 icon: 'route',
                 shortcut: ['m', 'm']
