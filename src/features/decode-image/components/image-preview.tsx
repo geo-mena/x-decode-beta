@@ -260,7 +260,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                 <CardHeader className='flex flex-row items-center justify-between pb-2'>
                     <div>
                         <CardTitle>
-                            {hasMultipleImages ? 'Imágenes Decodificadas' : 'Imagen Decodificada'}
+                            {hasMultipleImages ? 'Output Results' : 'Output Results'}
                         </CardTitle>
                         <CardDescription className='mt-1'>
                             {hasMultipleImages

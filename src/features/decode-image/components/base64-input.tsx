@@ -196,7 +196,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
         return (
             <Card>
                 <CardHeader>
-                    <CardTitle>Códigos Base64</CardTitle>
+                    <CardTitle>Input Parameters</CardTitle>
                     <CardDescription>
                         Ingrese hasta {MAX_CODES} códigos para generar imágenes
                     </CardDescription>
