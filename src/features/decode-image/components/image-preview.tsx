@@ -257,7 +257,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
     return (
         <>
             <Card className='flex h-full flex-col'>
-                <CardHeader className='flex flex-row items-center justify-between pb-2'>
+                <CardHeader className='flex flex-row items-center justify-between'>
                     <div>
                         <CardTitle>
                             {hasMultipleImages ? 'Output Results' : 'Output Results'}
@@ -306,7 +306,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
                                     onValueChange={setActiveTab}
                                     className='w-full'
                                 >
-                                    <TabsList className='mb-4 grid grid-cols-2'>
+                                    <TabsList className='mb-4 grid w-full' style={{ gridTemplateColumns: `repeat(${images.length}, 1fr)` }}>
                                         {images.map((_, index) => (
                                             <TabsTrigger key={index} value={index.toString()}>
                                                 <div className='flex items-center gap-1.5'>

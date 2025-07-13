@@ -432,7 +432,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
 
     return (
         <Card className='flex h-full flex-col'>
-            <CardHeader className='flex flex-row items-center justify-between pb-2'>
+            <CardHeader className='flex flex-row items-center justify-between'>
                 <div>
                     <CardTitle className='flex items-center space-x-2'>
                         <span>Output Results</span>
@@ -495,7 +495,7 @@ export function PdfPreview({ data, error, isLoading, onDownload }: PdfPreviewPro
                                             )}
                                             {loadedPdfs.has(pdf.file_name) &&
                                                 !iframeErrors.has(pdf.file_name) && (
-                                                    <CheckCircle className='ml-1 h-3 w-3 text-green-500' />
+                                                    <CheckCircle className='ml-1 h-3 w-3 text-primary' />
                                                 )}
                                         </TabsTrigger>
                                     ))}

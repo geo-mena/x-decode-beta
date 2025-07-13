@@ -270,7 +270,7 @@ export const TokenInput = forwardRef<any, TokenInputProps>(
                                                 ? tokens[0]
                                                 : `${tokens.length} tokens loaded`
                                         }
-                                        className='bg-muted w-full resize-none text-sm'
+                                        className='max-h-[100px] min-h-[100px] flex-grow bg-muted w-full resize-none overflow-y-auto font-mono text-xs'
                                     />
                                 )}
                             </div>

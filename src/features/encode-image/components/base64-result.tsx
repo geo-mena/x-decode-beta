@@ -137,7 +137,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                         value={
                             showTruncated ? truncateText(resultData.base64, 400) : resultData.base64
                         }
-                        className='h-24 resize-none font-mono text-xs'
+                        className='max-h-[100px] min-h-[100px] flex-grow resize-none overflow-y-auto font-mono text-xs'
                     />
 
                     <div className='flex gap-2'>
@@ -177,7 +177,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
 
     return (
         <Card className='flex h-full w-full max-w-full flex-col overflow-hidden'>
-            <CardHeader className='flex flex-row items-center justify-between pb-2'>
+            <CardHeader className='flex flex-row items-center justify-between'>
                 <div>
                     <CardTitle>Output Results</CardTitle>
                     <CardDescription className='mt-1'>
@@ -215,7 +215,7 @@ export function Base64Result({ data, error, isLoading, onCopy, onDownload }: Bas
                     <>
                         {hasMultipleResults ? (
                             <Tabs value={activeTab} onValueChange={setActiveTab} className='w-full'>
-                                <TabsList className='mb-4 grid grid-cols-2'>
+                                <TabsList className='mb-4 grid w-full' style={{ gridTemplateColumns: `repeat(${results.length}, 1fr)` }}>
                                     {results.map((_, index) => (
                                         <TabsTrigger key={index} value={index.toString()}>
                                             <div className='flex items-center gap-1.5'>
