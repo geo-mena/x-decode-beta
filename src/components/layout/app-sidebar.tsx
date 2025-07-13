@@ -1,19 +1,19 @@
 'use client';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+// import {
+//     DropdownMenu,
+//     DropdownMenuContent,
+//     DropdownMenuGroup,
+//     DropdownMenuItem,
+//     DropdownMenuLabel,
+//     DropdownMenuSeparator,
+//     DropdownMenuTrigger
+// } from '@/components/ui/dropdown-menu';
 import {
     Sidebar,
     SidebarContent,
-    SidebarFooter,
+    // SidebarFooter,
     SidebarGroup,
     SidebarGroupLabel,
     SidebarHeader,
@@ -26,22 +26,17 @@ import {
     SidebarRail,
     useSidebar
 } from '@/components/ui/sidebar';
-import { UserAvatarProfile } from '@/components/user-avatar-profile';
+// import { UserAvatarProfile } from '@/components/user-avatar-profile';
 import { navItems } from '@/constants/data';
 import { useMediaQuery } from '@/hooks/use-media-query';
-import { useUser } from '@clerk/nextjs';
+// import { useUser } from '@clerk/nextjs';
 import {
-    IconBell,
     IconChevronRight,
-    IconChevronsDown,
-    IconCreditCard,
-    IconLogout,
     IconPhotoUp,
-    IconUserCircle
 } from '@tabler/icons-react';
-import { SignOutButton } from '@clerk/nextjs';
+// import { SignOutButton } from '@clerk/nextjs';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
 import { OrgSwitcher } from '../org-switcher';
@@ -69,8 +64,8 @@ interface AppSidebarProps {
 export default function AppSidebar({ variant = 'inset', collapsible = 'icon' }: AppSidebarProps) {
     const pathname = usePathname();
     const { isOpen } = useMediaQuery();
-    const { user } = useUser();
-    const router = useRouter();
+    // const { user } = useUser();
+    // const router = useRouter();
     const { state } = useSidebar();
 
     const handleSwitchTenant = () => {
@@ -165,7 +160,7 @@ export default function AppSidebar({ variant = 'inset', collapsible = 'icon' }: 
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter>
+            {/* <SidebarFooter>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <DropdownMenu>
@@ -228,7 +223,7 @@ export default function AppSidebar({ variant = 'inset', collapsible = 'icon' }: 
                         </DropdownMenu>
                     </SidebarMenuItem>
                 </SidebarMenu>
-            </SidebarFooter>
+            </SidebarFooter> */}
             <SidebarRail />
         </Sidebar>
     );
