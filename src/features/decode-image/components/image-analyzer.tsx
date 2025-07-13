@@ -150,7 +150,7 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
     const analyzeImage = async () => {
         if (!data || !data.file_name || !data.preview_url) return;
 
-        setStatusMessage('Analizando imagen...');
+        setStatusMessage('Analyzing image...');
         setProcessingPercent(0);
         setAiDetectionError(null);
         setVisibleExplanation('');
@@ -169,7 +169,7 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
 
         try {
             // Comenzar detección de IA
-            setStatusMessage('Detectando si es generada por IA...');
+            setStatusMessage('Detecting if AI-generated...');
 
             // Obtener el archivo de imagen usando la URL del proxy
             const proxyUrl = base64ImageService.getProxyUrl(data.file_name);
@@ -184,13 +184,13 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
 
             if (!aiDetectionResult.success) {
                 throw new Error(
-                    aiDetectionResult.smart_explanation || 'Error en la detección de IA'
+                    aiDetectionResult.smart_explanation || 'AI detection error'
                 );
             }
 
             // Finalización del análisis
             setProcessingPercent(100);
-            setStatusMessage('Análisis completado');
+            setStatusMessage('Analysis completed');
 
             // Guardar solo los resultados de detección de IA
             setImageAnalysis({
@@ -210,11 +210,11 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
             setProcessingPercent(0);
             setStatusMessage('');
             setAiDetectionError(
-                error instanceof Error ? error.message : 'Error desconocido al analizar la imagen'
+                error instanceof Error ? error.message : 'Unknown error analyzing image'
             );
 
-            toast.error('Error al analizar', {
-                description: 'No se pudo completar el análisis de IA de la imagen'
+            toast.error('Analysis error', {
+                description: 'Could not complete AI analysis of the image'
             });
         }
     };
@@ -231,17 +231,17 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
                 <div>
                     <div className='bg-muted/30 rounded-md border p-4'>
                         <div className='mb-4 flex items-center justify-between'>
-                            <span className='text-sm font-medium'>Resultado:</span>
+                            <span className='text-sm font-medium'>Result:</span>
                             {aiDetection.smart_detection ? (
                                 <Badge className='px-3 py-1 text-xs' variant='destructive'>
-                                    Generada por IA
+                                    AI Generated
                                 </Badge>
                             ) : (
                                 <Badge
                                     className='border-emerald-500 px-3 py-1 text-xs text-emerald-500'
                                     variant='outline'
                                 >
-                                    Creada por humano
+                                    Human Created
                                 </Badge>
                             )}
                         </div>
@@ -250,7 +250,7 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
                             <div>
                                 <div className='mb-2 flex items-center justify-between text-xs'>
                                     <span className='text-muted-foreground'>
-                                        Nivel de confianza
+                                        Confidence Level
                                     </span>
                                     <span className='font-medium'>{confidencePercent}%</span>
                                 </div>
@@ -263,7 +263,7 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
                             <div
                                 className='text-muted-foreground relative cursor-pointer text-sm'
                                 onClick={completeTyping}
-                                title={!isTypingComplete ? 'Haz clic para completar' : ''}
+                                title={!isTypingComplete ? 'Click to complete' : ''}
                             >
                                 {visibleExplanation}
                                 {!isTypingComplete && showCursor && (
@@ -279,7 +279,7 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
                         {aiDetection.details.map((detail, index) => (
                             <div key={index} className='flex flex-col rounded-md border p-3'>
                                 <span className='text-muted-foreground text-xs capitalize'>
-                                    {detail.label === 'artificial' ? 'IA' : 'Humano'}
+                                    {detail.label === 'artificial' ? 'AI' : 'Human'}
                                 </span>
                                 <span className='text-2xl font-medium'>
                                     {Math.round(detail.score * 100)}%
@@ -295,13 +295,13 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant='ghost' size='icon' title='Analizar Imagen'>
+                <Button variant='ghost' size='icon' title='Analyze Image'>
                     <Leaf className='h-4 w-4' />
                 </Button>
             </DialogTrigger>
             <DialogContent className='sm:max-w-md'>
                 <DialogHeader>
-                    <DialogTitle>Análisis de Imagen</DialogTitle>
+                    <DialogTitle>Image Analysis</DialogTitle>
                 </DialogHeader>
 
                 {!imageAnalysis ? (
@@ -315,13 +315,13 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
                                     className='mt-2'
                                     onClick={() => setAiDetectionError(null)}
                                 >
-                                    Intentar de nuevo
+                                    Try again
                                 </Button>
                             </div>
                         ) : (
                             <>
                                 <p className='text-muted-foreground mb-4 text-center'>
-                                    Analiza esta imagen para detectar si fue generada por IA.
+                                    Analyze this image to detect if it was AI-generated.
                                 </p>
 
                                 {processingPercent > 0 && processingPercent < 100 ? (
@@ -336,7 +336,7 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
                                         disabled={!data}
                                     >
                                         <Leaf className='mr-2 h-4 w-4' />
-                                        Analizar Imagen
+                                        Analyze Image
                                     </Button>
                                 )}
                             </>
@@ -353,8 +353,8 @@ export function ImageAnalyzer({ data, onEnhanceApplied }: ImageAnalyzerProps) {
                                 <Button disabled={autoEnhanceApplied} className='w-full'>
                                     <Zap className='mr-2 h-4 w-4' />
                                     {autoEnhanceApplied
-                                        ? 'Mejora aplicada'
-                                        : 'Aplicar mejora automática'}
+                                        ? 'Enhancement applied'
+                                        : 'Apply automatic enhancement'}
                                 </Button>
                             </>
                         )}

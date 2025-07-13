@@ -28,11 +28,11 @@ export default function DecodeImage() {
             });
 
             if (!response.success || !response.data) {
-                setError(response.message || 'Error al decodificar la imagen.');
+                setError(response.message || 'Error decoding the image.');
                 setImageData(null);
 
-                toast.error('Error de decodificación', {
-                    description: response.message || 'No se pudo procesar los códigos base64.'
+                toast.error('Decoding error', {
+                    description: response.message || 'Could not process the base64 codes.'
                 });
             } else {
                 // Agregar índice de código a cada imagen para referencia
@@ -43,8 +43,8 @@ export default function DecodeImage() {
                     }));
                     setImageData(processedData);
 
-                    toast.success('Imágenes decodificadas', {
-                        description: `Se decodificaron ${processedData.length} imágenes exitosamente`
+                    toast.success('Images decoded', {
+                        description: `Successfully decoded ${processedData.length} images`
                     });
                 } else {
                     // Si es una sola imagen
@@ -53,13 +53,13 @@ export default function DecodeImage() {
                         codeIndex: 0
                     });
 
-                    toast.success('Imagen decodificada', {
+                    toast.success('Image decoded', {
                         description: `${response.data.file_name} (${response.data.width}×${response.data.height})`
                     });
                 }
             }
         } catch (err) {
-            const errorMessage = 'Error al procesar la solicitud. Intente nuevamente.';
+            const errorMessage = 'Error processing the request. Please try again.';
             setError(errorMessage);
             setImageData(null);
 
@@ -75,8 +75,8 @@ export default function DecodeImage() {
         if (fileName) {
             base64ImageService.downloadImage(fileName);
 
-            toast.success('Descargando imagen', {
-                description: `Descargando ${fileName}`
+            toast.success('Downloading image', {
+                description: `Downloading ${fileName}`
             });
         }
     };
@@ -90,8 +90,8 @@ export default function DecodeImage() {
             base64InputRef.current.reset();
         }
 
-        toast.info('Formulario restablecido', {
-            description: 'Todos los datos han sido borrados para una nueva consulta.'
+        toast.info('Form reset', {
+            description: 'All data has been cleared for a new query.'
         });
     };
 
@@ -101,16 +101,15 @@ export default function DecodeImage() {
             <>
                 <div className='mb-6 flex items-center justify-between'>
                     <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>Base64 a Imagen</h1>
+                        <h1 className='text-2xl font-bold tracking-tight'>Base64 to Image</h1>
                         <p className='text-muted-foreground text-sm'>
-                            Convierte códigos base64 en archivos de imagen visualizables y
-                            descargables.
+                            Convert base64 codes into viewable and downloadable image files.
                         </p>
                     </div>
                 </div>
 
                 <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Formulario de entrada de base64 */}
+                    {/* Base64 input form */}
                     <Base64Input
                         ref={base64InputRef}
                         onSubmit={handleDecode}
@@ -118,7 +117,7 @@ export default function DecodeImage() {
                         isLoading={loading}
                     />
 
-                    {/* Visualización de la imagen */}
+                    {/* Image visualization */}
                     <ImagePreview
                         data={imageData}
                         error={error}

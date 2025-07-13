@@ -76,7 +76,7 @@ export function FullscreenImage({
 
     // Format file size
     const formatFileSize = (bytes?: number) => {
-        if (!bytes) return 'Desconocido';
+        if (!bytes) return 'Unknown';
         if (bytes < 1024) return `${bytes} B`;
         if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
         return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
@@ -90,9 +90,9 @@ export function FullscreenImage({
             if (e.key === 'Escape') {
                 onClose();
             } else if (e.key === 'ArrowLeft') {
-                // Implementación para imagen anterior (se podría agregar como prop)
+                // Implementation for previous image (could be added as prop)
             } else if (e.key === 'ArrowRight') {
-                // Implementación para imagen siguiente (se podría agregar como prop)
+                // Implementation for next image (could be added as prop)
             } else if (e.key === '+') {
                 onZoom(Math.min(zoomLevel + 25, 300));
             } else if (e.key === '-') {
@@ -163,7 +163,7 @@ export function FullscreenImage({
 
     const handleImageError = () => {
         setIsLoading(false);
-        setError('No se pudo cargar la imagen');
+        setError('Could not load the image');
     };
 
     // Download the image
@@ -180,8 +180,8 @@ export function FullscreenImage({
             link.click();
             document.body.removeChild(link);
 
-            toast.info('Descargando imagen', {
-                description: 'La imagen se está descargando a su dispositivo'
+            toast.info('Downloading image', {
+                description: 'The image is downloading to your device'
             });
         }
     };
@@ -218,8 +218,8 @@ export function FullscreenImage({
                         try {
                             const data = [new ClipboardItem({ [blob.type]: blob })];
                             await navigator.clipboard.write(data);
-                            toast.success('Imagen copiada', {
-                                description: 'La imagen fue copiada al portapapeles'
+                            toast.success('Image copied', {
+                                description: 'The image was copied to the clipboard'
                             });
                         } catch (err) {
                             tryFallbackCopyMethod(canvas);
@@ -230,8 +230,8 @@ export function FullscreenImage({
                 tryFallbackCopyMethod(canvas);
             }
         } catch (error) {
-            toast.error('Error al copiar', {
-                description: 'No se pudo copiar la imagen. Intente con la opción "Descargar"'
+            toast.error('Copy error', {
+                description: 'Could not copy the image. Try the "Download" option'
             });
         } finally {
             setCopyLoading(false);
@@ -243,18 +243,18 @@ export function FullscreenImage({
         try {
             const link = document.createElement('a');
             link.href = canvas.toDataURL('image/png');
-            link.download = fileName || 'imagen.png';
+            link.download = fileName || 'image.png';
 
-            toast.info('Descargando imagen', {
-                description: 'La imagen no se puede copiar directamente. Se descargará en su lugar.'
+            toast.info('Downloading image', {
+                description: 'The image cannot be copied directly. It will be downloaded instead.'
             });
 
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         } catch (fallbackError) {
-            toast.error('Error al procesar', {
-                description: 'No se pudo procesar la imagen. Intente con la opción "Descargar"'
+            toast.error('Processing error', {
+                description: 'Could not process the image. Try the "Download" option'
             });
         }
     };
@@ -277,16 +277,16 @@ export function FullscreenImage({
                             </SheetTrigger>
                             <SheetContent className='w-full max-w-sm sm:max-w-md'>
                                 <SheetHeader>
-                                    <SheetTitle>Detalles de la imagen</SheetTitle>
+                                    <SheetTitle>Image Details</SheetTitle>
                                 </SheetHeader>
                                 <div className='mt-6 space-y-4'>
                                     {/* Información del archivo - Igual que en ImagePreview */}
                                     <div>
                                         <h3 className='mb-2 text-sm font-medium'>
-                                            Información del archivo
+                                            File Information
                                         </h3>
                                         <div className='grid grid-cols-2 gap-x-4 gap-y-2 text-sm'>
-                                            <div className='text-muted-foreground'>Tipo:</div>
+                                            <div className='text-muted-foreground'>Type:</div>
                                             <div>
                                                 <Badge
                                                     variant='default'
@@ -296,13 +296,13 @@ export function FullscreenImage({
                                                 </Badge>
                                             </div>
 
-                                            <div className='text-muted-foreground'>Tamaño:</div>
+                                            <div className='text-muted-foreground'>Size:</div>
                                             <div>{formatFileSize(size)}</div>
 
                                             {width && height && (
                                                 <>
                                                     <div className='text-muted-foreground'>
-                                                        Dimensiones:
+                                                        Dimensions:
                                                     </div>
                                                     <div>
                                                         {width} × {height} px
@@ -317,13 +317,13 @@ export function FullscreenImage({
                                     {/* Detalles técnicos - Igual que en ImagePreview */}
                                     <div>
                                         <h3 className='mb-2 text-sm font-medium'>
-                                            Detalles técnicos
+                                            Technical Details
                                         </h3>
                                         <div className='grid grid-cols-2 gap-x-4 gap-y-2 text-sm'>
                                             {quality !== undefined && (
                                                 <>
                                                     <div className='text-muted-foreground'>
-                                                        Calidad JPEG:
+                                                        JPEG Quality:
                                                     </div>
                                                     <div>{quality}%</div>
                                                 </>
@@ -332,9 +332,9 @@ export function FullscreenImage({
                                             {isProgressiveJpeg !== undefined && (
                                                 <>
                                                     <div className='text-muted-foreground'>
-                                                        JPEG Progresivo:
+                                                        Progressive JPEG:
                                                     </div>
-                                                    <div>{isProgressiveJpeg ? 'Sí' : 'No'}</div>
+                                                    <div>{isProgressiveJpeg ? 'Yes' : 'No'}</div>
                                                 </>
                                             )}
                                         </div>
@@ -377,7 +377,7 @@ export function FullscreenImage({
                             </div>
                             <p className='text-destructive font-medium'>{error}</p>
                             <p className='text-muted-foreground text-sm'>
-                                No se pudo cargar la imagen. Por favor, inténtelo de nuevo.
+                                Could not load the image. Please try again.
                             </p>
                         </div>
                     )}
@@ -390,7 +390,7 @@ export function FullscreenImage({
                     >
                         <img
                             src={imageUrl}
-                            alt={fileName || 'Imagen en pantalla completa'}
+                            alt={fileName || 'Fullscreen image'}
                             className='max-h-none max-w-none transform-gpu object-contain'
                             style={{
                                 transform: `scale(${zoomLevel / 100}) rotate(${rotation}deg)`,
@@ -410,7 +410,7 @@ export function FullscreenImage({
                     <div className='flex items-center gap-2'>
                         <Button variant='outline' size='sm' onClick={handleDownload}>
                             <Download className='mr-2 h-4 w-4' />
-                            Descargar
+                            Download
                         </Button>
 
                         <Button
@@ -424,7 +424,7 @@ export function FullscreenImage({
                             ) : (
                                 <Copy className='mr-2 h-4 w-4' />
                             )}
-                            Copiar Imagen
+                            Copy Image
                         </Button>
                     </div>
 

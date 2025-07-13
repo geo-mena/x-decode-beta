@@ -72,12 +72,12 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                             setCodes(validCodes);
 
                             if (jsonContent.length > MAX_CODES) {
-                                toast.warning('Límite de códigos excedido', {
-                                    description: `Solo se procesarán los primeros ${MAX_CODES} códigos. Se ignorarán los demás.`
+                                toast.warning('Code limit exceeded', {
+                                    description: `Only the first ${MAX_CODES} codes will be processed. The rest will be ignored.`
                                 });
                             } else {
-                                toast.success('Códigos cargados', {
-                                    description: `Se cargaron ${validCodes.length} códigos del archivo ${file.name}`
+                                toast.success('Codes loaded', {
+                                    description: `${validCodes.length} codes loaded from file ${file.name}`
                                 });
                             }
                             return;
@@ -87,12 +87,12 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                     }
 
                     setCodes([base64Content]);
-                    toast.success('Archivo cargado', {
-                        description: `Código base64 extraído del archivo ${file.name}`
+                    toast.success('File loaded', {
+                        description: `Base64 code extracted from file ${file.name}`
                     });
                 } catch (error) {
-                    toast.error('Error al procesar el archivo', {
-                        description: 'El archivo no contiene códigos base64 válidos.'
+                    toast.error('Error processing file', {
+                        description: 'The file does not contain valid base64 codes.'
                     });
                 }
             };
@@ -103,8 +103,8 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
             if (!code) return;
             navigator.clipboard.writeText(code);
 
-            toast.success('Copiado al portapapeles', {
-                description: 'El código ha sido copiado al portapapeles.'
+            toast.success('Copied to clipboard', {
+                description: 'The code has been copied to the clipboard.'
             });
         };
 
@@ -112,8 +112,8 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
             const validCodes = codes.filter((code) => code.trim() !== '');
 
             if (validCodes.length === 0) {
-                toast.error('Código base64 requerido', {
-                    description: 'Por favor ingrese al menos un código base64 válido.'
+                toast.error('Base64 code required', {
+                    description: 'Please enter at least one valid base64 code.'
                 });
                 return;
             }
@@ -128,8 +128,8 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
 
         const addCodeField = () => {
             if (codes.length >= MAX_CODES) {
-                toast.warning('Límite alcanzado', {
-                    description: `No se pueden agregar más de ${MAX_CODES} códigos.`
+                toast.warning('Limit reached', {
+                    description: `Cannot add more than ${MAX_CODES} codes.`
                 });
                 return;
             }
@@ -156,8 +156,8 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
         const handleRepairBase64 = async (index: number) => {
             const codeToRepair = codes[index];
             if (!codeToRepair.trim()) {
-                toast.error('Código vacío', {
-                    description: 'No hay código base64 para reparar.'
+                toast.error('Empty code', {
+                    description: 'No base64 code to repair.'
                 });
                 return;
             }
@@ -169,24 +169,24 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                 if (result.success && result.data?.repaired) {
                     updateCode(result.data.repaired, index);
 
-                    toast.success('Código reparado', {
-                        description: 'El código base64 ha sido reparado y actualizado.'
+                    toast.success('Code repaired', {
+                        description: 'The base64 code has been repaired and updated.'
                     });
 
                     if (result.warnings && result.warnings.length > 0) {
-                        toast.warning('Advertencias', {
+                        toast.warning('Warnings', {
                             description: result.warnings.join('. ')
                         });
                     }
                 } else {
-                    toast.error('No se pudo reparar', {
+                    toast.error('Could not repair', {
                         description:
-                            result.message || 'El código base64 no pudo ser reparado completamente.'
+                            result.message || 'The base64 code could not be completely repaired.'
                     });
                 }
             } catch (error) {
-                toast.error('Error al reparar', {
-                    description: 'Ocurrió un error al intentar reparar el código base64.'
+                toast.error('Repair error', {
+                    description: 'An error occurred while trying to repair the base64 code.'
                 });
             } finally {
                 setRepairing(false);
@@ -198,7 +198,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                 <CardHeader>
                     <CardTitle>Input Parameters</CardTitle>
                     <CardDescription>
-                        Ingrese hasta {MAX_CODES} códigos para generar imágenes
+                        Enter up to {MAX_CODES} codes to generate images
                     </CardDescription>
                 </CardHeader>
                 <CardContent className='space-y-4'>
@@ -209,18 +209,18 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                         <TabsList className='grid w-full grid-cols-2'>
                             <TabsTrigger value='paste'>
                                 <Braces className='mr-2 h-4 w-4' />
-                                Ingresar Códigos
+                                Enter Codes
                             </TabsTrigger>
                             <TabsTrigger value='upload'>
                                 <CloudUpload className='mr-2 h-4 w-4' />
-                                Subir Archivo
+                                Upload File
                             </TabsTrigger>
                         </TabsList>
 
                         <TabsContent value='paste' className='space-y-4'>
                             <div className='space-y-2'>
                                 <div className='flex items-center justify-between'>
-                                    <Label>Códigos Base64</Label>
+                                    <Label>Base64 Codes</Label>
                                     <Badge
                                         variant={
                                             codes.length >= MAX_CODES ? 'destructive' : 'secondary'
@@ -228,14 +228,14 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                         className='ml-2'
                                     >
                                         {codes.filter((c) => c.trim() !== '').length}/{MAX_CODES}{' '}
-                                        código(s)
+                                        code(s)
                                     </Badge>
                                 </div>
 
                                 {codes.map((code, index) => (
                                     <div key={index} className='flex space-x-2'>
                                         <Textarea
-                                            placeholder={`Código ${index + 1}`}
+                                            placeholder={`Code ${index + 1}`}
                                             value={code}
                                             onChange={(e) => updateCode(e.target.value, index)}
                                             className='max-h-[125px] min-h-[100px] flex-grow resize-none overflow-y-auto font-mono text-xs'
@@ -247,7 +247,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                                         variant='outline'
                                                         size='icon'
                                                         onClick={() => copyToClipboard(code)}
-                                                        title='Copiar código'
+                                                        title='Copy code'
                                                     >
                                                         <Copy className='h-4 w-4' />
                                                     </Button>
@@ -256,7 +256,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                                         size='icon'
                                                         onClick={() => handleRepairBase64(index)}
                                                         disabled={repairing}
-                                                        title='Reparar código base64'
+                                                        title='Repair base64 code'
                                                     >
                                                         {repairing ? (
                                                             <Loader className='h-4 w-4 animate-spin' />
@@ -270,7 +270,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                                 variant='outline'
                                                 size='icon'
                                                 onClick={() => removeCodeField(index)}
-                                                title='Eliminar campo'
+                                                title='Remove field'
                                             >
                                                 <X className='h-4 w-4' />
                                             </Button>
@@ -286,8 +286,8 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                 >
                                     <Plus className='mr-2 h-4 w-4' />
                                     {codes.length >= MAX_CODES
-                                        ? `Máximo ${MAX_CODES} códigos`
-                                        : 'Agregar otro código'}
+                                        ? `Maximum ${MAX_CODES} codes`
+                                        : 'Add another code'}
                                 </Button>
                             </div>
                         </TabsContent>
@@ -295,7 +295,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                         <TabsContent value='upload' className='space-y-4'>
                             <div className='space-y-2'>
                                 <Label htmlFor='file-upload'>
-                                    Subir archivo de código(s) base64
+                                    Upload base64 code(s) file
                                 </Label>
 
                                 <label
@@ -306,13 +306,13 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                         <FileText className='text-muted-foreground mb-2 h-12 w-12' />
                                         <p className='text-muted-foreground mb-2 text-sm'>
                                             <span className='font-semibold'>
-                                                Haga clic para subir
+                                                Click to upload
                                             </span>{' '}
-                                            o arrastre y suelte
+                                            or drag and drop
                                         </p>
                                         <p className='text-muted-foreground text-xs'>
-                                            Archivo de texto (.txt) o JSON (máx. {MAX_CODES}{' '}
-                                            códigos)
+                                            Text file (.txt) or JSON (max. {MAX_CODES}{' '}
+                                            codes)
                                         </p>
                                     </div>
                                     <input
@@ -332,7 +332,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                                                 ? codes[0].length > 100
                                                     ? codes[0].substring(0, 100) + '...'
                                                     : codes[0]
-                                                : `${codes.length} códigos cargados`
+                                                : `${codes.length} codes loaded`
                                         }
                                         className='bg-muted w-full resize-none text-sm'
                                     />
@@ -350,12 +350,12 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                         {isLoading ? (
                             <>
                                 <Loader className='mr-2 h-4 w-4 animate-spin' />
-                                Procesando...
+                                Processing...
                             </>
                         ) : (
                             <>
                                 <Play className='mr-2 h-4 w-4' />
-                                Decodificar
+                                Decode
                             </>
                         )}
                     </Button>
@@ -366,7 +366,7 @@ export const Base64Input = forwardRef<any, Base64InputProps>(
                         disabled={isLoading || codes.every((code) => !code.trim())}
                     >
                         <RefreshCw className='mr-2 h-4 w-4' />
-                        Limpiar
+                        Clear
                     </Button>
                 </CardFooter>
             </Card>

@@ -2,7 +2,7 @@ import PageContainer from '@/components/layout/page-container';
 import DecodeImage from '@/features/decode-image';
 
 export const metadata = {
-    title: 'TOOLS - Base64 a Imagen'
+    title: 'TOOLS - Base64 to Image'
 };
 
 export default function page() {
