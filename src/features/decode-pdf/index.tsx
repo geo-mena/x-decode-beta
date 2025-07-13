@@ -182,7 +182,6 @@ export default function DecodePdf() {
 
     return (
         <>
-            {/* ===== Main ===== */}
             <div>
                 <div className='mb-6 flex items-center justify-between'>
                     <div>

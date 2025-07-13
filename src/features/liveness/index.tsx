@@ -68,51 +68,48 @@ export default function LivenessContent() {
 
     return (
         <>
-            {/* ===== Main ===== */}
-            <>
-                <div className='mb-6 flex items-center justify-between'>
-                    <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>Liveness Evaluation</h1>
-                        <p className='text-muted-foreground text-sm'>
-                            Evaluate the authenticity of facial images to detect spoofing attacks.
-                        </p>
-                    </div>
+            <div className='mb-6 flex items-center justify-between'>
+                <div>
+                    <h1 className='text-2xl font-bold tracking-tight'>Liveness Evaluation</h1>
+                    <p className='text-muted-foreground text-sm'>
+                        Evaluate the authenticity of facial images to detect spoofing attacks.
+                    </p>
                 </div>
+            </div>
 
-                <Badge
-                    variant='secondary'
-                    className='text-primary cursor-pointer p-2'
-                    onClick={() =>
-                        window.open(
-                            'https://docs.identity-platform.io/docs/identity-api/resources/Services/liveness',
-                            '_blank',
-                            'noopener,noreferrer'
-                        )
-                    }
-                >
-                    <File className='h-4 w-4' />
-                    <span className='ml-2'>Documentation</span>
-                </Badge>
+            <Badge
+                variant='secondary'
+                className='text-primary cursor-pointer p-2'
+                onClick={() =>
+                    window.open(
+                        'https://docs.identity-platform.io/docs/identity-api/resources/Services/liveness',
+                        '_blank',
+                        'noopener,noreferrer'
+                    )
+                }
+            >
+                <File className='h-4 w-4' />
+                <span className='ml-2'>Documentation</span>
+            </Badge>
 
-                <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Image upload form */}
-                    <ImageUpload
-                        onFilesSelected={handleFilesSelected}
-                        onBase64Selected={handleBase64Selected}
-                        onClear={handleClear}
-                        isLoading={loading}
-                        supportedExtensions={supportedExtensions.slice()}
-                        useSDK={useSDK}
-                        setUseSDK={setUseSDK}
-                        selectedSDKEndpoints={selectedSDKEndpoints}
-                        setSelectedSDKEndpoints={setSelectedSDKEndpoints}
-                        checkSDKEndpointStatus={checkSDKEndpointStatus}
-                    />
+            <div className='grid gap-6 lg:grid-cols-2'>
+                {/* Image upload form */}
+                <ImageUpload
+                    onFilesSelected={handleFilesSelected}
+                    onBase64Selected={handleBase64Selected}
+                    onClear={handleClear}
+                    isLoading={loading}
+                    supportedExtensions={supportedExtensions.slice()}
+                    useSDK={useSDK}
+                    setUseSDK={setUseSDK}
+                    selectedSDKEndpoints={selectedSDKEndpoints}
+                    setSelectedSDKEndpoints={setSelectedSDKEndpoints}
+                    checkSDKEndpointStatus={checkSDKEndpointStatus}
+                />
 
-                    {/* Results preview */}
-                    <LivenessPreview isLoading={loading} hasResults={results.length > 0} />
-                </div>
-            </>
+                {/* Results preview */}
+                <LivenessPreview isLoading={loading} hasResults={results.length > 0} />
+            </div>
         </>
     );
 }

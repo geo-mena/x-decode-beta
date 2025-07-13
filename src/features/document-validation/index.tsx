@@ -120,8 +120,7 @@ export default function DocumentValidation() {
                 setError(response.message || 'Error getting validation data.');
                 setValidationResult(null);
                 toast.error('Error', {
-                    description:
-                        response.message || 'Could not get validation data.'
+                    description: response.message || 'Could not get validation data.'
                 });
             } else {
                 setValidationResult(response.data ?? null);
@@ -194,8 +193,7 @@ export default function DocumentValidation() {
                         } else {
                             setError('Error getting final validation data.');
                             toast.error('Error', {
-                                description:
-                                    'Could not get final validation data.'
+                                description: 'Could not get final validation data.'
                             });
                         }
                     } else if (status === 'FAILED') {
@@ -248,56 +246,51 @@ export default function DocumentValidation() {
 
     return (
         <>
-            {/* ===== Main ===== */}
-            <>
-                <div className='mb-6 flex items-center justify-between'>
-                    <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>
-                            Document Validation
-                        </h1>
-                        <p className='text-muted-foreground text-sm'>
-                            Validate identity documents such as passports, driver's licenses or
-                            identification cards.
-                        </p>
-                    </div>
+            <div className='mb-6 flex items-center justify-between'>
+                <div>
+                    <h1 className='text-2xl font-bold tracking-tight'>Document Validation</h1>
+                    <p className='text-muted-foreground text-sm'>
+                        Validate identity documents such as passports, driver&apos;s licenses or
+                        identification cards.
+                    </p>
                 </div>
+            </div>
 
-                <Badge
-                    variant='secondary'
-                    className='text-primary cursor-pointer p-2'
-                    onClick={() =>
-                        window.open(
-                            'https://docs.identity-platform.io/docs/identity-api/resources/Verify/document-validation',
-                            '_blank',
-                            'noopener,noreferrer'
-                        )
-                    }
-                >
-                    <File className='h-4 w-4' />
-                    <span className='ml-2'>Documentation</span>
-                </Badge>
+            <Badge
+                variant='secondary'
+                className='text-primary cursor-pointer p-2'
+                onClick={() =>
+                    window.open(
+                        'https://docs.identity-platform.io/docs/identity-api/resources/Verify/document-validation',
+                        '_blank',
+                        'noopener,noreferrer'
+                    )
+                }
+            >
+                <File className='h-4 w-4' />
+                <span className='ml-2'>Documentation</span>
+            </Badge>
 
-                <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Data input form */}
-                    <DocumentValidationInput
-                        ref={inputRef}
-                        onStartValidation={handleStartValidation}
-                        onGetValidationData={handleGetValidationData}
-                        onReset={handleReset}
-                        isLoading={loading}
-                        isPolling={pollingActive}
-                    />
+            <div className='grid gap-6 lg:grid-cols-2'>
+                {/* Data input form */}
+                <DocumentValidationInput
+                    ref={inputRef}
+                    onStartValidation={handleStartValidation}
+                    onGetValidationData={handleGetValidationData}
+                    onReset={handleReset}
+                    isLoading={loading}
+                    isPolling={pollingActive}
+                />
 
-                    {/* Results visualization */}
-                    <DocumentValidationResult
-                        data={validationResult}
-                        error={error}
-                        isLoading={loading}
-                        isPolling={pollingActive}
-                        pollingStatus={pollingStatus}
-                    />
-                </div>
-            </>
+                {/* Results visualization */}
+                <DocumentValidationResult
+                    data={validationResult}
+                    error={error}
+                    isLoading={loading}
+                    isPolling={pollingActive}
+                    pollingStatus={pollingStatus}
+                />
+            </div>
         </>
     );
 }

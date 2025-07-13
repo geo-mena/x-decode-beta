@@ -97,35 +97,32 @@ export default function DecodeImage() {
 
     return (
         <>
-            {/* ===== Main ===== */}
-            <>
-                <div className='mb-6 flex items-center justify-between'>
-                    <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>Base64 to Image</h1>
-                        <p className='text-muted-foreground text-sm'>
-                            Convert base64 codes into viewable and downloadable image files.
-                        </p>
-                    </div>
+            <div className='mb-6 flex items-center justify-between'>
+                <div>
+                    <h1 className='text-2xl font-bold tracking-tight'>Base64 to Image</h1>
+                    <p className='text-muted-foreground text-sm'>
+                        Convert base64 codes into viewable and downloadable image files.
+                    </p>
                 </div>
+            </div>
 
-                <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Base64 input form */}
-                    <Base64Input
-                        ref={base64InputRef}
-                        onSubmit={handleDecode}
-                        onReset={handleReset}
-                        isLoading={loading}
-                    />
+            <div className='grid gap-6 lg:grid-cols-2'>
+                {/* Base64 input form */}
+                <Base64Input
+                    ref={base64InputRef}
+                    onSubmit={handleDecode}
+                    onReset={handleReset}
+                    isLoading={loading}
+                />
 
-                    {/* Image visualization */}
-                    <ImagePreview
-                        data={imageData}
-                        error={error}
-                        isLoading={loading}
-                        onDownload={handleDownload}
-                    />
-                </div>
-            </>
+                {/* Image visualization */}
+                <ImagePreview
+                    data={imageData}
+                    error={error}
+                    isLoading={loading}
+                    onDownload={handleDownload}
+                />
+            </div>
         </>
     );
 }

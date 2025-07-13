@@ -46,7 +46,7 @@ countries.registerLocale(spanish);
 const MAX_SIZE_MB = 50;
 const ID_TYPES = [
     { value: 'PASSPORT', label: 'Passport' },
-    { value: 'DRIVING_LICENSE', label: 'Driver\'s License' },
+    { value: 'DRIVING_LICENSE', label: "Driver's License" },
     { value: 'ID_CARD', label: 'ID Card' },
     { value: 'VISA', label: 'Visa' }
 ];
@@ -257,8 +257,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
         const validateStartForm = (): boolean => {
             if (!validateCountryCode(country)) {
                 toast.error('Invalid country', {
-                    description:
-                        'Please enter a valid country code in ISO 3166-1 alpha-3 format.'
+                    description: 'Please enter a valid country code in ISO 3166-1 alpha-3 format.'
                 });
                 return false;
             }
@@ -287,8 +286,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
             // For passports the back is not mandatory, but for other documents it is
             if (idType !== 'PASSPORT' && !backsideImageBase64) {
                 toast.error('Back image required', {
-                    description:
-                        'For this document type it is necessary to provide the back image.'
+                    description: 'For this document type it is necessary to provide the back image.'
                 });
                 return false;
             }
@@ -561,8 +559,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                                             openImageModal(
                                                                 frontsidePreviewUrl,
                                                                 'Document Front Image',
-                                                                frontsideFileName ||
-                                                                    'Front image'
+                                                                frontsideFileName || 'Front image'
                                                             )
                                                         }
                                                         disabled={isLoading || isPolling}
@@ -749,9 +746,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
 
                             {/* Optional custom reference field */}
                             <div className='space-y-2'>
-                                <Label htmlFor='merchantRef'>
-                                    Custom Reference (optional)
-                                </Label>
+                                <Label htmlFor='merchantRef'>Custom Reference (optional)</Label>
                                 <Input
                                     id='merchantRef'
                                     placeholder='custom-ref-123'
@@ -761,8 +756,8 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     maxLength={100}
                                 />
                                 <p className='text-muted-foreground text-xs'>
-                                    Custom reference to identify this validation (max.
-                                    100 characters)
+                                    Custom reference to identify this validation (max. 100
+                                    characters)
                                 </p>
                             </div>
 

@@ -88,7 +88,7 @@ export const navItems: NavItem[] = [
                 url: '/service/detokenize',
                 icon: 'route',
                 shortcut: ['m', 'm']
-            },
+            }
         ]
     },
 

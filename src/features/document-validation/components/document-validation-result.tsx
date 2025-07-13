@@ -130,9 +130,7 @@ export function DocumentValidationResult({
                 {!data && !error && !isLoading && !isPolling && (
                     <div className='text-muted-foreground flex h-full flex-col items-center justify-center'>
                         <CloudCog className='mb-4 h-20 w-20' />
-                        <p className='text-sm'>
-                            Complete the form to start or query a validation
-                        </p>
+                        <p className='text-sm'>Complete the form to start or query a validation</p>
                     </div>
                 )}
 
@@ -190,9 +188,8 @@ export function DocumentValidationResult({
                                 <FileWarning className='h-4 w-4' />
                                 <AlertTitle>Validation failed</AlertTitle>
                                 <AlertDescription>
-                                    The document validation process has failed. Verify that
-                                    the images are clear and that the provided data is
-                                    correct.
+                                    The document validation process has failed. Verify that the
+                                    images are clear and that the provided data is correct.
                                 </AlertDescription>
                             </Alert>
                         )}
@@ -213,7 +210,8 @@ export function DocumentValidationResult({
                                     )}
                                     {data.document?.status === 'DENIED_FRAUD' && (
                                         <span className='mt-1 block'>
-                                            The document has been rejected due to suspicion of fraud.
+                                            The document has been rejected due to suspicion of
+                                            fraud.
                                         </span>
                                     )}
                                     {data.document?.status === 'APPROVED_VERIFIED' && (

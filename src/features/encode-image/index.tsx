@@ -17,7 +17,6 @@ export default function EncodeImage() {
 
     /* 🌱 Función para manejar la codificación de imágenes */
     const handleEncodeImages = async (files: File[]) => {
-        // Limpiar estado previo
         setEncodedData(null);
         setError(null);
         setLoading(true);
@@ -64,7 +63,6 @@ export default function EncodeImage() {
 
     /* 🌱 Función para manejar la codificación desde URL */
     const handleEncodeFromUrl = async (imageUrl: string) => {
-        // Limpiar estado previo
         setEncodedData(null);
         setError(null);
         setLoading(true);
@@ -138,38 +136,34 @@ export default function EncodeImage() {
 
     return (
         <>
-            {/* ===== Main ===== */}
-            <>
-                <div className='mb-6 flex items-center justify-between'>
-                    <div>
-                        <h1 className='text-2xl font-bold tracking-tight'>Image to Base64</h1>
-                        <p className='text-muted-foreground text-sm'>
-                            Convert images to base64 codes for use in HTML, CSS or any other
-                            document.
-                        </p>
-                    </div>
+            <div className='mb-6 flex items-center justify-between'>
+                <div>
+                    <h1 className='text-2xl font-bold tracking-tight'>Image to Base64</h1>
+                    <p className='text-muted-foreground text-sm'>
+                        Convert images to base64 codes for use in HTML, CSS or any other document.
+                    </p>
                 </div>
+            </div>
 
-                <div className='grid gap-6 lg:grid-cols-2'>
-                    {/* Image input form */}
-                    <ImageInput
-                        ref={imageInputRef}
-                        onSubmitFiles={handleEncodeImages}
-                        onSubmitUrl={handleEncodeFromUrl}
-                        onReset={handleReset}
-                        isLoading={loading}
-                    />
+            <div className='grid gap-6 lg:grid-cols-2'>
+                {/* Image input form */}
+                <ImageInput
+                    ref={imageInputRef}
+                    onSubmitFiles={handleEncodeImages}
+                    onSubmitUrl={handleEncodeFromUrl}
+                    onReset={handleReset}
+                    isLoading={loading}
+                />
 
-                    {/* Base64 results visualization */}
-                    <Base64Result
-                        data={encodedData}
-                        error={error}
-                        isLoading={loading}
-                        onCopy={handleCopyToClipboard}
-                        onDownload={handleDownloadFromDataUri}
-                    />
-                </div>
-            </>
+                {/* Base64 results visualization */}
+                <Base64Result
+                    data={encodedData}
+                    error={error}
+                    isLoading={loading}
+                    onCopy={handleCopyToClipboard}
+                    onDownload={handleDownloadFromDataUri}
+                />
+            </div>
         </>
     );
 }
