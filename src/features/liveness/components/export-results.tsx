@@ -286,7 +286,7 @@ export function ExportResults({
 
     const handleExport = async () => {
         if (!clientName.trim()) {
-            alert('Por favor ingrese el nombre del cliente');
+            alert('Please enter the client name');
             return;
         }
 
@@ -302,7 +302,7 @@ export function ExportResults({
             setClientName('');
         } catch (error) {
             console.error('Error exporting results:', error);
-            alert('Error al exportar los resultados. Por favor intente nuevamente.');
+            alert('Error exporting results. Please try again.');
         } finally {
             setIsExporting(false);
         }
@@ -317,15 +317,15 @@ export function ExportResults({
             <Card className="mt-4">
                 <CardContent className="p-4">
                     <div className="mb-4">
-                        <h3 className="font-semibold text-sm mb-2">Vista previa de los datos a exportar:</h3>
+                        <h3 className="font-semibold text-sm mb-2">Preview of data to export:</h3>
                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
                             <div className="flex items-center gap-1">
                                 <User className="h-3 w-3" />
-                                <span>Cliente: {clientName || '[Nombre del cliente]'}</span>
+                                <span>Client: {clientName || '[Client name]'}</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 <FileText className="h-3 w-3" />
-                                <span>Formato: {Object.entries(visibleColumns).filter(([key, visible]) => visible && key !== 'acciones').length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
+                                <span>Format: {Object.entries(visibleColumns).filter(([key, visible]) => visible && key !== 'acciones').length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
                             </div>
                         </div>
                     </div>
@@ -364,7 +364,7 @@ export function ExportResults({
                                 {tableData.length > 3 && (
                                     <tr className="border-t bg-muted/50">
                                         <td colSpan={Object.keys(headers).length} className="p-2 text-center text-muted-foreground">
-                                            ... y {tableData.length - 3} registros más
+                                            ... and {tableData.length - 3} more records
                                         </td>
                                     </tr>
                                 )}
@@ -373,8 +373,8 @@ export function ExportResults({
                     </div>
                     
                     <div className="mt-3 text-xs text-muted-foreground">
-                        Total de columnas: {Object.keys(headers).length} | Total de registros: {tableData.length} | 
-                        Orientación: <span className="font-medium">{Object.entries(visibleColumns).filter(([key, visible]) => visible && key !== 'acciones').length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
+                        Total columns: {Object.keys(headers).length} | Total records: {tableData.length} | 
+                        Orientation: <span className="font-medium">{Object.entries(visibleColumns).filter(([key, visible]) => visible && key !== 'acciones').length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
                     </div>
                 </CardContent>
             </Card>
@@ -393,20 +393,20 @@ export function ExportResults({
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <Download className="h-5 w-5" />
-                        Exportar Resultados a PDF
+                        Export Results to PDF
                     </DialogTitle>
                     <DialogDescription>
-                        Genere un informe en PDF con los resultados filtrados de la tabla en formato landscape.
+                        Generate a PDF report with the filtered table results in intelligent format.
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="client-name">Nombre del Cliente *</Label>
+                        <Label htmlFor="client-name">Client Name *</Label>
                         <Input
                             id="client-name"
                             type="text"
-                            placeholder="Ingrese el nombre del cliente"
+                            placeholder="Enter the client name"
                             value={clientName}
                             onChange={(e) => setClientName(e.target.value)}
                             disabled={isExporting}
@@ -422,7 +422,7 @@ export function ExportResults({
                         onClick={() => setIsOpen(false)}
                         disabled={isExporting}
                     >
-                        Cancelar
+                        Cancel
                     </Button>
                     <Button
                         onClick={handleExport}
@@ -431,12 +431,12 @@ export function ExportResults({
                         {isExporting ? (
                             <>
                                 <Loader className="mr-2 h-4 w-4 animate-spin" />
-                                Exportando...
+                                Exporting...
                             </>
                         ) : (
                             <>
                                 <Download className="mr-2 h-4 w-4" />
-                                Exportar PDF
+                                Export PDF
                             </>
                         )}
                     </Button>
