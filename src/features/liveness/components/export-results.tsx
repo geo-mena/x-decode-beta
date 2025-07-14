@@ -189,9 +189,11 @@ export function ExportResults({
     };
 
     const convertToPDF = async (htmlContent: string, filename: string) => {
-        // Determine orientation based on number of active columns
-        const activeColumns = Object.values(visibleColumns).filter(Boolean).length;
-        const isLandscape = activeColumns >= 6;
+        // Determine orientation based on number of active columns (excluding Actions)
+        const exportableColumns = Object.entries(visibleColumns)
+            .filter(([key, visible]) => visible && key !== 'acciones')
+            .length;
+        const isLandscape = exportableColumns >= 6;
         const orientation = isLandscape ? 'landscape' : 'portrait';
         // Create a new iframe to isolate from page CSS
         const iframe = document.createElement('iframe');
@@ -323,7 +325,7 @@ export function ExportResults({
                             </div>
                             <div className="flex items-center gap-1">
                                 <FileText className="h-3 w-3" />
-                                <span>Formato: {Object.values(visibleColumns).filter(Boolean).length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
+                                <span>Formato: {Object.entries(visibleColumns).filter(([key, visible]) => visible && key !== 'acciones').length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
                             </div>
                         </div>
                     </div>
@@ -372,7 +374,7 @@ export function ExportResults({
                     
                     <div className="mt-3 text-xs text-muted-foreground">
                         Total de columnas: {Object.keys(headers).length} | Total de registros: {tableData.length} | 
-                        Orientación: <span className="font-medium">{Object.values(visibleColumns).filter(Boolean).length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
+                        Orientación: <span className="font-medium">{Object.entries(visibleColumns).filter(([key, visible]) => visible && key !== 'acciones').length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
                     </div>
                 </CardContent>
             </Card>
