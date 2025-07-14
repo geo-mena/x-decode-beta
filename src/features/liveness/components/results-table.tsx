@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { ResultsTableSkeleton } from './results-table-skeleton';
 import { ImagePreviewModal } from './image-preview';
+import { ExportResults } from './export-results';
 
 interface ResultsTableProps {
     results: LivenessResult[];
@@ -341,6 +342,14 @@ export function ResultsTable({ results, isLoading, onClear, useSDK }: ResultsTab
                 </div>
 
                 <div className='flex items-center gap-2'>
+                    {/* Export button */}
+                    <ExportResults
+                        visibleColumns={visibleColumns}
+                        filteredResults={filteredResults}
+                        useSDK={useSDK}
+                        sdkTags={sdkTags}
+                    />
+
                     {/* Column view */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
