@@ -13,7 +13,11 @@ import ServiceBlankState from '@/features/overview/components/service-blank-stat
 import React from 'react';
 
 export const metadata = {
-    title: 'Overview'
+    title: 'Overview',
+    metadataBase: new URL('https://www.xdecode.app'),
+    alternates: {
+        canonical: '/service/overview'
+    }
 };
 
 export default function OverViewLayout({
