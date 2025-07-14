@@ -189,12 +189,16 @@ export function ExportResults({
     };
 
     const convertToPDF = async (htmlContent: string, filename: string) => {
+        // Determine orientation based on number of active columns
+        const activeColumns = Object.values(visibleColumns).filter(Boolean).length;
+        const isLandscape = activeColumns >= 6;
+        const orientation = isLandscape ? 'landscape' : 'portrait';
         // Create a new iframe to isolate from page CSS
         const iframe = document.createElement('iframe');
         iframe.style.position = 'absolute';
         iframe.style.left = '-9999px';
         iframe.style.top = '-9999px';
-        iframe.style.width = '1400px';
+        iframe.style.width = isLandscape ? '1400px' : '800px';
         iframe.style.height = '2000px';
         iframe.style.border = 'none';
         document.body.appendChild(iframe);
@@ -240,7 +244,7 @@ export function ExportResults({
                 useCORS: true,
                 allowTaint: true,
                 backgroundColor: '#ffffff',
-                width: 1400,
+                width: isLandscape ? 1400 : 800,
                 logging: false,
                 foreignObjectRendering: false
             });
@@ -248,7 +252,7 @@ export function ExportResults({
             const imgData = canvas.toDataURL('image/png');
             
             const pdf = new jsPDF({
-                orientation: 'landscape',
+                orientation: orientation,
                 unit: 'mm',
                 format: 'a4'
             });
@@ -317,6 +321,10 @@ export function ExportResults({
                                 <User className="h-3 w-3" />
                                 <span>Cliente: {clientName || '[Nombre del cliente]'}</span>
                             </div>
+                            <div className="flex items-center gap-1">
+                                <FileText className="h-3 w-3" />
+                                <span>Formato: {Object.values(visibleColumns).filter(Boolean).length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
+                            </div>
                         </div>
                     </div>
                     
@@ -363,7 +371,8 @@ export function ExportResults({
                     </div>
                     
                     <div className="mt-3 text-xs text-muted-foreground">
-                        Total de columnas: {Object.keys(headers).length} | Total de registros: {tableData.length}
+                        Total de columnas: {Object.keys(headers).length} | Total de registros: {tableData.length} | 
+                        Orientación: <span className="font-medium">{Object.values(visibleColumns).filter(Boolean).length >= 6 ? 'LANDSCAPE' : 'PORTRAIT'}</span>
                     </div>
                 </CardContent>
             </Card>
