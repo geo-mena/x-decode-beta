@@ -12,7 +12,7 @@ import {
     DialogTrigger
 } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
-import { Download, FileText, User } from 'lucide-react';
+import { Download, FileText, Loader, User } from 'lucide-react';
 import { LivenessResult } from '@/types/liveness';
 import { format } from 'date-fns';
 import { jsPDF } from 'jspdf';
@@ -428,7 +428,7 @@ export function ExportResults({
                     >
                         {isExporting ? (
                             <>
-                                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                                <Loader className="mr-2 h-4 w-4 animate-spin" />
                                 Exportando...
                             </>
                         ) : (
