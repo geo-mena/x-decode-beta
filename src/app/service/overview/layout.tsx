@@ -13,8 +13,8 @@ import ServiceBlankState from '@/features/overview/components/service-blank-stat
 import React from 'react';
 
 export const metadata = {
-    title: 'Overview',
-    metadataBase: new URL('https://www.xdecode.app'),
+    title: 'X DECODE - Overview',
+    metadataBase: new URL('https://xdecode.app'),
     alternates: {
         canonical: '/service/overview'
     }
