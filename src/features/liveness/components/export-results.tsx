@@ -314,8 +314,8 @@ export function ExportResults({
         const previewData = tableData.slice(0, 3);
 
         return (
-            <Card className="mt-4">
-                <CardContent className="p-4">
+            <Card className="mt-2">
+                <CardContent>
                     <div className="mb-4">
                         <h3 className="font-semibold text-sm mb-2">Preview of data to export:</h3>
                         <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
@@ -330,7 +330,7 @@ export function ExportResults({
                         </div>
                     </div>
                     
-                    <div className="overflow-x-auto border rounded">
+                    {/* <div className="overflow-x-auto border rounded">
                         <table className="w-full text-xs">
                             <thead className="bg-muted">
                                 <tr>
@@ -370,7 +370,7 @@ export function ExportResults({
                                 )}
                             </tbody>
                         </table>
-                    </div>
+                    </div> */}
                     
                     <div className="mt-3 text-xs text-muted-foreground">
                         Total columns: {Object.keys(headers).length} | Total records: {tableData.length} | 
