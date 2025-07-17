@@ -5,7 +5,6 @@ import { Base64ImageResponseData } from '@/types/base64-image';
 import { CloudAlert, CloudCog, Copy, Download, ExternalLink, Images, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import base64ImageService from '@/lib/tools/base64-image.service';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Card,

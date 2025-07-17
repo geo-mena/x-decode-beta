@@ -5,7 +5,6 @@ import { DetokenizeResponseData } from '@/types/detokenize';
 import { CloudAlert, CloudCog, Copy, Download, ExternalLink, Images, Loader } from 'lucide-react';
 import { toast } from 'sonner';
 import detokenizeService from '@/lib/identity-api/detokenize.service';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Card,
