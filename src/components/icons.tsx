@@ -43,7 +43,7 @@ import {
     IconTools
 } from '@tabler/icons-react';
 import { link } from 'fs';
-import { MonitorCog } from 'lucide-react';
+import { MonitorCog, Network } from 'lucide-react';
 
 export type Icon = React.ComponentType<IconProps>;
 
@@ -91,5 +91,6 @@ export const Icons = {
     link: IconLink,
     cloudDownload: IconCloudDownload,
     cloudUpload: IconCloudUpload,
-    monitorCog: MonitorCog
+    monitorCog: MonitorCog,
+    network: Network
 };

@@ -144,6 +144,22 @@ export const navItems: NavItem[] = [
                 shortcut: ['m', 'm']
             }
         ]
+    },
+
+    {
+        title: 'Network',
+        url: '#', // Placeholder as there is no direct link for the parent
+        icon: 'network',
+        isActive: true,
+
+        items: [
+            {
+                title: 'MAC Address Lookup',
+                url: '/tools/mac-address-lookup',
+                icon: 'route',
+                shortcut: ['m', 'm']
+            }
+        ]
     }
 ];
 
