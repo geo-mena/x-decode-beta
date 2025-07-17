@@ -158,6 +158,12 @@ export const navItems: NavItem[] = [
                 url: '/tools/mac-address-lookup',
                 icon: 'route',
                 shortcut: ['m', 'm']
+            },
+            {
+                title: 'MAC Address Generator',
+                url: '/tools/mac-address-generator',
+                icon: 'route',
+                shortcut: ['m', 'm']
             }
         ]
     }
