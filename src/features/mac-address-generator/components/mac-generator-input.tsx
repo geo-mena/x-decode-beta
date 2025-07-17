@@ -206,3 +206,5 @@ export const MacGeneratorInput = forwardRef<MacGeneratorInputRef, MacGeneratorIn
         );
     }
 );
+
+MacGeneratorInput.displayName = 'MacGeneratorInput';

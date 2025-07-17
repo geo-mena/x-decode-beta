@@ -136,3 +136,5 @@ export const MacAddressInput = forwardRef<MacAddressInputRef, MacAddressInputPro
         );
     }
 );
+
+MacAddressInput.displayName = 'MacAddressInput';
