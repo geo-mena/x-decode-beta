@@ -4,8 +4,16 @@ import { useState, forwardRef, useImperativeHandle } from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, RotateCcw } from 'lucide-react';
-import { macAddressValidationRules, formatMacAddress } from '@/utils/macAddress';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle
+} from '@/components/ui/card';
+import { Search, RefreshCw, Loader } from 'lucide-react';
+import { macAddressValidationRules } from '@/utils/macAddress';
 
 interface MacAddressInputProps {
     onLookup: (macAddress: string) => void;
@@ -70,46 +78,62 @@ export const MacAddressInput = forwardRef<MacAddressInputRef, MacAddressInputPro
         };
 
         return (
-            <div className="space-y-4">
-                <div className="space-y-2">
-                    <Label htmlFor="mac-address">MAC Address</Label>
-                    <Input
-                        id="mac-address"
-                        type="text"
-                        placeholder="Type a MAC address (e.g., 20:37:06:12:34:56)"
-                        value={macAddress}
-                        onChange={handleInputChange}
-                        onKeyPress={handleKeyPress}
-                        autoComplete="off"
-                        autoCorrect="off"
-                        autoCapitalize="off"
-                        spellCheck={false}
-                        className={error ? 'border-red-500' : ''}
-                    />
-                    {error && (
-                        <p className="text-sm text-red-500">{error}</p>
-                    )}
-                </div>
-
-                <div className="flex gap-2">
+            <Card>
+                <CardHeader>
+                    <CardTitle>MAC Address Input</CardTitle>
+                    <CardDescription>
+                        Enter a MAC address to lookup vendor information
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="mac-address">MAC Address</Label>
+                        <Input
+                            id="mac-address"
+                            type="text"
+                            placeholder="Type a MAC address (e.g., 20:37:06:12:34:56)"
+                            value={macAddress}
+                            onChange={handleInputChange}
+                            onKeyPress={handleKeyPress}
+                            autoComplete="off"
+                            autoCorrect="off"
+                            autoCapitalize="off"
+                            spellCheck={false}
+                            className={error ? 'border-red-500' : ''}
+                        />
+                        {error && (
+                            <p className="text-sm text-red-500">{error}</p>
+                        )}
+                    </div>
+                </CardContent>
+                <CardFooter className="flex gap-2">
                     <Button
                         onClick={handleLookup}
                         disabled={isLoading || !!error || !macAddress.trim()}
                         className="flex-1"
                     >
-                        <Search className="h-4 w-4 mr-2" />
-                        {isLoading ? 'Looking up...' : 'Lookup Vendor'}
+                        {isLoading ? (
+                            <>
+                                <Loader className="mr-2 h-4 w-4 animate-spin" />
+                                Looking up...
+                            </>
+                        ) : (
+                            <>
+                                <Search className="mr-2 h-4 w-4" />
+                                Lookup Vendor
+                            </>
+                        )}
                     </Button>
-
                     <Button
                         onClick={handleReset}
-                        variant="outline"
+                        variant="secondary"
                         disabled={isLoading}
                     >
-                        <RotateCcw className="h-4 w-4" />
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Clear
                     </Button>
-                </div>
-            </div>
+                </CardFooter>
+            </Card>
         );
     }
 );
