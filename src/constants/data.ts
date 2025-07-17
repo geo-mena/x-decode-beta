@@ -146,27 +146,27 @@ export const navItems: NavItem[] = [
         ]
     },
 
-    {
-        title: 'Network',
-        url: '#', // Placeholder as there is no direct link for the parent
-        icon: 'network',
-        isActive: true,
+    // {
+    //     title: 'Network',
+    //     url: '#', // Placeholder as there is no direct link for the parent
+    //     icon: 'network',
+    //     isActive: true,
 
-        items: [
-            {
-                title: 'MAC Address Lookup',
-                url: '/tools/mac-address-lookup',
-                icon: 'route',
-                shortcut: ['m', 'm']
-            },
-            {
-                title: 'MAC Address Generator',
-                url: '/tools/mac-address-generator',
-                icon: 'route',
-                shortcut: ['m', 'm']
-            }
-        ]
-    }
+    //     items: [
+    //         {
+    //             title: 'MAC Address Lookup',
+    //             url: '/tools/mac-address-lookup',
+    //             icon: 'route',
+    //             shortcut: ['m', 'm']
+    //         },
+    //         {
+    //             title: 'MAC Address Generator',
+    //             url: '/tools/mac-address-generator',
+    //             icon: 'route',
+    //             shortcut: ['m', 'm']
+    //         }
+    //     ]
+    // }
 ];
 
 export interface SaleUser {
