@@ -194,6 +194,9 @@ importers:
       nuqs:
         specifier: ^2.4.1
         version: 2.4.1(next@15.3.2(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      oui-data:
+        specifier: ^1.1.388
+        version: 1.1.388
       pizzip:
         specifier: ^3.2.0
         version: 3.2.0
@@ -3892,6 +3895,9 @@ packages:
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
+
+  oui-data@1.1.388:
+    resolution: {integrity: sha512-7ClTwM3qSy3tdvR5/phYTUFOtxYgXf5jirOl12XGNg69uPPI0np+99x6rG1552nKzBVzYGyzU9XdnGt3eIVSxA==}
 
   own-keys@1.0.1:
     resolution: {integrity: sha512-qFOyK5PjiWZd+QQIh+1jhdb9LpxTF0qs7Pm8o5QHYZ0M3vKqSqzsZaEB6oWlxZ+q2sJBMI/Ktgd2N5ZwQoRHfg==}
@@ -8746,6 +8752,8 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
       word-wrap: 1.2.5
+
+  oui-data@1.1.388: {}
 
   own-keys@1.0.1:
     dependencies:
