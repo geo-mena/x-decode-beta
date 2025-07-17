@@ -200,32 +200,30 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
         <div className='space-y-4'>
             <div>
                 <h3 className='mb-2 text-sm font-medium'>Image Information</h3>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className='border-r'>Format</TableHead>
-                            <TableHead className='border-r'>Size</TableHead>
-                            <TableHead className='border-r'>Resolution</TableHead>
+                <Table className='border border-border'>
+                    <TableHeader className='bg-muted'>
+                        <TableRow className='border-b border-border'>
+                            <TableHead className='border-r border-border font-semibold'>Format</TableHead>
+                            <TableHead className='border-r border-border font-semibold'>Size</TableHead>
+                            <TableHead className='border-r border-border font-semibold'>Resolution</TableHead>
                             {imageData.jpeg_quality !== undefined && (
-                                <TableHead>JPEG Quality</TableHead>
+                                <TableHead className='border-border font-semibold'>JPEG Quality</TableHead>
                             )}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow>
-                            <TableCell className='border-r'>
-                                <Badge variant='default' className='font-mono text-xs'>
-                                    {imageData.mime_type}
-                                </Badge>
+                        <TableRow className='border-b border-border'>
+                            <TableCell className='border-r border-border'>
+                                {imageData.mime_type}
                             </TableCell>
-                            <TableCell className='border-r'>
+                            <TableCell className='border-r border-border'>
                                 {formatFileSize(imageData.size)}
                             </TableCell>
-                            <TableCell className='border-r'>
+                            <TableCell className='border-r border-border'>
                                 {imageData.width} × {imageData.height} px
                             </TableCell>
                             {imageData.jpeg_quality !== undefined && (
-                                <TableCell>{imageData.jpeg_quality}%</TableCell>
+                                <TableCell className='border-border'>{imageData.jpeg_quality}%</TableCell>
                             )}
                         </TableRow>
                     </TableBody>
