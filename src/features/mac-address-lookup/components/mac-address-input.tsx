@@ -12,7 +12,7 @@ import {
     CardHeader,
     CardTitle
 } from '@/components/ui/card';
-import { Search, RefreshCw, Loader } from 'lucide-react';
+import { RefreshCw, Loader, Play } from 'lucide-react';
 import { macAddressValidationRules } from '@/utils/macAddress';
 
 interface MacAddressInputProps {
@@ -118,7 +118,7 @@ export const MacAddressInput = forwardRef<MacAddressInputRef, MacAddressInputPro
                             </>
                         ) : (
                             <>
-                                <Search className="mr-2 h-4 w-4" />
+                                <Play className="mr-2 h-4 w-4" />
                                 Lookup Vendor
                             </>
                         )}
