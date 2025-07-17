@@ -1,8 +1,8 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Copy, Building } from 'lucide-react';
+import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface VendorInfoProps {
@@ -28,10 +28,12 @@ export function VendorInfo({ vendorInfo, macAddress, isLoading = false, error }:
         return (
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Building className="h-5 w-5" />
-                        Vendor Information
+                    <CardTitle>
+                        Output Results
                     </CardTitle>
+                    <CardDescription>
+                        Looking up vendor information for MAC address: {macAddress}
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="flex items-center justify-center p-8">
@@ -46,10 +48,12 @@ export function VendorInfo({ vendorInfo, macAddress, isLoading = false, error }:
         return (
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Building className="h-5 w-5" />
-                        Vendor Information
+                    <CardTitle>
+                        Output Results
                     </CardTitle>
+                    <CardDescription>
+                        An error occurred while looking up vendor information.
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="text-center text-red-500 p-4">
@@ -63,10 +67,12 @@ export function VendorInfo({ vendorInfo, macAddress, isLoading = false, error }:
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Building className="h-5 w-5" />
-                    Vendor Information
+               <CardTitle>
+                    Output Results
                 </CardTitle>
+                <CardDescription>
+                    Vendor information for MAC address: {macAddress}
+                </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="min-h-[120px] rounded-lg bg-muted p-4">

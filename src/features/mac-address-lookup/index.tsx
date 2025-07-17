@@ -2,8 +2,6 @@
 
 import { useRef, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Network } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { MacAddressInput, MacAddressInputRef } from './components/mac-address-input';
 import { VendorInfo } from './components/vendor-info';
 import { getVendorValue } from '@/utils/macAddress';
@@ -57,27 +55,6 @@ export default function MacAddressLookup() {
                         Lookup vendor information for MAC addresses using the IEEE OUI database.
                     </p>
                 </div>
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-            >
-                <Badge
-                    variant='secondary'
-                    className='text-primary cursor-pointer p-2 mb-6'
-                    onClick={() =>
-                        window.open(
-                            'https://standards.ieee.org/develop/regauth/oui/public.html',
-                            '_blank',
-                            'noopener,noreferrer'
-                        )
-                    }
-                >
-                    <Network className='h-4 w-4' />
-                    <span className='ml-2'>IEEE OUI Database</span>
-                </Badge>
             </motion.div>
 
             <motion.div

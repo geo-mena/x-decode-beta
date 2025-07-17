@@ -80,7 +80,7 @@ export const MacAddressInput = forwardRef<MacAddressInputRef, MacAddressInputPro
         return (
             <Card>
                 <CardHeader>
-                    <CardTitle>MAC Address Input</CardTitle>
+                    <CardTitle>Input Parameters</CardTitle>
                     <CardDescription>
                         Enter a MAC address to lookup vendor information
                     </CardDescription>
@@ -99,7 +99,6 @@ export const MacAddressInput = forwardRef<MacAddressInputRef, MacAddressInputPro
                             autoCorrect="off"
                             autoCapitalize="off"
                             spellCheck={false}
-                            className={error ? 'border-red-500' : ''}
                         />
                         {error && (
                             <p className="text-sm text-red-500">{error}</p>
