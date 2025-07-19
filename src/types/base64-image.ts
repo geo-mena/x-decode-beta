@@ -18,6 +18,7 @@ export interface Base64ImageResponseData {
     jpeg_quality?: number;
     is_progressive_jpeg?: boolean;
     codeIndex?: number;
+    base64_data?: string;
 }
 
 export interface Base64ImageResponse {

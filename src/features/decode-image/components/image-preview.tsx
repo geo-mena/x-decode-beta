@@ -25,7 +25,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ImageControls } from '@/features/detokenize/components/image-controls';
 import { FullscreenImage } from './full-screen-image';
-// import { ImageAnalyzer } from './image-analyzer';
+import { LivenessAnalyzer } from './liveness-analyzer';
 
 interface ImageControlState {
     zoomLevel: number;
@@ -268,8 +268,7 @@ export function ImagePreview({ data, error, isLoading, onDownload }: ImagePrevie
 
                     {activeImage && (
                         <div className='flex gap-2'>
-                            {/* Componente de análisis de imagen */}
-                            {/* <ImageAnalyzer data={activeImage} /> */}
+                            <LivenessAnalyzer data={activeImage} />
                         </div>
                     )}
                 </CardHeader>

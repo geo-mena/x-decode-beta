@@ -14,14 +14,15 @@ export default function DecodeImage() {
     const [imageData, setImageData] = useState<
         Base64ImageResponseData | Base64ImageResponseData[] | null
     >(null);
+    const [_originalCodes, setOriginalCodes] = useState<string[]>([]);
     const base64InputRef = useRef<{ reset: () => void } | null>(null);
 
     /* 🌱 Función para manejar la decodificación de la imagen */
     const handleDecode = async (base64Codes: string[]) => {
-        // Limpiar estado previo
         setImageData(null);
         setError(null);
         setLoading(true);
+        setOriginalCodes(base64Codes);
 
         try {
             const response = await base64ImageService.decodeImage({
@@ -36,11 +37,11 @@ export default function DecodeImage() {
                     description: response.message || 'Could not process the base64 codes.'
                 });
             } else {
-                // Agregar índice de código a cada imagen para referencia
                 if (Array.isArray(response.data)) {
                     const processedData = response.data.map((img, index) => ({
                         ...img,
-                        codeIndex: index
+                        codeIndex: index,
+                        base64_data: base64Codes[index]
                     }));
                     setImageData(processedData);
 
@@ -48,10 +49,10 @@ export default function DecodeImage() {
                         description: `Successfully decoded ${processedData.length} images`
                     });
                 } else {
-                    // Si es una sola imagen
                     setImageData({
                         ...response.data,
-                        codeIndex: 0
+                        codeIndex: 0,
+                        base64_data: base64Codes[0]
                     });
 
                     toast.success('Image decoded', {
@@ -86,6 +87,7 @@ export default function DecodeImage() {
         setImageData(null);
         setError(null);
         setLoading(false);
+        setOriginalCodes([]);
 
         if (base64InputRef.current && typeof base64InputRef.current.reset === 'function') {
             base64InputRef.current.reset();
