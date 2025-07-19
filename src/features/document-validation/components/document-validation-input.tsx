@@ -762,7 +762,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                             </div>
 
                             {/* Option to store responses */}
-                            <div className='flex items-center space-x-2 py-2'>
+                            {/* <div className='flex items-center space-x-2 py-2'>
                                 <Switch
                                     id='storeResponses'
                                     checked={storeResponses}
@@ -770,7 +770,7 @@ export const DocumentValidationInput = forwardRef<any, DocumentValidationInputPr
                                     disabled={isLoading || isPolling}
                                 />
                                 <Label htmlFor='storeResponses'>Store Responses</Label>
-                            </div>
+                            </div> */}
 
                             {/* Error message if exists */}
                             {formError && (
