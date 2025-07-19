@@ -29,7 +29,7 @@
 
 <div align="center">
 
-![Node Badge](https://shields.io/badge/Node-14.17.0-339933?logo=node.js)
+![Node Badge](https://shields.io/badge/Node-22.17.0-339933?logo=node.js)
 ![React Badge](https://shields.io/badge/React-19.0.0-61DAFB?logo=react)
 ![Next.js Badge](https://shields.io/badge/Next.js-15.0.0-000000?logo=next.js)
 ![Tailwind CSS Badge](https://shields.io/badge/Tailwind%20CSS-4.0.0-06B6D4?logo=tailwind-css)
