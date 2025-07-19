@@ -129,7 +129,7 @@ export function LivenessAnalyzer({ data }: LivenessAnalyzerProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant='ghost' size='icon' title='Test Liveness'>
+                <Button variant='outline' size='icon' title='Test Liveness'>
                     <Activity className='h-4 w-4' />
                 </Button>
             </DialogTrigger>
