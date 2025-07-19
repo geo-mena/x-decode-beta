@@ -32,17 +32,13 @@
 ![Next.js Badge](https://img.shields.io/badge/Next.js-000000?logo=nextdotjs&logoColor=fff&style=flat)
 ![TypeScript Badge](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff&style=flat)
 ![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=fff&style=flat)
-![Clerk Badge](https://img.shields.io/badge/Clerk-9333EA?logo=clerk&logoColor=fff&style=flat)
 ![React Badge](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000&style=flat)
-![GitHub stars](https://img.shields.io/github/stars/geo-mena/x-decode)
-![GitHub forks](https://img.shields.io/github/forks/geo-mena/x-decode)
-![GitHub issues](https://img.shields.io/github/issues/geo-mena/x-decode)
 
 </div>
 
 ## 🔍 Overview
 
-X-Decode is a comprehensive web application for image analysis, document processing, and digital forensics tools. Built with modern web technologies, it provides powerful utilities for developers, security professionals, and digital analysts.
+ This tools is a comprehensive web application for image analysis, document processing, and digital forensics tools. Built with modern web technologies, it provides powerful utilities for developers, security professionals, and digital analysts.
 
 **Key capabilities:**
 - 🖼️ Image encoding/decoding and analysis
@@ -55,16 +51,16 @@ X-Decode is a comprehensive web application for image analysis, document process
 
 A comprehensive suite of digital analysis tools:
 
-|                                                                                                            | Tool                    | Description                                                     |
-| ---------------------------------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------------- |
-| <img src="public/images/logo.svg" height="25" />                                                         | Image Decoder           | Decode base64 images and analyze metadata                      |
-| <img src="public/images/logo.svg" height="25" />                                                         | Image Encoder           | Convert images to base64 format                                |
-| <img src="public/images/logo.svg" height="25" />                                                         | PDF Decoder             | Extract and analyze PDF content from base64                    |
-| <img src="public/images/logo.svg" height="25" />                                                         | Image Analysis          | Advanced image analysis with detailed reporting                |
-| <img src="public/images/logo.svg" height="25" />                                                         | Liveness Detection      | Verify image authenticity and detect manipulation              |
-| <img src="public/images/logo.svg" height="25" />                                                         | Document Validation     | Validate document integrity and authenticity                   |
-| <img src="public/images/logo.svg" height="25" />                                                         | MAC Address Generator   | Generate random MAC addresses for testing                      |
-| <img src="public/images/logo.svg" height="25" />                                                         | MAC Address Lookup      | Lookup vendor information from MAC addresses                   |
+| Tool                    | Description                                                     |
+| ----------------------- | --------------------------------------------------------------- |
+| Image Decoder           | Decode base64 images and analyze metadata                      |
+| Image Encoder           | Convert images to base64 format                                |
+| PDF Decoder             | Extract and analyze PDF content from base64                    |
+| Image Analysis          | Advanced image analysis with detailed reporting                |
+| Liveness Detection      | Verify image authenticity and detect manipulation              |
+| Document Validation     | Validate document integrity and authenticity                   |
+| MAC Address Generator   | Generate random MAC addresses for testing                      |
+| MAC Address Lookup      | Lookup vendor information from MAC addresses                   |
 
 ## ✨ Features
 
@@ -93,39 +89,6 @@ A comprehensive suite of digital analysis tools:
 - [**kbar**](https://kbar.vercel.app/) - Command palette interface
 - [**Sentry**](https://sentry.io/) - Error tracking and performance monitoring
 - [**Lucide React**](https://lucide.dev/) - Beautiful and consistent icon library
-
-## 📁 Project Structure
-
-```plaintext
-src/
-├── app/                    # Next.js App Router
-│   ├── auth/              # Authentication pages
-│   ├── service/           # Service tools dashboard
-│   │   ├── overview/      # Analytics dashboard
-│   │   ├── liveness/      # Liveness detection
-│   │   ├── morphology/    # Image morphology
-│   │   └── detokenize/    # Token processing
-│   └── tools/             # Standalone tools
-│       ├── decode-image/  # Image decoder
-│       ├── encode-image/  # Image encoder
-│       └── image-analysis/ # Advanced analysis
-│
-├── components/            # Shared UI components
-│   ├── ui/               # Base components (shadcn-ui)
-│   └── layout/           # Layout components
-│
-├── features/             # Feature-specific modules
-│   ├── decode-image/     # Image decoding logic
-│   ├── liveness/         # Liveness detection
-│   ├── image-analysis/   # Analysis algorithms
-│   └── mac-address-*/    # Network utilities
-│
-├── lib/                  # Core utilities
-│   ├── identity-api/     # API service clients
-│   └── tools/           # Tool-specific utilities
-│
-└── types/               # TypeScript definitions
-```
 
 ## 🚀 Getting Started
 
@@ -205,9 +168,3 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 ## 🔑 License
 
 This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
-
----
-
-<div align="center">
-  <strong>Built with ❤️ by <a href="https://github.com/geo-mena">Geovanni Mena</a></strong>
-</div>
