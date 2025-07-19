@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AlertCircle, Activity, Play } from 'lucide-react';
+import { AlertCircle, Activity, Play, Loader } from 'lucide-react';
 import { toast } from 'sonner';
 import { usePlaygroundStore } from '@/store';
 import { createLivenessServiceWithApiKey } from '@/lib/identity-api/liveness.service';
@@ -14,7 +14,6 @@ import {
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog';
-import { Progress } from '@/components/ui/progress';
 import { JsonHighlighter } from '@/components/ui/json-highlighter';
 
 interface ImageData {
@@ -185,9 +184,9 @@ export function LivenessAnalyzer({ data }: LivenessAnalyzerProps) {
                                 )}
 
                                 {processingPercent > 0 && processingPercent < 100 ? (
-                                    <div className='space-y-3'>
-                                        <p className='text-center text-sm'>{statusMessage}</p>
-                                        <Progress value={processingPercent} className='h-2' />
+                                    <div className='flex flex-col items-center space-y-3'>
+                                        <Loader className='h-8 w-8 animate-spin text-primary' />
+                                        <p className='text-center text-sm text-muted-foreground'>{statusMessage}</p>
                                     </div>
                                 ) : (
                                     <Button
