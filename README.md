@@ -1,115 +1,213 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/9113740/201498864-2a900c64-d88f-4ed4-b5cf-770bcb57e1f5.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/9113740/201498152-b171abb8-9225-487a-821c-6ff49ee48579.png">
-</picture>
-
-<div align="center"><strong>Next.js Admin Dashboard Starter Template With Shadcn-ui</strong></div>
-<div align="center">Built with the Next.js 15 App Router</div>
-<br />
 <div align="center">
-<a href="https://dub.sh/shadcn-dashboard">View Demo</a>
-<span>
+<img src="public/images/banner.png">
+<p></p>
 </div>
 
-## Overview
+<div align="center">
+    <a href="#-getting-started">
+        Getting Started
+    </a>
+    <span>&nbsp;✦&nbsp;</span>
+    <a href="#-tools">
+        Tools
+    </a>
+    <span>&nbsp;✦&nbsp;</span>
+    <a href="#-features">
+        Features
+    </a>
+    <span>&nbsp;✦&nbsp;</span>
+    <a href="#%EF%B8%8F-stack">
+        Stack
+    </a>
+    <span>&nbsp;✦&nbsp;</span>
+    <a href="#%EF%B8%8F-contributing">
+        Contributing
+    </a>
+</div>
 
-This is a starter template using the following stack:
+</p>
 
-- Framework - [Next.js 15](https://nextjs.org/13)
-- Language - [TypeScript](https://www.typescriptlang.org)
-- Auth - [Clerk](https://go.clerk.com/ILdYhn7)
-- Error tracking - [<picture><img alt="Sentry" src="public/assets/sentry.svg">
-  </picture>](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy26q2-nextjs&utm_content=github-banner-project-tryfree)
-- Styling - [Tailwind CSS v4](https://tailwindcss.com)
-- Components - [Shadcn-ui](https://ui.shadcn.com)
-- Schema Validations - [Zod](https://zod.dev)
-- State Management - [Zustand](https://zustand-demo.pmnd.rs)
-- Search params state manager - [Nuqs](https://nuqs.47ng.com/)
-- Tables - [Tanstack Data Tables](https://ui.shadcn.com/docs/components/data-table) • [Dice table](https://www.diceui.com/docs/components/data-table)
-- Forms - [React Hook Form](https://ui.shadcn.com/docs/components/form)
-- Command+k interface - [kbar](https://kbar.vercel.app/)
-- Linting - [ESLint](https://eslint.org)
-- Pre-commit Hooks - [Husky](https://typicode.github.io/husky/)
-- Formatting - [Prettier](https://prettier.io)
+<div align="center">
 
-_If you are looking for a React admin dashboard starter, here is the [repo](https://github.com/Kiranism/react-shadcn-dashboard-starter)._
+![Next.js Badge](https://img.shields.io/badge/Next.js-000000?logo=nextdotjs&logoColor=fff&style=flat)
+![TypeScript Badge](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff&style=flat)
+![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=fff&style=flat)
+![Clerk Badge](https://img.shields.io/badge/Clerk-9333EA?logo=clerk&logoColor=fff&style=flat)
+![React Badge](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000&style=flat)
+![GitHub stars](https://img.shields.io/github/stars/geo-mena/x-decode)
+![GitHub forks](https://img.shields.io/github/forks/geo-mena/x-decode)
+![GitHub issues](https://img.shields.io/github/issues/geo-mena/x-decode)
 
-## Pages
+</div>
 
-| Pages                                                                                                                                                                  | Specifications                                                                                                                                                                                                                                                          |
-| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Signup / Signin](https://go.clerk.com/ILdYhn7)                                                                                                                        | Authentication with **Clerk** provides secure authentication and user management with multiple sign-in options including passwordless authentication, social logins, and enterprise SSO - all designed to enhance security while delivering a seamless user experience. |
-| [Dashboard (Overview)](https://shadcn-dashboard.kiranism.dev/dashboard)                                                                                                | Cards with Recharts graphs for analytics. Parallel routes in the overview sections feature independent loading, error handling, and isolated component rendering.                                                                                                       |
-| [Product](https://shadcn-dashboard.kiranism.dev/dashboard/product)                                                                                                     | Tanstack tables with server side searching, filter, pagination by Nuqs which is a Type-safe search params state manager in nextjs                                                                                                                                       |
-| [Product/new](https://shadcn-dashboard.kiranism.dev/dashboard/product/new)                                                                                             | A Product Form with shadcn form (react-hook-form + zod).                                                                                                                                                                                                                |
-| [Profile](https://shadcn-dashboard.kiranism.dev/dashboard/profile)                                                                                                     | Clerk's full-featured account management UI that allows users to manage their profile and security settings                                                                                                                                                             |
-| [Kanban Board](https://shadcn-dashboard.kiranism.dev/dashboard/kanban)                                                                                                 | A Drag n Drop task management board with dnd-kit and zustand to persist state locally.                                                                                                                                                                                  |
-| [Not Found](https://shadcn-dashboard.kiranism.dev/dashboard/notfound)                                                                                                  | Not Found Page Added in the root level                                                                                                                                                                                                                                  |
-| [Global Error](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy26q2-nextjs&utm_content=github-banner-project-tryfree) | A centralized error page that captures and displays errors across the application. Integrated with **Sentry** to log errors, provide detailed reports, and enable replay functionality for better debugging.                                                            |
+## 🔍 Overview
 
-## Feature based organization
+X-Decode is a comprehensive web application for image analysis, document processing, and digital forensics tools. Built with modern web technologies, it provides powerful utilities for developers, security professionals, and digital analysts.
+
+**Key capabilities:**
+- 🖼️ Image encoding/decoding and analysis
+- 📄 PDF processing and conversion
+- 🔐 Document validation and liveness detection
+- 🔧 Network utilities (MAC address tools)
+- 📊 Analytics dashboard and reporting
+
+## 🛠️ Tools
+
+A comprehensive suite of digital analysis tools:
+
+|                                                                                                            | Tool                    | Description                                                     |
+| ---------------------------------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------------- |
+| <img src="public/images/logo.svg" height="25" />                                                         | Image Decoder           | Decode base64 images and analyze metadata                      |
+| <img src="public/images/logo.svg" height="25" />                                                         | Image Encoder           | Convert images to base64 format                                |
+| <img src="public/images/logo.svg" height="25" />                                                         | PDF Decoder             | Extract and analyze PDF content from base64                    |
+| <img src="public/images/logo.svg" height="25" />                                                         | Image Analysis          | Advanced image analysis with detailed reporting                |
+| <img src="public/images/logo.svg" height="25" />                                                         | Liveness Detection      | Verify image authenticity and detect manipulation              |
+| <img src="public/images/logo.svg" height="25" />                                                         | Document Validation     | Validate document integrity and authenticity                   |
+| <img src="public/images/logo.svg" height="25" />                                                         | MAC Address Generator   | Generate random MAC addresses for testing                      |
+| <img src="public/images/logo.svg" height="25" />                                                         | MAC Address Lookup      | Lookup vendor information from MAC addresses                   |
+
+## ✨ Features
+
+- **🔐 Authentication** - Secure user authentication with Clerk
+- **🎨 Modern UI** - Beautiful interface built with Tailwind CSS and Shadcn-ui
+- **📱 Responsive** - Fully responsive design for all devices
+- **🌙 Dark Mode** - Built-in dark/light theme support
+- **⚡ Fast** - Optimized performance with Next.js 15 and Turbopack
+- **🔍 Search** - Global command palette with kbar
+- **📊 Analytics** - Comprehensive dashboard with charts and metrics
+- **🎯 TypeScript** - Full type safety throughout the application
+- **♿ Accessible** - WCAG compliant components
+
+## 🛠️ Stack
+
+- [**Next.js 15**](https://nextjs.org/) - React framework with App Router and Turbopack
+- [**TypeScript**](https://www.typescriptlang.org/) - JavaScript with syntax for types
+- [**Tailwind CSS v4**](https://tailwindcss.com/) - Utility-first CSS framework
+- [**Shadcn-ui**](https://ui.shadcn.com/) - Beautiful and accessible component library
+- [**Clerk**](https://clerk.com/) - Complete authentication and user management
+- [**React Hook Form**](https://react-hook-form.com/) + [**Zod**](https://zod.dev/) - Form handling with validation
+- [**Zustand**](https://zustand-demo.pmnd.rs/) - State management for React
+- [**Nuqs**](https://nuqs.47ng.com/) - Type-safe search params state manager
+- [**Recharts**](https://recharts.org/) - Composable charting library for React
+- [**Framer Motion**](https://www.framer.com/motion/) - Production-ready motion library
+- [**kbar**](https://kbar.vercel.app/) - Command palette interface
+- [**Sentry**](https://sentry.io/) - Error tracking and performance monitoring
+- [**Lucide React**](https://lucide.dev/) - Beautiful and consistent icon library
+
+## 📁 Project Structure
 
 ```plaintext
 src/
-├── app/ # Next.js App Router directory
-│ ├── (auth)/ # Auth route group
-│ │ ├── (signin)/
-│ ├── (dashboard)/ # Dashboard route group
-│ │ ├── layout.tsx
-│ │ ├── loading.tsx
-│ │ └── page.tsx
-│ └── api/ # API routes
+├── app/                    # Next.js App Router
+│   ├── auth/              # Authentication pages
+│   ├── service/           # Service tools dashboard
+│   │   ├── overview/      # Analytics dashboard
+│   │   ├── liveness/      # Liveness detection
+│   │   ├── morphology/    # Image morphology
+│   │   └── detokenize/    # Token processing
+│   └── tools/             # Standalone tools
+│       ├── decode-image/  # Image decoder
+│       ├── encode-image/  # Image encoder
+│       └── image-analysis/ # Advanced analysis
 │
-├── components/ # Shared components
-│ ├── ui/ # UI components (buttons, inputs, etc.)
-│ └── layout/ # Layout components (header, sidebar, etc.)
+├── components/            # Shared UI components
+│   ├── ui/               # Base components (shadcn-ui)
+│   └── layout/           # Layout components
 │
-├── features/ # Feature-based modules
-│ ├── feature/
-│ │ ├── components/ # Feature-specific components
-│ │ ├── actions/ # Server actions
-│ │ ├── schemas/ # Form validation schemas
-│ │ └── utils/ # Feature-specific utilities
-│ │
-├── lib/ # Core utilities and configurations
-│ ├── auth/ # Auth configuration
-│ ├── db/ # Database utilities
-│ └── utils/ # Shared utilities
+├── features/             # Feature-specific modules
+│   ├── decode-image/     # Image decoding logic
+│   ├── liveness/         # Liveness detection
+│   ├── image-analysis/   # Analysis algorithms
+│   └── mac-address-*/    # Network utilities
 │
-├── hooks/ # Custom hooks
-│ └── use-debounce.ts
+├── lib/                  # Core utilities
+│   ├── identity-api/     # API service clients
+│   └── tools/           # Tool-specific utilities
 │
-├── stores/ # Zustand stores
-│ └── dashboard-store.ts
-│
-└── types/ # TypeScript types
-└── index.ts
+└── types/               # TypeScript definitions
 ```
 
-## Getting Started
+## 🚀 Getting Started
 
 > [!NOTE]  
-> We are using **Next 15** with **React 19**, follow these steps:
+> This project uses **Next.js 15** with **React 19** and **Tailwind CSS v4**
 
-Clone the repo:
+**Prerequisites:**
+- [Node.js 18+ (recommended 20 LTS)](https://nodejs.org/en/)
+- [pnpm](https://pnpm.io/) (recommended package manager)
+- [Git](https://git-scm.com/)
 
+**1. Clone the repository:**
+
+```bash
+git clone https://github.com/geo-mena/x-decode.git
+cd x-decode
 ```
-git clone https://github.com/Kiranism/next-shadcn-dashboard-starter.git
+
+**2. Install dependencies:**
+
+```bash
+# Install pnpm globally if you don't have it
+npm install -g pnpm
+
+# Install project dependencies
+pnpm install
 ```
 
-- `pnpm install` ( we have legacy-peer-deps=true added in the .npmrc)
-- Create a `.env.local` file by copying the example environment file:
-  `cp env.example.txt .env.local`
-- Add the required environment variables to the `.env.local` file.
-- `pnpm run dev`
+**3. Environment setup:**
 
-##### Environment Configuration Setup
+```bash
+# Copy the environment template
+cp env.example.txt .env.local
 
-To configure the environment for this project, refer to the `env.example.txt` file. This file contains the necessary environment variables required for authentication and error tracking.
+# Add your environment variables
+# - Clerk authentication keys
+# - Sentry DSN (optional)
+# - API endpoints
+```
 
-You should now be able to access the application at http://localhost:3000.
+**4. Start the development server:**
 
-> [!WARNING]
-> After cloning or forking the repository, be cautious when pulling or syncing with the latest changes, as this may result in breaking conflicts.
+```bash
+pnpm dev
+```
 
-Cheers! 🥂
+The application will be available at [http://localhost:3000](http://localhost:3000)
+
+### 🐳 Docker Deployment
+
+For production deployment with Docker:
+
+```bash
+# Build the Docker image
+chmod +x docker-build.sh
+./docker-build.sh
+
+# Or manually
+docker build -t x-decode .
+docker run -p 3000:3000 x-decode
+```
+
+> [!TIP]
+> Check the `public/docs/docker-deployment.md` file for detailed Docker deployment instructions.
+
+## ✌️ Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+**Development workflow:**
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 🔑 License
+
+This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
+
+---
+
+<div align="center">
+  <strong>Built with ❤️ by <a href="https://github.com/geo-mena">Geovanni Mena</a></strong>
+</div>
