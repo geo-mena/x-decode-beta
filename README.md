@@ -29,16 +29,18 @@
 
 <div align="center">
 
-![Next.js Badge](https://img.shields.io/badge/Next.js-000000?logo=nextdotjs&logoColor=fff&style=flat)
-![TypeScript Badge](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff&style=flat)
-![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=fff&style=flat)
-![React Badge](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000&style=flat)
+![Node Badge](https://shields.io/badge/Node-14.17.0-339933?logo=node.js)
+![React Badge](https://shields.io/badge/React-19.0.0-61DAFB?logo=react)
+![Next.js Badge](https://shields.io/badge/Next.js-15.0.0-000000?logo=next.js)
+![Tailwind CSS Badge](https://shields.io/badge/Tailwind%20CSS-4.0.0-06B6D4?logo=tailwind-css)
+![TypeScript Badge](https://shields.io/badge/TypeScript-5.0.0-3178C6?logo=typescript)
+![License Badge](https://shields.io/badge/License-MIT-green.svg)
 
 </div>
 
 ## 🔍 Overview
 
- This tools is a comprehensive web application for image analysis, document processing, and digital forensics tools. Built with modern web technologies, it provides powerful utilities for developers, security professionals, and digital analysts.
+ Comprehensive web application for image analysis, document processing, and digital forensics tools. Built with modern web technologies, it provides powerful utilities for developers, security professionals, and digital analysts.
 
 **Key capabilities:**
 - 🖼️ Image encoding/decoding and analysis
